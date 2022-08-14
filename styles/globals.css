@@ -40,11 +40,11 @@ body {
 
   background: radial-gradient(
     ellipse at center,
-    #131313 0%,
-    #202020 35%,
-    #131313 95%
+    #020202 0%,
+    #121212 35%,
+    #101010 95%
   );
-  background-color: #131313;
+  background-color: #101010;
   height: 100%;
   color: white;
 }
@@ -73,8 +73,8 @@ body {
   right: -500px;
   bottom: -500px;
   left: -500px;
-  background: transparent url("/images/noise.png") 0 0;
-  opacity: 0.18;
+  background: transparent url("/images/noise.png");
+  opacity: 0.1;
   animation: noise 2s steps(2, end) infinite both;
 }
 
