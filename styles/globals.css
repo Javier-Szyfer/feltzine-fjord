@@ -52,8 +52,11 @@ body {
 .text-shadowInit1 {
   text-shadow: 0px 0px 10px #cccccc;
 }
-.text-shadowFirst {
+.text-shadowFirstCollection {
   text-shadow: 0px 0px 10px #655a5a;
+}
+.text-shadowFirst {
+  text-shadow: 0px 0px 10px #cccccc;
 }
 .text-shadowInit1:hover {
   color: #3a86ff;
