@@ -18,7 +18,7 @@ function IntroText({ visible, setVisible }: any) {
               exit={{ opacity: 0 }}
             >
               <SplitChars
-                initial={{ y: "100%" }}
+                initial={{ y: "115%" }}
                 animate="visible"
                 variants={{
                   visible: (i: number) => ({

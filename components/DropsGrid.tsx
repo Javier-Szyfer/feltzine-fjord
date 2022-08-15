@@ -50,12 +50,12 @@ const DropsGrid = () => {
       exit={{ opacity: 0 }}
       initial="initial"
       animate="animate"
-      className="absolute inset-0 flex flex-col"
+      className="absolute inset-0 "
       id="dropsGrid"
     >
       <motion.div
         variants={stagger}
-        className="lg:shadow-xl lg:shadow-stone-600/50 gap-6 mt-12 py-12 md:py-24 px-4 w-full my-auto   mx-auto sm:max-w-6xl  grid grid-col-1 md:grid-cols-2 place-content-center md:gap-1 font-bold md:max-w-4xl  h-full "
+        className="lg:shadow-xl lg:shadow-stone-600/50 gap-6 mt-72 sm:mt-80   md:mt-12 md:py-24 px-4 w-full mx-auto sm:max-w-6xl  grid grid-col-1 md:grid-cols-2 place-content-center md:gap-1 font-bold md:max-w-4xl h-full "
       >
         {enter && (
           <>
