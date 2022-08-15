@@ -50,12 +50,12 @@ const DropsGrid = () => {
       exit={{ opacity: 0 }}
       initial="initial"
       animate="animate"
-      className="absolute inset-0 "
+      className="relative h-full  overflow-hidden"
       id="dropsGrid"
     >
       <motion.div
         variants={stagger}
-        className="lg:shadow-xl lg:shadow-stone-600/50 gap-6 mt-72 sm:mt-80   md:mt-12 md:py-24 px-4 w-full mx-auto sm:max-w-6xl  grid grid-col-1 md:grid-cols-2 place-content-center md:gap-1 font-bold md:max-w-4xl h-full "
+        className="lg:shadow-xl lg:shadow-stone-600/50 gap-6 md:py-20  px-4 w-full mx-auto sm:max-w-6xl  grid grid-col-1 md:grid-cols-2 place-content-center md:gap-1 font-bold md:max-w-4xl h-full "
       >
         {enter && (
           <>
@@ -63,7 +63,7 @@ const DropsGrid = () => {
             <motion.div
               variants={fadeInUp}
               transition={{ delay: 0.5 }}
-              className="cursor-pointer border-[0.9px] border-[#55505084] shadow-md shadow-stone-200/10 text-[#ff0000] p-4 h-64 bg-[#00000055]  opacity-95"
+              className="cursor-pointer border-[0.9px] mt-10 md:mt-0 border-[#55505084] shadow-md shadow-stone-200/10 text-[#ff0000] p-4 h-64 bg-[#00000055]  opacity-95"
             >
               <motion.div
                 onMouseEnter={() => {
@@ -192,7 +192,7 @@ const DropsGrid = () => {
               onClick={() => {
                 setIsSoundon(!isSoundOn), play6();
               }}
-              className="bg-[#202020] text-shadowFirst py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none w-auto sm:w-32 mt-10 text-xs"
+              className="bg-[#202020] text-shadowFirst py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none w-auto sm:w-32 mt-8 text-xs"
             >
               {isSoundOn ? "sound off" : "sound on"}
             </button>
@@ -203,7 +203,7 @@ const DropsGrid = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, ease: "easeInOut" }}
-            className="w-full h-[75vh] flex flex-col justify-between items-center col-span-2"
+            className="w-full h-[75vh] mt-12 md:mt-0 flex flex-col justify-between items-center col-span-2"
           >
             <IntroText setVisible={setVisible} visible={visible} />
             <motion.button
