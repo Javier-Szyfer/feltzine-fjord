@@ -37,16 +37,17 @@ body {
   margin: 0;
   letter-spacing: -48x;
   font-family: "Teletactile", sans-serif;
-
+  background-color: #151515;
   background: radial-gradient(
     ellipse at center,
     #020202 0%,
-    #121212 35%,
-    #101010 95%
+    #080808 35%,
+    #030303 95%
   );
-  background-color: #101010;
+
   height: 100%;
   color: white;
+  cursor: url("../public/cursor/cursor.svg"), auto;
 }
 
 .text-shadowInit1 {
@@ -69,6 +70,9 @@ body {
 .text-shadowInit3:hover {
   color: #daee00;
   text-shadow: 0px 0px 10px #daee00;
+}
+.text-drop1 {
+  text-shadow: 0px 0px 10px #66000a;
 }
 .noise {
   position: fixed;

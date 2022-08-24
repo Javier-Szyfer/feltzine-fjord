@@ -6,7 +6,11 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      cursor: {
+        fancy: "url(../public/cursor/cursor.svg), pointer",
+      },
+    },
   },
   plugins: [require("@tailwindcss/typography")],
 };
