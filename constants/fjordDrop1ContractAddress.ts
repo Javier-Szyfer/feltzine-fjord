@@ -1,2 +1,2 @@
 export const fjordDrop1ContractAddress =
-  "0x8b94C8Dcd62a42AA6Be1E9957E719A58d57b4877";
+  "0xdF7705d921D711Da96Beffa97fab6BA142ca16cE";

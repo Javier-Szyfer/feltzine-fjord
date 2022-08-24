@@ -163,7 +163,7 @@ export const fjordDrop1GoerliAbi = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "address", name: "to", type: "address" }],
+    inputs: [],
     name: "mint",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "nonpayable",
@@ -181,16 +181,6 @@ export const fjordDrop1GoerliAbi = [
     name: "mintPerWhitelistedWallet",
     outputs: [{ internalType: "uint32", name: "", type: "uint32" }],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "uint256", name: "amount", type: "uint256" },
-      { internalType: "bytes32[]", name: "merkleProof", type: "bytes32[]" },
-    ],
-    name: "mintWhitelisted",
-    outputs: [],
-    stateMutability: "payable",
     type: "function",
   },
   {
@@ -349,6 +339,16 @@ export const fjordDrop1GoerliAbi = [
     name: "whiteListSaleMerkleRoot",
     outputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "amount", type: "uint256" },
+      { internalType: "bytes32[]", name: "merkleProof", type: "bytes32[]" },
+    ],
+    name: "whitelistMint",
+    outputs: [],
+    stateMutability: "payable",
     type: "function",
   },
   {
