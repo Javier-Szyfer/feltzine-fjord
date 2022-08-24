@@ -21,22 +21,24 @@ const Drop1Tv = ({
   proof,
   address,
   tv1SoundtrackStop,
+  isSoundOn,
 }: any) => {
   const [mintAmount, setMintAmount] = useState(1);
   const [processing, setProcessing] = useState(false);
+
   const price = 0.02;
   let totalPrice = mintAmount * price;
 
   //SOUNDS
-  const [mint1] = useSound(
+  const [mint1, { stop: mint1Stop }] = useSound(
     "https://res.cloudinary.com/aldi/video/upload/v1661350626/feltzine/mint1_th5lyy.mp3",
     { volume: 0.2 }
   );
-  const [mint2] = useSound(
+  const [mint2, { stop: mint2Stop }] = useSound(
     "https://res.cloudinary.com/aldi/video/upload/v1661350625/feltzine/mint2_biappo.mp3",
     { volume: 0.2 }
   );
-  const [back] = useSound(
+  const [back, { stop: backStop }] = useSound(
     "https://res.cloudinary.com/aldi/video/upload/v1661351389/feltzine/back_o59yfu.mp3",
     { volume: 0.2 }
   );
@@ -49,14 +51,14 @@ const Drop1Tv = ({
   const { data: nftsOwned } = useContractRead({
     addressOrName: fjordDrop1ContractAddress,
     contractInterface: fjordDrop1GoerliAbi,
-    functionName: "balanceOf",
+    functionName: "mintPerWhitelistedWallet",
     args: [address],
     enabled: true,
   });
   const { config } = usePrepareContractWrite({
     addressOrName: fjordDrop1ContractAddress,
     contractInterface: fjordDrop1GoerliAbi,
-    functionName: "mintWhitelisted",
+    functionName: "whitelistMint",
     args: [
       mintAmount,
       proof,
@@ -67,7 +69,6 @@ const Drop1Tv = ({
   });
   const { data, write } = useContractWrite({
     ...config,
-
     onError(error) {
       alert(error);
       setProcessing(false);
@@ -95,7 +96,7 @@ const Drop1Tv = ({
       alert("Insufficient balance");
       setProcessing(false);
       return;
-    } else if (nftsOwned && nftsOwned?.toNumber() + mintAmount > 2) {
+    } else if (nftsOwned && Number(nftsOwned) + mintAmount > 2) {
       alert("You can only own 2 NFTs");
       setProcessing(false);
       return;
@@ -143,7 +144,7 @@ const Drop1Tv = ({
                 mintAmount === 1 ? "bg-[#ff000066]" : "bg-none"
               } text-drop1 w-7 h-7 md:w-10 md:h-10 border-r border-[#ff0000] rounded-l cursor-fancy `}
               onClick={() => {
-                setMintAmount(1), mint1();
+                setMintAmount(1), isSoundOn && mint1();
               }}
             >
               1
@@ -153,7 +154,7 @@ const Drop1Tv = ({
                 mintAmount === 2 ? "bg-[#ff000066]" : "bg-none"
               } text-drop1 w-7 h-7 md:w-10 md:h-10 border-r border-[#ff0000] rounded-l cursor-fancy `}
               onClick={() => {
-                setMintAmount(2), mint2();
+                isSoundOn && mint2(), setMintAmount(2);
               }}
             >
               2
@@ -164,7 +165,10 @@ const Drop1Tv = ({
           <button
             className="text-drop1 hover:text-[#ff3700] cursor-fancy "
             onClick={() => {
-              setAllTVs(true), back(), setEnterTV1(false), tv1SoundtrackStop();
+              isSoundOn && back(),
+                setAllTVs(true),
+                setEnterTV1(false),
+                tv1SoundtrackStop();
             }}
           >
             BACK

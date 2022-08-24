@@ -73,6 +73,7 @@ const DropsGrid = () => {
     "https://res.cloudinary.com/aldi/video/upload/v1661350979/feltzine/tv1soundtrack_uottyq.mp3",
     {
       volume: 0.2,
+
       onplay: () => {
         setIsTV1Soundtrack(true);
       },
@@ -125,13 +126,17 @@ const DropsGrid = () => {
       id="dropsGrid"
     >
       {/* Mobile connect */}
-      <div className=" xl:hidden h-auto flex flex-col justify-center  items-center  mt-6 cursor-fancy ">
-        <ConnectBtn />
-      </div>
+      {enter && (
+        <div className=" xl:hidden h-auto flex flex-col justify-center  items-center  mt-6 cursor-fancy ">
+          <ConnectBtn />
+        </div>
+      )}
       {/* Desktop connect */}
-      <div className=" hidden  xl:flex fixed  top-8 right-4 cursor-fancy ">
-        <ConnectBtn />
-      </div>
+      {enter && (
+        <div className=" hidden  xl:flex fixed  top-8 right-4 cursor-fancy ">
+          <ConnectBtn />
+        </div>
+      )}
 
       <motion.div
         variants={stagger}
@@ -151,6 +156,7 @@ const DropsGrid = () => {
               proof={merkleCheck?.proof}
               address={address}
               tv1SoundtrackStop={tv1SoundtrackStop}
+              isSoundOn={isSoundOn}
             />
             <div className="flex w-full justify-start">
               <button
@@ -201,7 +207,8 @@ const DropsGrid = () => {
                   onClick={() => {
                     merkleCheck?.isIncluded && handleEnterTv(1),
                       stop1(),
-                      setTv1Hover(false);
+                      setIsSoundon(true);
+                    setTv1Hover(false);
                   }}
                   className=" cursor-fancy relative shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center "
                 >
