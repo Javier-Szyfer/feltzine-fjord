@@ -1,14 +1,17 @@
+import Link from "next/link";
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { fadeInUp, stagger } from "../animations/animations";
+import { motion } from "framer-motion";
 import { format } from "date-fns";
 import useSound from "use-sound";
 import { CgExternal } from "react-icons/cg";
+import { Zoom, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 //FJORD DROP1
 import { fjordDrop1ContractAddress } from "../constants/fjordDrop1ContractAddress";
 import { fjordDrop1GoerliAbi } from "../contractABI/fjordDrop1GoerliAbi";
 //COMPONENTS
-import IntroText from "./IntroText";
+import News from "./News";
 import { ConnectBtn } from "./ConnectBtn";
 import Timer from "./Timer";
 import Drop1Tv from "./Drop1Tv";
@@ -16,15 +19,12 @@ import Drop1Tv from "./Drop1Tv";
 import { wlAddresses1 } from "../utils/merkle/wlAddresses1";
 import { useWhitelist } from "../hooks/useWhitelist";
 //WAGMI
-import { useAccount, useContractRead } from "wagmi";
-import Link from "next/link";
+import { useAccount, useContractRead, useNetwork } from "wagmi";
 
-const DropsGrid = () => {
+const DropsGrid = ({ enter, setEnter }: any) => {
   const [isSoundOn, setIsSoundon] = useState(true);
-  const [enter, setEnter] = useState(false);
-  const [visible, setVisible] = useState(false);
 
-  //TVs state
+  //TVs STATE
   const [enterTV1, setEnterTV1] = useState(false);
   const [isTV1Soundtrack, setIsTV1Soundtrack] = useState(false);
   const [enterTV2, setEnterTV2] = useState(false);
@@ -58,10 +58,6 @@ const DropsGrid = () => {
     "https://res.cloudinary.com/aldi/video/upload/v1660499727/feltzine/tv3_icptgi.mp3",
     { volume: 0.1 }
   );
-  const [enterSound] = useSound(
-    "https://res.cloudinary.com/aldi/video/upload/v1660491197/feltzine/enter_w9keap.mp3",
-    { volume: 0.5 }
-  );
   const [muteSound] = useSound(
     "https://res.cloudinary.com/aldi/video/upload/v1660491891/feltzine/toggle1_ibppkc.mp3",
     { volume: 0.1 }
@@ -84,11 +80,9 @@ const DropsGrid = () => {
   );
 
   //WAMGI HOOKS
-
   const { address } = useAccount();
-
-  //MERKLE HOOK
-  const merkleCheck = useWhitelist(address, wlAddresses1);
+  const { chain } = useNetwork();
+  console.log("chain", chain);
   const { data: totalMintedDrop1 } = useContractRead({
     addressOrName: fjordDrop1ContractAddress,
     contractInterface: fjordDrop1GoerliAbi,
@@ -96,11 +90,27 @@ const DropsGrid = () => {
     enabled: true,
   });
 
+  //MERKLE HOOK
+  const merkleCheck1 = useWhitelist(address, wlAddresses1);
+
+  //HANDLE TVS
   const handleEnterTv = (tv: number) => {
+    if (!chain) {
+      toast.error("Please connect wallet to continue", {
+        toastId: "walletDisconnected-4tvs",
+      });
+      return;
+    } else if (chain?.id != 5) {
+      toast.error("Please switch to Goerli network", {
+        toastId: "switchNetwork-4tvs",
+      });
+      return;
+    }
     setAllTVs(false);
     switch (tv) {
       case 1:
-        setEnterTV1(true);
+        stop1(), setTv1Hover(false);
+        merkleCheck1?.isIncluded && setEnterTV1(true);
         tv1SoundtrackPlay();
         break;
       case 2:
@@ -122,19 +132,32 @@ const DropsGrid = () => {
       exit={{ opacity: 0 }}
       initial="initial"
       animate="animate"
-      className="relative h-full w-full overflow-hidden"
+      className="relative overflow-hidden  h-full w-full text-md md:text-xl "
       id="dropsGrid"
     >
-      {/* Mobile connect */}
+      <ToastContainer
+        position="bottom-right"
+        autoClose={4000}
+        theme="dark"
+        transition={Zoom}
+        limit={2}
+      />
+      {/* Desktop connect */}
       {enter && (
-        <div className=" xl:hidden h-auto flex flex-col justify-center  items-center  mt-6 cursor-fancy ">
+        <div className=" hidden lg:flex fixed  top-8 right-4 cursor-fancy text-sm ">
           <ConnectBtn />
         </div>
       )}
-      {/* Desktop connect */}
+      {/* NEWS  */}
       {enter && (
-        <div className=" hidden  xl:flex fixed  top-8 right-4 cursor-fancy ">
-          <ConnectBtn />
+        <div className=" px-4 md:max-w-4xl lg:px-0 mx-auto mt-2">
+          <News size="xl" />
+          {merkleCheck1?.isIncluded && allTVS && (
+            <span className=" mt-4 text-[#00eeff] tracking-tighter text-xs text-shadowFirst flex flex-col sm:flex-row justify-center items-center">
+              You are whitelisted for:{" "}
+              <span className="italic ml-1"> Endangered Memories</span>
+            </span>
+          )}
         </div>
       )}
 
@@ -145,15 +168,16 @@ const DropsGrid = () => {
           allTVS
             ? "grid grid-col-1 gap-6 md:grid-cols-2 place-content-center md:gap-1"
             : "flex flex-col justify-center items-center min-h-[80vh] "
-        }  md:max-w-4xl md:py-14 h-full lg:shadow-xl lg:shadow-stone-600/50  font-bold`}
+        } md:max-w-4xl md:py-4 h-full lg:shadow-xl lg:shadow-stone-600/50 2xl:max-w-7xl  font-bold`}
       >
+        {/* TV1 ONLY */}
         {enterTV1 && !allTVS && (
           <>
             <Drop1Tv
               setEnterTV1={setEnterTV1}
               setAllTVs={setAllTVs}
               totalMintedDrop1={totalMintedDrop1}
-              proof={merkleCheck?.proof}
+              proof={merkleCheck1?.proof}
               address={address}
               tv1SoundtrackStop={tv1SoundtrackStop}
               isSoundOn={isSoundOn}
@@ -178,7 +202,7 @@ const DropsGrid = () => {
             <motion.div
               variants={fadeInUp}
               transition={{ delay: 0.5 }}
-              className=" border-[0.9px] mt-10 md:mt-0 border-[#55505084] shadow-md shadow-stone-200/10 hover:shadow-[#ff0000]/50 text-[#ff0000] p-4 h-64 bg-[#00000055]  opacity-95"
+              className=" border-[0.9px] mt-4 md:mt-0 border-[#55505084] shadow-md shadow-stone-200/10 hover:shadow-[#ff0000]/50 text-[#ff0000] p-4 h-64 w-96 2xl:h-80 md:w-full bg-[#00000055]  opacity-95"
             >
               <motion.div
                 onMouseEnter={() => {
@@ -204,21 +228,16 @@ const DropsGrid = () => {
               >
                 <div className="absolute border-[0.5px] border-[#9da6a824]  inset-0  rounded-2xl bg-gradient-to-t  from-[#31333e31] to-[#9f959525] w-full h-full hover:blur-sm" />
                 <button
-                  onClick={() => {
-                    merkleCheck?.isIncluded && handleEnterTv(1),
-                      stop1(),
-                      setIsSoundon(true);
-                    setTv1Hover(false);
-                  }}
-                  className=" cursor-fancy relative shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center "
+                  onClick={() => handleEnterTv(1)}
+                  className="text-shadowFirstCollection cursor-fancy relative shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center "
                 >
-                  <h2 className="text-[#ff0000] text-xl">COLLECTION 1</h2>
+                  <h2 className="text-[#ff0000] ">ENDANGERED MEMORIES</h2>
                   {!tv1Hover && <Timer deadline={deadline} />}
                   {tv1Hover && <p className="text-2xl">{formattedDate}</p>}
-                  {tv1Hover && merkleCheck?.isIncluded && (
-                    <p className="text-xl absolute bottom-4 ">ACCESS</p>
+                  {tv1Hover && merkleCheck1?.isIncluded && (
+                    <p className=" absolute bottom-4 ">ACCESS</p>
                   )}
-                  {tv1Hover && !merkleCheck?.isIncluded && (
+                  {tv1Hover && !merkleCheck1?.isIncluded && (
                     <Link href={"https://copperlaunch.com/"} passHref>
                       <a
                         target="blank"
@@ -240,7 +259,7 @@ const DropsGrid = () => {
             {/* TV2 */}
             <motion.div
               variants={fadeInUp}
-              className="border-[0.9px] border-[#55505084] shadow-md shadow-stone-200/10 hover:shadow-[#3a86ff]/50 cursor-fancy   h-64 p-4 bg-[#00000055] opacity-50"
+              className="border-[0.9px] border-[#55505084] shadow-md shadow-stone-200/10 hover:shadow-[#3a86ff]/50 cursor-fancy   h-64 2xl:h-80 p-4 bg-[#00000055] opacity-50"
             >
               <motion.div
                 whileHover={{
@@ -263,15 +282,15 @@ const DropsGrid = () => {
               >
                 <div className="absolute border-[0.5px] border-[#5e5d5d3a] hover:border-[#69ff69] inset-0  rounded-2xl bg-gradient-to-t  from-[#31333e31] to-[#9f959525] w-full h-full " />
                 <div className="hover:blur-sm absolute inset-0 shadow-xl shadow-stone-500/10 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center ">
-                  <h2 className="text-xl">COLLECTION 2</h2>
-                  <h3 className="text-xl font-semibold">- Coming soon -</h3>
+                  <h2 className="">COLLECTION 2</h2>
+                  <h3 className="font-semibold">- Coming soon -</h3>
                 </div>
               </motion.div>
             </motion.div>
             {/* TV3 */}
             <motion.div
               variants={fadeInUp}
-              className="border-[0.9px] border-[#55505084] shadow-md shadow-stone-200/10 hover:shadow-[#69ff69]/20 cursor-fancy   h-64 p-4 bg-[#00000055] opacity-50 "
+              className="border-[0.9px] border-[#55505084] shadow-md shadow-stone-200/10 hover:shadow-[#69ff69]/20 cursor-fancy   h-64 2xl:h-80  p-4 bg-[#00000055] opacity-50 "
             >
               <motion.div
                 whileHover={{
@@ -294,15 +313,15 @@ const DropsGrid = () => {
               >
                 <div className="absolute  inset-0 border-[0.5px] border-[#4c4a4a93] hover:border-[#69ff69]  rounded-2xl bg-gradient-to-t  from-[#31333e31] to-[#9f959525] w-full h-full " />
                 <div className="hover:blur-sm absolute inset-0  rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center ">
-                  <h2 className="text-xl">COLLECTION 3</h2>
-                  <h3 className="text-xl font-semibold">- Coming soon -</h3>
+                  <h2 className="">COLLECTION 3</h2>
+                  <h3 className="font-semibold">- Coming soon -</h3>
                 </div>
               </motion.div>
             </motion.div>
             {/* TV4 */}
             <motion.div
               variants={fadeInUp}
-              className="border-[0.9px] border-[#55505084] shadow-md shadow-stone-200/10 hover:shadow-[#daee00]/20 cursor-fancy  daee00  h-64 p-4 bg-[#00000055] opacity-50"
+              className="border-[0.9px] border-[#55505084] shadow-md shadow-stone-200/10 hover:shadow-[#daee00]/20 cursor-fancy  daee00  h-64 2xl:h-80 p-4 bg-[#00000055] opacity-50"
             >
               <motion.div
                 whileHover={{
@@ -325,41 +344,43 @@ const DropsGrid = () => {
               >
                 <div className="absolute  border-[0.5px] border-[#4c4a4a93] hover:border-[#daee00]  rounded-2xl bg-gradient-to-t  from-[#31333e31] to-[#9f959525] w-full h-full " />
                 <div className="hover:blur-sm   rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center ">
-                  <h2 className="text-xl">COLLECTION 4</h2>
-                  <h3 className="text-xl font-semibold">- COMING SOON -</h3>
+                  <h2 className="">COLLECTION 4</h2>
+                  <h3 className="font-semibold">- COMING SOON -</h3>
                 </div>
               </motion.div>
             </motion.div>
-            <button
-              onClick={() => {
-                setIsSoundon(!isSoundOn), muteSound();
-              }}
-              className="bg-[#202020] cursor-fancy text-shadowFirst py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none w-auto sm:w-32 mt-8 text-xs"
-            >
-              {isSoundOn ? "sound off" : "sound on"}
-            </button>
+            <div className="pb-8  text-shadowFirst md:col-span-2 flex flex-col w-full md:flex-row  items-center justify-between mt-4 text-xs">
+              <button
+                onClick={() => {
+                  setIsSoundon(!isSoundOn), muteSound();
+                }}
+                className="bg-[#202020] cursor-fancy text-shadowFirst py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none  "
+              >
+                {isSoundOn ? "sound off" : "sound on"}
+              </button>
+              <div className="flex items-center justify-center mt-8 md:mt-0">
+                <Link href={"https://twitter.com/FeltZine"} passHref>
+                  <a
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    className="cursor-fancy hover:underline"
+                  >
+                    <span>TWITTER</span>
+                  </a>
+                </Link>
+                <span className="mx-2">|</span>
+                <Link href={"https://www.feltzine.art/"} passHref>
+                  <a
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    className="cursor-fancy hover:underline"
+                  >
+                    <span>FELT ZINE</span>
+                  </a>
+                </Link>
+              </div>
+            </div>
           </>
-        )}
-        {!enter && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, ease: "easeInOut" }}
-            className="w-full h-[75vh] mt-12 md:mt-0 flex flex-col justify-between items-center col-span-2"
-          >
-            <IntroText setVisible={setVisible} visible={visible} />
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, ease: "easeInOut" }}
-              onClick={() => {
-                enterSound(), setEnter(true), setVisible(false);
-              }}
-              className="bg-[#202020] cursor-fancy text-shadowFirst py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none "
-            >
-              ENTER
-            </motion.button>
-          </motion.div>
         )}
       </motion.div>
     </motion.div>

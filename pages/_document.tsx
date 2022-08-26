@@ -115,6 +115,12 @@ export default function Document() {
           content="max-snippet:-1, max-image-preview:large, max-video-preview:-1"
           name="robots"
         /> */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed&family=Public+Sans:ital,wght@0,100;1,100&display=swap"
+          rel="stylesheet"
+        />
       </Head>
       <body>
         <Main />

@@ -3,24 +3,6 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "Kindly";
-  src: local(""), url("../public/fonts/KindlyRewind-BOon.woff") format("woff");
-  font-weight: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "BBB";
-  src: local(""), url("../public/fonts/BBB.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: "legion";
-  src: local(""), url("../public/fonts/legion.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
   font-family: "Teletactile";
   src: local(""), url("../public/fonts/Teletactile.woff") format("woff");
   font-weight: normal;
@@ -37,7 +19,6 @@ body {
   margin: 0;
   letter-spacing: -48x;
   font-family: "Teletactile", sans-serif;
-  background-color: #151515;
   background: radial-gradient(
     ellipse at center,
     #020202 0%,
@@ -48,13 +29,26 @@ body {
   height: 100%;
   color: white;
   cursor: url("../public/cursor/cursor.svg"), auto;
+  scrollbar-face-color: #646464;
+  scrollbar-base-color: #646464;
+  scrollbar-3dlight-color: #646464;
+  scrollbar-highlight-color: #646464;
+  scrollbar-track-color: #000;
+  scrollbar-arrow-color: #000;
+  scrollbar-shadow-color: #646464;
+  scrollbar-dark-shadow-color: #646464;
 }
-
+.publicSans {
+  font-family: "Public Sans", sans-serif;
+}
+.firaSans {
+  font-family: "Fira Sans Condensed", sans-serif;
+}
 .text-shadowInit1 {
   text-shadow: 0px 0px 10px #cccccc;
 }
 .text-shadowFirstCollection {
-  text-shadow: 0px 0px 10px #655a5a;
+  text-shadow: 0px 0px 10px #66000a;
 }
 .text-shadowFirst {
   text-shadow: 0px 0px 10px #cccccc;
@@ -80,11 +74,35 @@ body {
   right: -500px;
   bottom: -500px;
   left: -500px;
-  background: transparent url("/images/noise.png");
+  background: black url("/images/noise.png");
   opacity: 0.1;
   animation: noise 2s steps(2, end) infinite both;
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+  height: 3px;
+}
+::-webkit-scrollbar-button {
+  background-color: #666;
+}
+::-webkit-scrollbar-track {
+  background-color: #646464;
+}
+::-webkit-scrollbar-track-piece {
+  background-color: #000;
+}
+::-webkit-scrollbar-thumb {
+  height: 50px;
+  background-color: #666;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-corner {
+  background-color: #646464;
+}
+::-webkit-resizer {
+  background-color: #666;
+}
 @keyframes noise {
   0% {
     transform: translateX(0px, 0px);
@@ -119,4 +137,39 @@ body {
   100% {
     transform: translate(-100px, 100px);
   }
+}
+
+// CUSTOM TOASTS STYLING
+.Toastify__toast-container {
+  background-color: #101010 !important;
+  font-family: "Fira Sans Condensed", sans-serif;
+}
+.Toastify__toast-theme--dark {
+  background-color: #101010 !important;
+  font-size: 16px;
+  font-family: "Fira Sans Condensed", sans-serif;
+}
+.Toastify__toast--error {
+  background-color: #10101077 !important;
+  border-radius: 0 !important;
+  box-shadow: 0 0 8px #f1f1f177 !important;
+  color: #ff0000 !important;
+  text-shadow: 0px 0px 10px #ff000087;
+  font-family: "Fira Sans Condensed", sans-serif;
+}
+.Toastify__toast--success {
+  background-color: #10101077 !important;
+  border-radius: 0 !important;
+  box-shadow: 0 0 8px #f1f1f177 !important;
+  color: #00ff00 !important;
+  font-family: "Fira Sans Condensed", sans-serif;
+}
+.Toastify__progress-bar--error {
+  background-color: #ff0000 !important;
+}
+.Toastify__toast-icon {
+  display: none !important;
+}
+.Toastify__close-button {
+  box-shadow: 0 0 2px #f1f1f166 !important;
 }
