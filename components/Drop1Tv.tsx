@@ -2,7 +2,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ethers } from "ethers";
 import useSound from "use-sound";
-
+import { toast } from "react-toastify";
+//WAGMI
 import {
   useBalance,
   useContractWrite,
@@ -11,6 +12,7 @@ import {
   useWaitForTransaction,
   useContractRead,
 } from "wagmi";
+//DATA
 import { fjordDrop1ContractAddress } from "../constants/fjordDrop1ContractAddress";
 import { fjordDrop1GoerliAbi } from "../contractABI/fjordDrop1GoerliAbi";
 
@@ -28,7 +30,6 @@ const Drop1Tv = ({
 
   const price = 0.02;
   let totalPrice = mintAmount * price;
-
   //SOUNDS
   const [mint1, { stop: mint1Stop }] = useSound(
     "https://res.cloudinary.com/aldi/video/upload/v1661350626/feltzine/mint1_th5lyy.mp3",
@@ -70,7 +71,7 @@ const Drop1Tv = ({
   const { data, write } = useContractWrite({
     ...config,
     onError(error) {
-      alert(error);
+      toast.error(error.message);
       setProcessing(false);
     },
   });
@@ -79,25 +80,30 @@ const Drop1Tv = ({
     wait: data?.wait,
     onSuccess() {
       setProcessing(false);
+      toast.success("Transaction successful", { toastId: "mintSuccess-tv1" });
     },
   });
 
   const handleMint = () => {
     setProcessing(true);
     if (chain?.id !== 5) {
-      alert("Please switch to Goerli");
+      toast.error("Please connect to Goerli Testnet", {
+        toastId: "wrongNetwork-tv1",
+      });
       setProcessing(false);
       return;
     } else if (!address) {
-      alert("Please connect your wallet");
+      toast.error("Please connect your wallet", { toastId: "noWallet-tv1" });
       setProcessing(false);
       return;
     } else if (balance && balance?.formatted < totalPrice.toString()) {
-      alert("Insufficient balance");
+      toast.error("Insufficient funds", { toastId: "insufficientFunds-tv1" });
       setProcessing(false);
       return;
     } else if (nftsOwned && Number(nftsOwned) + mintAmount > 2) {
-      alert("You can only own 2 NFTs");
+      toast.error("You can only mint 2 NFTs", {
+        toastId: "maxMintExceeded-tv1",
+      });
       setProcessing(false);
       return;
     }
@@ -108,23 +114,26 @@ const Drop1Tv = ({
       initial={{ y: 60, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.5, ease: "easeInOut" }}
-      className=" text-drop1 relative text-sm md:text-lg border-[0.9px] h-full w-full mt-0 md:mt-0 border-[#55505084] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] min-h-[60vh] p-4 bg-[#01000055] opacity-95"
+      transition={{ duration: 0.75, ease: "easeInOut" }}
+      className=" text-drop1 relative text-sm lg:text-lg border-[0.9px] h-full w-full mt-0 md:mt-0 border-[#55505084] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] min-h-[60vh] p-4 bg-[#01000055] opacity-95"
     >
-      {/* <div className=" border-[0.5px] border-[#9da6a824] rounded-2xl  bg-gradient-to-t  from-[#1429cb] to-[#9f959599] w-full h-full " /> */}
       <video
         src="https://res.cloudinary.com/aldi/video/upload/v1661348392/feltzine/production_ID_3877749_gackzc.mp4"
         autoPlay
         loop
         muted
-        className=" object-center opacity-60 contrast-80 hue-rotate-50 bg-black mix-blend-exclusion h-full w-full hidden lg:flex"
+        className=" opacity-60 contrast-80 hue-rotate-50 bg-black mix-blend-exclusion h-full w-full hidden lg:flex"
       />
       <div className="md:absolute inset-0 flex flex-col justify-between shadow-xl shadow-stone-200/10 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full  p-8 ">
         <div>
           <h2>Endangered Memories</h2>
           <span>
             Artifacts found:
-            {ethers.BigNumber.from(totalMintedDrop1?._hex).toString()}/100
+            {totalMintedDrop1
+              ? ` ${ethers.BigNumber.from(
+                  totalMintedDrop1._hex
+                ).toString()}/100`
+              : "N/A"}
           </span>
           <h3 className="mt-8">
             Researchers discover Ina&apos;s memories in the year 3030.

@@ -5,7 +5,6 @@ import {
   RainbowKitProvider,
   connectorsForWallets,
   wallet,
-  darkTheme,
   Theme,
 } from "@rainbow-me/rainbowkit";
 import { WagmiConfig, chain, configureChains, createClient } from "wagmi";
@@ -19,7 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => setMounted(true), []);
 
   const { chains, provider } = configureChains(
-    [chain.mainnet, chain.goerli],
+    [chain.goerli],
     [infuraProvider({ apiKey: process.env.INFURA_API_KEY }), publicProvider()]
   );
   const connectors = connectorsForWallets([
@@ -94,7 +93,7 @@ const fjordTheme: Theme = {
     standby: "0000ff",
   },
   fonts: {
-    body: "arial",
+    body: "Public Sans",
   },
   radii: {
     actionButton: "none",
