@@ -360,3 +360,7 @@ export const fjordDrop1GoerliAbi = [
   },
   { stateMutability: "payable", type: "receive" },
 ];
+
+export const fjordDrop2GoerliAbi = [];
+export const fjordDrop3GoerliAbi = [];
+export const fjordDrop4GoerliAbi = [];

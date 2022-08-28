@@ -1,15 +1,16 @@
 import Link from "next/link";
-import { useState } from "react";
-import { fadeInUp, stagger } from "../animations/animations";
+import { useContext, useState } from "react";
+import { SoundContext } from "../context/soundContext/soundContext";
 import { motion } from "framer-motion";
+import { fadeInUp, stagger } from "../animations/animations";
 import { format } from "date-fns";
 import useSound from "use-sound";
 import { CgExternal } from "react-icons/cg";
 import { Zoom, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 //FJORD DROP1
-import { fjordDrop1ContractAddress } from "../constants/fjordDrop1ContractAddress";
-import { fjordDrop1GoerliAbi } from "../contractABI/fjordDrop1GoerliAbi";
+import { fjordDrop1ContractAddress } from "../constants/contractAddresses";
+import { fjordDrop1GoerliAbi } from "../contractABI/goerliABIS";
 //COMPONENTS
 import News from "./News";
 import { ConnectBtn } from "./ConnectBtn";
@@ -20,9 +21,16 @@ import { wlAddresses1 } from "../utils/merkle/wlAddresses1";
 import { useWhitelist } from "../hooks/useWhitelist";
 //WAGMI
 import { useAccount, useContractRead, useNetwork } from "wagmi";
+import Router from "next/router";
 
-const DropsGrid = ({ enter, setEnter }: any) => {
-  const [isSoundOn, setIsSoundon] = useState(true);
+interface DropsGridProps {
+  enter: boolean;
+}
+
+const DropsGrid = ({ enter }: DropsGridProps) => {
+  const { soundState, setSoundOn } = useContext(SoundContext);
+
+  const { isSoundOn } = soundState;
 
   //TVs STATE
   const [enterTV1, setEnterTV1] = useState(false);
@@ -82,7 +90,6 @@ const DropsGrid = ({ enter, setEnter }: any) => {
   //WAMGI HOOKS
   const { address } = useAccount();
   const { chain } = useNetwork();
-  console.log("chain", chain);
   const { data: totalMintedDrop1 } = useContractRead({
     addressOrName: fjordDrop1ContractAddress,
     contractInterface: fjordDrop1GoerliAbi,
@@ -92,6 +99,9 @@ const DropsGrid = ({ enter, setEnter }: any) => {
 
   //MERKLE HOOK
   const merkleCheck1 = useWhitelist(address, wlAddresses1);
+  const merkleCheck2 = useWhitelist(address, wlAddresses1);
+  const merkleCheck3 = useWhitelist(address, wlAddresses1);
+  const merkleCheck4 = useWhitelist(address, wlAddresses1);
 
   //HANDLE TVS
   const handleEnterTv = (tv: number) => {
@@ -105,13 +115,18 @@ const DropsGrid = ({ enter, setEnter }: any) => {
         toastId: "switchNetwork-4tvs",
       });
       return;
+    } else if (!merkleCheck1?.isIncluded) {
+      window.open(
+        "https://copperlaunch.com/drops/goerli/0x117EeD5828f799a816D27cfdeEE5c6c2bBadc8A7"
+      );
+      return;
     }
     setAllTVs(false);
     switch (tv) {
       case 1:
         stop1(), setTv1Hover(false);
         merkleCheck1?.isIncluded && setEnterTV1(true);
-        tv1SoundtrackPlay();
+        isSoundOn && tv1SoundtrackPlay();
         break;
       case 2:
         setEnterTV2(true);
@@ -132,7 +147,7 @@ const DropsGrid = ({ enter, setEnter }: any) => {
       exit={{ opacity: 0 }}
       initial="initial"
       animate="animate"
-      className="relative overflow-hidden  h-full w-full text-md md:text-xl "
+      className="relative overflow-hidden h-full w-full text-md md:text-xl "
       id="dropsGrid"
     >
       <ToastContainer
@@ -150,12 +165,21 @@ const DropsGrid = ({ enter, setEnter }: any) => {
       )}
       {/* NEWS  */}
       {enter && (
-        <div className=" px-4 md:max-w-4xl lg:px-0 mx-auto mt-2">
+        <div className="px-8 sm:px-4 md:max-w-4xl lg:px-0 mx-auto mt-2">
           <News size="xl" />
           {merkleCheck1?.isIncluded && allTVS && (
-            <span className=" mt-4 text-[#00eeff] tracking-tighter text-xs text-shadowFirst flex flex-col sm:flex-row justify-center items-center">
+            <span className=" mt-4 text-[#00eeff] tracking-tighter text-[10px] sm:text-xs text-shadowFirst flex flex-col sm:flex-row justify-center items-center">
               You are whitelisted for:{" "}
-              <span className="italic ml-1"> Endangered Memories</span>
+              <span className="italic ml-1 flex flex-col justify-center items-center ">
+                {merkleCheck1?.isIncluded && "Endangered Memories"}
+                {/* {merkleCheck1?.isIncluded && "- Second Chance"}
+                {merkleCheck1?.isIncluded && "- Third Monster"} */}
+              </span>
+            </span>
+          )}
+          {!merkleCheck1?.isIncluded && address && (
+            <span className=" mt-4 text-[#00eeff] tracking-tighter text-xs text-shadowFirst flex flex-col sm:flex-row justify-center items-center">
+              Not whitelisted
             </span>
           )}
         </div>
@@ -163,12 +187,12 @@ const DropsGrid = ({ enter, setEnter }: any) => {
 
       <motion.div
         variants={stagger}
-        className={` px-4 w-full mx-auto sm:max-w-6xl 
+        className={` px-4 w-full mx-auto 
         ${
           allTVS
             ? "grid grid-col-1 gap-6 md:grid-cols-2 place-content-center md:gap-1"
-            : "flex flex-col justify-center items-center min-h-[80vh] "
-        } md:max-w-4xl md:py-4 h-full lg:shadow-xl lg:shadow-stone-600/50 2xl:max-w-7xl  font-bold`}
+            : "flex flex-col justify-center items-center  "
+        } md:max-w-4xl md:py-4 h-full lg:shadow-xl lg:shadow-stone-600/50 sm:max-w-6xl  2xl:max-w-7xl  font-bold`}
       >
         {/* TV1 ONLY */}
         {enterTV1 && !allTVS && (
@@ -176,17 +200,17 @@ const DropsGrid = ({ enter, setEnter }: any) => {
             <Drop1Tv
               setEnterTV1={setEnterTV1}
               setAllTVs={setAllTVs}
-              totalMintedDrop1={totalMintedDrop1}
-              proof={merkleCheck1?.proof}
-              address={address}
+              totalMintedDrop1={totalMintedDrop1 as unknown as number}
+              proof={merkleCheck1?.proof as unknown as string}
+              address={address as unknown as string}
               tv1SoundtrackStop={tv1SoundtrackStop}
               isSoundOn={isSoundOn}
             />
-            <div className="flex w-full justify-start">
+            <div className="flex w-full justify-start pb-6">
               <button
                 onClick={() => {
                   isTV1Soundtrack ? tv1SoundtrackPause() : tv1SoundtrackPlay();
-                  setIsSoundon(!isSoundOn), muteSound();
+                  setSoundOn(!isSoundOn), muteSound();
                 }}
                 className=" cursor-fancy text-shadowFirst border border-gray-400 py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none w-auto sm:w-32 mt-8 text-xs"
               >
@@ -202,7 +226,7 @@ const DropsGrid = ({ enter, setEnter }: any) => {
             <motion.div
               variants={fadeInUp}
               transition={{ delay: 0.5 }}
-              className=" border-[0.9px] mt-4 md:mt-0 border-[#55505084] shadow-md shadow-stone-200/10 hover:shadow-[#ff0000]/50 text-[#ff0000] p-4 h-64 w-96 2xl:h-80 md:w-full bg-[#00000055]  opacity-95"
+              className=" border-[0.9px] mt-4 md:mt-0 border-[#36353584] shadow-md shadow-stone-200/10 hover:shadow-[#ff0000]/50 text-[#ff0000] p-4 h-64 w-96 2xl:h-80 md:w-full bg-[#00000055]  opacity-95"
             >
               <motion.div
                 onMouseEnter={() => {
@@ -226,7 +250,7 @@ const DropsGrid = ({ enter, setEnter }: any) => {
                 onHoverEnd={() => setTv1Hover(false)}
                 className="text-shadowFirstCollection relative w-full h-full "
               >
-                <div className="absolute border-[0.5px] border-[#9da6a824]  inset-0  rounded-2xl bg-gradient-to-t  from-[#31333e31] to-[#9f959525] w-full h-full hover:blur-sm" />
+                <div className="absolute border-[0.5px] border-[#0e0e0e84] inset-0  rounded-2xl bg-gradient-to-t  from-[#31333e31] to-[#76737325] w-full h-full hover:blur-sm" />
                 <button
                   onClick={() => handleEnterTv(1)}
                   className="text-shadowFirstCollection cursor-fancy relative shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center "
@@ -237,19 +261,16 @@ const DropsGrid = ({ enter, setEnter }: any) => {
                   {tv1Hover && merkleCheck1?.isIncluded && (
                     <p className=" absolute bottom-4 ">ACCESS</p>
                   )}
-                  {tv1Hover && !merkleCheck1?.isIncluded && (
+                  {!merkleCheck1?.isIncluded && address && (
                     <Link href={"https://copperlaunch.com/"} passHref>
                       <a
                         target="blank"
                         rel="noopener"
                         className="absolute bottom-4 "
                       >
-                        <div className="flex w-full justify-center items-center">
-                          <CgExternal className="h-5 w-5 sm:h-7 sm:w-7" />
-                          <p className="text-sm md:text-lg ml-2 underline">
-                            MINT THROUGH COPPER
-                          </p>
-                        </div>
+                        <p className="text-sm md:text-lg ml-2 ">
+                          MINT THROUGH COPPER
+                        </p>
                       </a>
                     </Link>
                   )}
@@ -259,7 +280,7 @@ const DropsGrid = ({ enter, setEnter }: any) => {
             {/* TV2 */}
             <motion.div
               variants={fadeInUp}
-              className="border-[0.9px] border-[#55505084] shadow-md shadow-stone-200/10 hover:shadow-[#3a86ff]/50 cursor-fancy   h-64 2xl:h-80 p-4 bg-[#00000055] opacity-50"
+              className="border-[0.9px] border-[#36353584] shadow-md shadow-stone-200/10 hover:shadow-[#3a86ff]/50 cursor-fancy   h-64 2xl:h-80 p-4 bg-[#00000055] opacity-50"
             >
               <motion.div
                 whileHover={{
@@ -280,7 +301,7 @@ const DropsGrid = ({ enter, setEnter }: any) => {
                 }}
                 className="text-shadowInit1 relative  w-full h-full "
               >
-                <div className="absolute border-[0.5px] border-[#5e5d5d3a] hover:border-[#69ff69] inset-0  rounded-2xl bg-gradient-to-t  from-[#31333e31] to-[#9f959525] w-full h-full " />
+                <div className="absolute border-[0.5px] border-[#0e0e0e84] hover:border-[#69ff69] inset-0  rounded-2xl bg-gradient-to-t  from-[#31333e31] to-[#9f959525] w-full h-full " />
                 <div className="hover:blur-sm absolute inset-0 shadow-xl shadow-stone-500/10 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center ">
                   <h2 className="">COLLECTION 2</h2>
                   <h3 className="font-semibold">- Coming soon -</h3>
@@ -311,7 +332,7 @@ const DropsGrid = ({ enter, setEnter }: any) => {
                 }}
                 className="text-shadowInit1 text-shadowInit2 relative  w-full h-full "
               >
-                <div className="absolute  inset-0 border-[0.5px] border-[#4c4a4a93] hover:border-[#69ff69]  rounded-2xl bg-gradient-to-t  from-[#31333e31] to-[#9f959525] w-full h-full " />
+                <div className="absolute  inset-0 border-[0.5px] border-[#0e0e0e84] hover:border-[#69ff69]  rounded-2xl bg-gradient-to-t  from-[#31333e31] to-[#9f959525] w-full h-full " />
                 <div className="hover:blur-sm absolute inset-0  rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center ">
                   <h2 className="">COLLECTION 3</h2>
                   <h3 className="font-semibold">- Coming soon -</h3>
@@ -321,7 +342,7 @@ const DropsGrid = ({ enter, setEnter }: any) => {
             {/* TV4 */}
             <motion.div
               variants={fadeInUp}
-              className="border-[0.9px] border-[#55505084] shadow-md shadow-stone-200/10 hover:shadow-[#daee00]/20 cursor-fancy  daee00  h-64 2xl:h-80 p-4 bg-[#00000055] opacity-50"
+              className="border-[0.9px] border-[#55505084] shadow-md shadow-stone-200/10 hover:shadow-[#daee00]/20 cursor-fancy   h-64 2xl:h-80  p-4 bg-[#00000055] opacity-50"
             >
               <motion.div
                 whileHover={{
@@ -340,21 +361,21 @@ const DropsGrid = ({ enter, setEnter }: any) => {
                   stop2();
                   stop3();
                 }}
-                className=" relative text-shadowInit1 text-shadowInit3 p-6 lg:p-0  rounded-2xl w-full hover:blur-sm   h-full flex flex-col justify-center items-center space-y-2 shadow-sm shadow-stone-100/20  "
+                className="text-shadowInit1 text-shadowInit3 relative  w-full h-full "
               >
-                <div className="absolute  border-[0.5px] border-[#4c4a4a93] hover:border-[#daee00]  rounded-2xl bg-gradient-to-t  from-[#31333e31] to-[#9f959525] w-full h-full " />
-                <div className="hover:blur-sm   rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center ">
+                <div className="absolute  inset-0 border-[0.5px] border-[#0e0e0e84] hover:border-[#69ff69]  rounded-2xl bg-gradient-to-t  from-[#31333e31] to-[#9f959525] w-full h-full " />
+                <div className="hover:blur-sm absolute inset-0  rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center ">
                   <h2 className="">COLLECTION 4</h2>
-                  <h3 className="font-semibold">- COMING SOON -</h3>
+                  <h3 className="font-semibold">- Coming soon -</h3>
                 </div>
               </motion.div>
             </motion.div>
             <div className="pb-8  text-shadowFirst md:col-span-2 flex flex-col w-full md:flex-row  items-center justify-between mt-4 text-xs">
               <button
                 onClick={() => {
-                  setIsSoundon(!isSoundOn), muteSound();
+                  setSoundOn(!isSoundOn), muteSound();
                 }}
-                className="bg-[#202020] cursor-fancy text-shadowFirst py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none  "
+                className="bg-transparent  border border-[#555555] hover:border-[#999999] cursor-fancy text-shadowFirst py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none  "
               >
                 {isSoundOn ? "sound off" : "sound on"}
               </button>
