@@ -7,6 +7,7 @@ import {
   wallet,
   Theme,
 } from "@rainbow-me/rainbowkit";
+import { SoundProvider } from "../context/soundContext/soundCtxProvider";
 import { WagmiConfig, chain, configureChains, createClient } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 import { infuraProvider } from "wagmi/providers/infura";
@@ -49,7 +50,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains} theme={fjordTheme}>
         <AnimatePresence exitBeforeEnter>
-          <Component {...pageProps} />
+          <SoundProvider>
+            <Component {...pageProps} />
+          </SoundProvider>
         </AnimatePresence>
       </RainbowKitProvider>
     </WagmiConfig>
@@ -63,7 +66,7 @@ const fjordTheme: Theme = {
     modalOverlay: "...",
   },
   colors: {
-    accentColor: "#30303066",
+    accentColor: "#707070",
     accentColorForeground: "#f8f8f8",
     actionButtonBorder: "#555555",
     actionButtonBorderMobile: "#c6c6c6",
@@ -93,7 +96,7 @@ const fjordTheme: Theme = {
     standby: "0000ff",
   },
   fonts: {
-    body: "Public Sans",
+    body: "Public Sans, sans-serif",
   },
   radii: {
     actionButton: "none",
