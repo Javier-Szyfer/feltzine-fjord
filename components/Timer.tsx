@@ -1,7 +1,12 @@
 import { useState, useMemo, useEffect } from "react";
 import { differenceInSeconds } from "date-fns";
 
-const Timer = ({ deadline }: any) => {
+interface TimerProps {
+  deadline: number;
+  size?: string;
+}
+
+const Timer = ({ deadline, size }: TimerProps) => {
   const ONE_DAY = 60 * 60 * 24;
   const ONE_HOUR = 60 * 60;
   const ONE_MINUTE = 60;
@@ -41,7 +46,7 @@ const Timer = ({ deadline }: any) => {
   const countdown = useMemo(getCoundown, [ONE_DAY, ONE_HOUR, diffInSeconds]);
 
   useEffect(() => {
-    let interval: any;
+    let interval: number | NodeJS.Timeout | undefined;
     if (deadline > currentTime) {
       interval = setInterval(() => {
         const now = new Date().getTime();
@@ -52,7 +57,7 @@ const Timer = ({ deadline }: any) => {
   }, [currentTime, deadline]);
 
   return (
-    <div className="tabular-nums flex justify-between  text-2xl  ">
+    <div className={`tabular-nums flex justify-between text-${size}`}>
       {countdown.days}:{countdown.hours}:{countdown.minutes}:{countdown.seconds}
     </div>
   );

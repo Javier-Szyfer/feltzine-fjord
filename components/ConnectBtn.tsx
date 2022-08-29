@@ -6,14 +6,9 @@ export const ConnectBtn = () => {
   const ensName = useEnsName({
     address: address,
   });
-  const {
-    data: avatar,
-    isError,
-    isLoading,
-  } = useEnsAvatar({
+  const { data: avatar } = useEnsAvatar({
     addressOrName: address,
   });
-  console.log("avatar", avatar);
   return (
     <ConnectButton.Custom>
       {({
@@ -67,9 +62,9 @@ export const ConnectBtn = () => {
                     type="button"
                     className="flex items-center font-sans font-semibold tracking-tight text-shadowFirst text-[#ebebebef] hover:text-white"
                   >
-                    {account?.ensAvatar && (
+                    {avatar ? (
                       <img
-                        src={account?.ensAvatar}
+                        src={avatar}
                         alt="avatar"
                         style={{
                           width: "20px",
@@ -78,8 +73,12 @@ export const ConnectBtn = () => {
                         }}
                         className="rounded-full shadow-sm shadow-[#f9f9f9]/50"
                       />
+                    ) : (
+                      <span className="mr-2 w-6 h-6 bg-[#070606] flex  justify-center items-center rounded-full shadow-sm shadow-[#f9f9f9]/50">
+                        👤
+                      </span>
                     )}
-                    {ensName ? ensName.data : account.displayName}
+                    {ensName.data ? ensName.data : account.displayName}
                     {/* {account.displayBalance
                       ? ` (${account.displayBalance})`
                       : ""} */}

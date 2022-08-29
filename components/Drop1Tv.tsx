@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { ethers } from "ethers";
 import useSound from "use-sound";
 import { toast } from "react-toastify";
+import Timer from "./Timer";
+
 //WAGMI
 import {
   useBalance,
@@ -24,6 +26,8 @@ interface Drop1TvProps {
   address: string;
   tv1SoundtrackStop: () => void;
   isSoundOn: boolean;
+  endWLDateInSecs: number;
+  isIncluded: boolean;
 }
 
 const Drop1Tv = ({
@@ -33,23 +37,26 @@ const Drop1Tv = ({
   proof,
   address,
   tv1SoundtrackStop,
+  endWLDateInSecs,
+  isIncluded,
   isSoundOn,
 }: Drop1TvProps) => {
   const [mintAmount, setMintAmount] = useState(1);
   const [processing, setProcessing] = useState(false);
+  const date = new Date();
 
   const price = 0.02;
   let totalPrice = mintAmount * price;
   //SOUNDS
-  const [mint1, { stop: mint1Stop }] = useSound(
+  const [mint1] = useSound(
     "https://res.cloudinary.com/aldi/video/upload/v1661350626/feltzine/mint1_th5lyy.mp3",
     { volume: 0.2 }
   );
-  const [mint2, { stop: mint2Stop }] = useSound(
+  const [mint2] = useSound(
     "https://res.cloudinary.com/aldi/video/upload/v1661350625/feltzine/mint2_biappo.mp3",
     { volume: 0.2 }
   );
-  const [back, { stop: backStop }] = useSound(
+  const [back] = useSound(
     "https://res.cloudinary.com/aldi/video/upload/v1661351389/feltzine/back_o59yfu.mp3",
     { volume: 0.2 }
   );
@@ -64,7 +71,6 @@ const Drop1Tv = ({
     contractInterface: fjordDrop1GoerliAbi,
     functionName: "mintPerWhitelistedWallet",
     args: [address],
-    enabled: true,
   });
   const { config } = usePrepareContractWrite({
     addressOrName: fjordDrop1ContractAddress,
@@ -116,6 +122,16 @@ const Drop1Tv = ({
       });
       setProcessing(false);
       return;
+    } else if (!isIncluded) {
+      toast.error("You are not whitelisted", { toastId: "notWhitelisted-tv1" });
+      setProcessing(false);
+      return;
+    } else if (date.getTime() >= endWLDateInSecs) {
+      toast.error("Whitelist period has ended", {
+        toastId: "whitelistEnded-tv1",
+      });
+      setProcessing(false);
+      return;
     }
     write?.();
   };
@@ -135,9 +151,11 @@ const Drop1Tv = ({
         className=" opacity-60 contrast-80 hue-rotate-50 bg-black mix-blend-exclusion h-full w-full hidden lg:flex"
       />
       <div className="md:absolute inset-0 flex flex-col justify-between shadow-xl shadow-stone-200/10 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full  p-8 ">
-        {" "}
         <div>
-          <h2>Endangered Memories</h2>
+          <div className="flex flex-col md:flex-row justify-between md:items-center">
+            <h2>Endangered Memories</h2>
+            <Timer deadline={endWLDateInSecs} />
+          </div>
           <span>
             Artifacts found:
             {totalMintedDrop1
@@ -196,7 +214,33 @@ const Drop1Tv = ({
             onClick={() => handleMint()}
             disabled={processing}
           >
-            {processing ? "PROCESSING..." : `DISCOVER Ξ${totalPrice}`}
+            {processing ? (
+              <div className="flex items-center justify-center">
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-6 w-6 text-[#ff0000]"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                <span>PROCESSING...</span>
+              </div>
+            ) : (
+              `DISCOVER Ξ${totalPrice}`
+            )}
           </button>
         </div>
       </div>

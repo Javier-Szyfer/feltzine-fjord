@@ -1,6 +1,6 @@
+import { useEffect } from "react";
 import { SplitChars } from "./SplitChars";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect } from "react";
 import { easing } from "../animations/animations";
 
 function IntroText({ visible, setVisible }: any) {

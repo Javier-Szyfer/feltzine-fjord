@@ -3,9 +3,8 @@ import { useContext, useState } from "react";
 import { SoundContext } from "../context/soundContext/soundContext";
 import { motion } from "framer-motion";
 import { fadeInUp, stagger } from "../animations/animations";
-import { format } from "date-fns";
+import { format, fromUnixTime } from "date-fns";
 import useSound from "use-sound";
-import { CgExternal } from "react-icons/cg";
 import { Zoom, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 //FJORD DROP1
@@ -21,17 +20,15 @@ import { wlAddresses1 } from "../utils/merkle/wlAddresses1";
 import { useWhitelist } from "../hooks/useWhitelist";
 //WAGMI
 import { useAccount, useContractRead, useNetwork } from "wagmi";
-import Router from "next/router";
 
 interface DropsGridProps {
   enter: boolean;
 }
 
 const DropsGrid = ({ enter }: DropsGridProps) => {
+  //CONTEXT
   const { soundState, setSoundOn } = useContext(SoundContext);
-
   const { isSoundOn } = soundState;
-
   //TVs STATE
   const [enterTV1, setEnterTV1] = useState(false);
   const [isTV1Soundtrack, setIsTV1Soundtrack] = useState(false);
@@ -45,10 +42,6 @@ const DropsGrid = ({ enter }: DropsGridProps) => {
   // const [tv3Hover, setTv3Hover] = useState(false);
   // const [tv4Hover, setTv4Hover] = useState(false);
 
-  // HANDLE TIME
-  const date: any = new Date("2022-09-12T15:00:00");
-  const formattedDate = format(date, "MM-dd-yyyy");
-  const deadline = date.getTime();
   //AUDIOS FOR DROPS
   const [play1, { stop: stop1 }] = useSound(
     "https://res.cloudinary.com/aldi/video/upload/v1660499727/feltzine/tv1_wcnpei.mp3",
@@ -94,8 +87,18 @@ const DropsGrid = ({ enter }: DropsGridProps) => {
     addressOrName: fjordDrop1ContractAddress,
     contractInterface: fjordDrop1GoerliAbi,
     functionName: "totalSupply",
-    enabled: true,
+    watch: true,
+    suspense: true,
   });
+  // HANDLE TIME
+  const { data: whitelistEndDate } = useContractRead({
+    addressOrName: fjordDrop1ContractAddress,
+    contractInterface: fjordDrop1GoerliAbi,
+    functionName: "whitelistEndDate",
+  });
+  const endWLDate = fromUnixTime(Number(whitelistEndDate));
+  const formattedWLEndDate = format(endWLDate, "MM-dd-yyyy");
+  const endWLDateInSecs = endWLDate.getTime();
 
   //MERKLE HOOK
   const merkleCheck1 = useWhitelist(address, wlAddresses1);
@@ -116,6 +119,7 @@ const DropsGrid = ({ enter }: DropsGridProps) => {
       });
       return;
     } else if (!merkleCheck1?.isIncluded) {
+      stop1();
       window.open(
         "https://copperlaunch.com/drops/goerli/0x117EeD5828f799a816D27cfdeEE5c6c2bBadc8A7"
       );
@@ -205,6 +209,8 @@ const DropsGrid = ({ enter }: DropsGridProps) => {
               address={address as unknown as string}
               tv1SoundtrackStop={tv1SoundtrackStop}
               isSoundOn={isSoundOn}
+              isIncluded={merkleCheck1?.isIncluded as unknown as boolean}
+              endWLDateInSecs={endWLDateInSecs as unknown as number}
             />
             <div className="flex w-full justify-start pb-6">
               <button
@@ -256,8 +262,8 @@ const DropsGrid = ({ enter }: DropsGridProps) => {
                   className="text-shadowFirstCollection cursor-fancy relative shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center "
                 >
                   <h2 className="text-[#ff0000] ">ENDANGERED MEMORIES</h2>
-                  {!tv1Hover && <Timer deadline={deadline} />}
-                  {tv1Hover && <p className="text-2xl">{formattedDate}</p>}
+                  {!tv1Hover && <Timer deadline={endWLDateInSecs} size="2xl" />}
+                  {tv1Hover && <p className="text-2xl">{formattedWLEndDate}</p>}
                   {tv1Hover && merkleCheck1?.isIncluded && (
                     <p className=" absolute bottom-4 ">ACCESS</p>
                   )}
