@@ -46,7 +46,7 @@ const Timer = ({ deadline, size }: TimerProps) => {
   const countdown = useMemo(getCoundown, [ONE_DAY, ONE_HOUR, diffInSeconds]);
 
   useEffect(() => {
-    let interval: number | NodeJS.Timeout | undefined;
+    let interval: any;
     if (deadline > currentTime) {
       interval = setInterval(() => {
         const now = new Date().getTime();
