@@ -7,12 +7,14 @@ export const fjordDrop1GoerliAbi = [
         name: "whiteListSaleMerkleRoot_",
         type: "bytes32",
       },
+      { internalType: "uint256", name: "mintQtyToOwner", type: "uint256" },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
   },
   { inputs: [], name: "FJORD_InexactPayment", type: "error" },
   { inputs: [], name: "FJORD_TotalMinted", type: "error" },
+  { inputs: [], name: "FJORD_WhitelistMintEnded", type: "error" },
   {
     anonymous: false,
     inputs: [
@@ -72,7 +74,6 @@ export const fjordDrop1GoerliAbi = [
     name: "MintedAnNFT",
     type: "event",
   },
-  { anonymous: false, inputs: [], name: "MintedCopper", type: "event" },
   {
     anonymous: false,
     inputs: [
@@ -109,7 +110,7 @@ export const fjordDrop1GoerliAbi = [
   },
   {
     inputs: [],
-    name: "MAX_SUPPLY",
+    name: "TOTAL_SUPPLY",
     outputs: [{ internalType: "uint16", name: "", type: "uint16" }],
     stateMutability: "view",
     type: "function",
@@ -280,6 +281,13 @@ export const fjordDrop1GoerliAbi = [
     type: "function",
   },
   {
+    inputs: [{ internalType: "uint256", name: "time_", type: "uint256" }],
+    name: "setEndDateWhitelist",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [
       { internalType: "address", name: "erc20TokenAddress_", type: "address" },
     ],
@@ -342,6 +350,13 @@ export const fjordDrop1GoerliAbi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "whitelistEndDate",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       { internalType: "uint256", name: "amount", type: "uint256" },
       { internalType: "bytes32[]", name: "merkleProof", type: "bytes32[]" },
@@ -360,7 +375,6 @@ export const fjordDrop1GoerliAbi = [
   },
   { stateMutability: "payable", type: "receive" },
 ];
-
 export const fjordDrop2GoerliAbi = [];
 export const fjordDrop3GoerliAbi = [];
 export const fjordDrop4GoerliAbi = [];
