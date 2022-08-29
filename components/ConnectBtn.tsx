@@ -1,14 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useAccount, useEnsAvatar, useEnsName } from "wagmi";
 export const ConnectBtn = () => {
-  const { address } = useAccount();
-  const ensName = useEnsName({
-    address: address,
-  });
-  const { data: avatar } = useEnsAvatar({
-    addressOrName: address,
-  });
   return (
     <ConnectButton.Custom>
       {({
@@ -21,7 +13,11 @@ export const ConnectBtn = () => {
         mounted,
       }) => {
         const ready = mounted && authenticationStatus !== "loading";
-        const connected = ready && account && chain;
+        const connected =
+          ready &&
+          account &&
+          chain &&
+          (!authenticationStatus || authenticationStatus === "authenticated");
 
         return (
           <div
@@ -62,9 +58,9 @@ export const ConnectBtn = () => {
                     type="button"
                     className="flex items-center font-sans font-semibold tracking-tight text-shadowFirst text-[#ebebebef] hover:text-white"
                   >
-                    {avatar ? (
+                    {account?.ensAvatar ? (
                       <img
-                        src={avatar}
+                        src={account.ensAvatar}
                         alt="avatar"
                         style={{
                           width: "20px",
@@ -78,7 +74,7 @@ export const ConnectBtn = () => {
                         👤
                       </span>
                     )}
-                    {ensName.data ? ensName.data : account.displayName}
+                    {account?.ensName ? account.ensName : account.displayName}
                     {/* {account.displayBalance
                       ? ` (${account.displayBalance})`
                       : ""} */}
