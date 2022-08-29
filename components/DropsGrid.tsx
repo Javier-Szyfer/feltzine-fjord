@@ -89,7 +89,6 @@ const DropsGrid = ({ enter }: DropsGridProps) => {
     contractInterface: fjordDrop1GoerliAbi,
     functionName: "totalSupply",
     watch: true,
-    suspense: true,
   });
   // HANDLE TIME
   const { data: whitelistEndDate } = useContractRead({
