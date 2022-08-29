@@ -20,6 +20,7 @@ import { wlAddresses1 } from "../utils/merkle/wlAddresses1";
 import { useWhitelist } from "../hooks/useWhitelist";
 //WAGMI
 import { useAccount, useContractRead, useNetwork } from "wagmi";
+import { ethers } from "ethers";
 
 interface DropsGridProps {
   enter: boolean;
@@ -96,10 +97,11 @@ const DropsGrid = ({ enter }: DropsGridProps) => {
     contractInterface: fjordDrop1GoerliAbi,
     functionName: "whitelistEndDate",
   });
-  const endWLDate = fromUnixTime(Number(whitelistEndDate));
-  const formattedWLEndDate = format(endWLDate, "MM-dd-yyyy");
+  const whitelistEndDateToNumber =
+    ethers.BigNumber.from(whitelistEndDate).toNumber();
+  const endWLDate = fromUnixTime(whitelistEndDateToNumber);
   const endWLDateInSecs = endWLDate.getTime();
-
+  const formattedWLEndDate = format(endWLDateInSecs, "MM-dd-yyyy");
   //MERKLE HOOK
   const merkleCheck1 = useWhitelist(address, wlAddresses1);
   const merkleCheck2 = useWhitelist(address, wlAddresses1);
