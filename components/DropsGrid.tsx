@@ -89,7 +89,6 @@ const DropsGrid = ({ enter }: DropsGridProps) => {
     contractInterface: fjordDrop1GoerliAbi,
     functionName: "totalSupply",
     watch: true,
-    suspense: true,
   });
   // HANDLE TIME
   const { data: whitelistEndDate } = useContractRead({
@@ -97,8 +96,9 @@ const DropsGrid = ({ enter }: DropsGridProps) => {
     contractInterface: fjordDrop1GoerliAbi,
     functionName: "whitelistEndDate",
   });
-  const whitelistEndDateToNumber =
-    ethers.BigNumber.from(whitelistEndDate).toNumber();
+  const whitelistEndDateToNumber = whitelistEndDate
+    ? ethers.BigNumber.from(whitelistEndDate).toNumber()
+    : 0;
   const endWLDate = fromUnixTime(whitelistEndDateToNumber);
   const endWLDateInSecs = endWLDate.getTime();
   const formattedWLEndDate = format(endWLDateInSecs, "MM-dd-yyyy");
