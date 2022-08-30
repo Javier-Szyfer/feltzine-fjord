@@ -1,15 +1,13 @@
 import Link from "next/link";
 import { useContext, useState } from "react";
 import { SoundContext } from "../context/soundContext/soundContext";
+import { useDrop1Context } from "../context/drop1Context/drop1Ctx";
+import { useDrop2Context } from "../context/drop2Context/drop2Ctx";
 import { motion } from "framer-motion";
 import { fadeInUp, stagger } from "../animations/animations";
-import { format, fromUnixTime } from "date-fns";
 import useSound from "use-sound";
 import { Zoom, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-//FJORD DROP1
-import { fjordDrop1ContractAddress } from "../constants/contractAddresses";
-import { fjordDrop1GoerliAbi } from "../contractABI/goerliABIS";
 //COMPONENTS
 import News from "./News";
 import { ConnectBtn } from "./ConnectBtn";
@@ -19,8 +17,7 @@ import Drop1Tv from "./Drop1Tv";
 import { wlAddresses1 } from "../utils/merkle/wlAddresses1";
 import { useWhitelist } from "../hooks/useWhitelist";
 //WAGMI
-import { useAccount, useContractRead, useNetwork } from "wagmi";
-import { ethers } from "ethers";
+import { useAccount, useNetwork } from "wagmi";
 
 interface DropsGridProps {
   enter: boolean;
@@ -30,18 +27,26 @@ const DropsGrid = ({ enter }: DropsGridProps) => {
   //CONTEXT
   const { soundState, setSoundOn } = useContext(SoundContext);
   const { isSoundOn } = soundState;
-  //TVs STATE
+  //STATE
+  const [allTVS, setAllTVs] = useState(true);
+  //DROP1
+  const { endWLDateInSecs, formattedWLEndDate } = useDrop1Context();
+  const [tv1Hover, setTv1Hover] = useState(false);
   const [enterTV1, setEnterTV1] = useState(false);
   const [isTV1Soundtrack, setIsTV1Soundtrack] = useState(false);
+  //DROP2
+  const { endWL2DateInSecs, formattedWL2EndDate } = useDrop2Context();
+  const [tv2Hover, setTv2Hover] = useState(false);
   const [enterTV2, setEnterTV2] = useState(false);
+  const [isTV2Soundtrack, setIsTV2Soundtrack] = useState(false);
+  //DROP3
+  const [tv3Hover, setTv3Hover] = useState(false);
   const [enterTV3, setEnterTV3] = useState(false);
+  const [isTV3Soundtrack, setIsTV3Soundtrack] = useState(false);
+  //DROP4
   const [enterTV4, setEnterTV4] = useState(false);
-  const [allTVS, setAllTVs] = useState(true);
-
-  const [tv1Hover, setTv1Hover] = useState(false);
-  // const [tv2Hover, setTv2Hover] = useState(false);
-  // const [tv3Hover, setTv3Hover] = useState(false);
-  // const [tv4Hover, setTv4Hover] = useState(false);
+  const [tv4Hover, setTv4Hover] = useState(false);
+  const [isTV4Soundtrack, setIsTV4Soundtrack] = useState(false);
 
   //AUDIOS FOR DROPS
   const [play1, { stop: stop1 }] = useSound(
@@ -84,24 +89,6 @@ const DropsGrid = ({ enter }: DropsGridProps) => {
   //WAMGI HOOKS
   const { address } = useAccount();
   const { chain } = useNetwork();
-  const { data: totalMintedDrop1 } = useContractRead({
-    addressOrName: fjordDrop1ContractAddress,
-    contractInterface: fjordDrop1GoerliAbi,
-    functionName: "totalSupply",
-    watch: true,
-  });
-  // HANDLE TIME
-  const { data: whitelistEndDate } = useContractRead({
-    addressOrName: fjordDrop1ContractAddress,
-    contractInterface: fjordDrop1GoerliAbi,
-    functionName: "whitelistEndDate",
-  });
-  const whitelistEndDateToNumber = whitelistEndDate
-    ? ethers.BigNumber.from(whitelistEndDate).toNumber()
-    : 0;
-  const endWLDate = fromUnixTime(whitelistEndDateToNumber);
-  const endWLDateInSecs = endWLDate.getTime();
-  const formattedWLEndDate = format(endWLDateInSecs, "MM-dd-yyyy");
   //MERKLE HOOK
   const merkleCheck1 = useWhitelist(address, wlAddresses1);
   const merkleCheck2 = useWhitelist(address, wlAddresses1);
@@ -206,13 +193,11 @@ const DropsGrid = ({ enter }: DropsGridProps) => {
             <Drop1Tv
               setEnterTV1={setEnterTV1}
               setAllTVs={setAllTVs}
-              totalMintedDrop1={totalMintedDrop1 as unknown as number}
               proof={merkleCheck1?.proof as unknown as string}
               address={address as unknown as string}
               tv1SoundtrackStop={tv1SoundtrackStop}
               isSoundOn={isSoundOn}
               isIncluded={merkleCheck1?.isIncluded as unknown as boolean}
-              endWLDateInSecs={endWLDateInSecs as unknown as number}
             />
             <div className="flex w-full justify-start pb-6">
               <button

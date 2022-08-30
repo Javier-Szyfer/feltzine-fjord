@@ -4,6 +4,7 @@ import { ethers } from "ethers";
 import useSound from "use-sound";
 import { toast } from "react-toastify";
 import Timer from "./Timer";
+import { useDrop1Context } from "../context/drop1Context/drop1Ctx";
 
 //WAGMI
 import {
@@ -21,26 +22,23 @@ import { fjordDrop1GoerliAbi } from "../contractABI/goerliABIS";
 interface Drop1TvProps {
   setEnterTV1: React.Dispatch<React.SetStateAction<boolean>>;
   setAllTVs: React.Dispatch<React.SetStateAction<boolean>>;
-  totalMintedDrop1: number;
   proof: string;
   address: string;
   tv1SoundtrackStop: () => void;
   isSoundOn: boolean;
-  endWLDateInSecs: number;
   isIncluded: boolean;
 }
 
 const Drop1Tv = ({
   setEnterTV1,
   setAllTVs,
-  totalMintedDrop1,
   proof,
   address,
   tv1SoundtrackStop,
-  endWLDateInSecs,
   isIncluded,
   isSoundOn,
 }: Drop1TvProps) => {
+  const { totalMintedDrop1, endWLDateInSecs } = useDrop1Context();
   const [mintAmount, setMintAmount] = useState(1);
   const [processing, setProcessing] = useState(false);
   const date = new Date();
@@ -61,7 +59,7 @@ const Drop1Tv = ({
     { volume: 0.2 }
   );
 
-  //WAGMI
+  //WAGMI READ
   const { chain } = useNetwork();
   const { data: balance } = useBalance({
     addressOrName: address,
@@ -72,6 +70,7 @@ const Drop1Tv = ({
     functionName: "mintPerWhitelistedWallet",
     args: [address],
   });
+  //WRITE
   const { config } = usePrepareContractWrite({
     addressOrName: fjordDrop1ContractAddress,
     contractInterface: fjordDrop1GoerliAbi,
@@ -158,9 +157,7 @@ const Drop1Tv = ({
           </div>
           <span>
             Artifacts found:
-            {totalMintedDrop1
-              ? ` ${ethers.BigNumber.from(totalMintedDrop1).toString()}/100`
-              : "N/A"}
+            {totalMintedDrop1 ? `${totalMintedDrop1}/100` : "N/A"}
           </span>
           <h3 className="mt-8">
             Researchers discover Ina&apos;s memories in the year 3030.
