@@ -1,4 +1,8 @@
 import type { AppProps } from "next/app";
+//Context
+import { SoundProvider } from "../context/soundContext/soundCtxProvider";
+import { Drop1Wrapper } from "../context/drop1Context/drop1Ctx";
+import { Drop2Wrapper } from "../context/drop2Context/drop2Ctx";
 import { useState, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import {
@@ -7,7 +11,6 @@ import {
   wallet,
   Theme,
 } from "@rainbow-me/rainbowkit";
-import { SoundProvider } from "../context/soundContext/soundCtxProvider";
 import { WagmiConfig, chain, configureChains, createClient } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 import { infuraProvider } from "wagmi/providers/infura";
@@ -51,7 +54,11 @@ function MyApp({ Component, pageProps }: AppProps) {
       <RainbowKitProvider chains={chains} theme={fjordTheme}>
         <AnimatePresence exitBeforeEnter>
           <SoundProvider>
-            <Component {...pageProps} />
+            <Drop1Wrapper>
+              <Drop2Wrapper>
+                <Component {...pageProps} />
+              </Drop2Wrapper>
+            </Drop1Wrapper>
           </SoundProvider>
         </AnimatePresence>
       </RainbowKitProvider>
