@@ -18,9 +18,14 @@ const News = ({ size }: any) => {
         gradientWidth={50}
         className="publicSans italic "
       >
-        FJORD Drop1 - Lost Echoes - Status: ACTIVE - Total minted:{" "}
-        {totalMintedDrop1}/500 | FJORD Drop2 - Status: NOT STARTED | FJORD Drop3
-        - Status: NOT STARTED | FJORD Drop4 - Status: NOT STARTED |{" "}
+        <span className="mx-2">
+          *:･ﾟ Lost Echoes *:･ﾟ Status:{" "}
+          <span className="font-bold">ACTIVE</span> - Total minted:{" "}
+          {totalMintedDrop1}/500 ✧ ✧ ✧
+        </span>
+        <span className="mr-2">FJORD Drop2 - Status: NOT STARTED ✧ ✧ ✧ </span>
+        <span className="mr-2"> FJORD Drop3 - Status: NOT STARTED ✧ ✧ ✧</span>
+        <span className="mr-2"> FJORD Drop4 - Status: NOT STARTED ✧ ✧ ✧</span>
       </Marquee>
     </div>
   );
