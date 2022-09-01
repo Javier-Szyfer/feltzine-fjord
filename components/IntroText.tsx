@@ -30,8 +30,8 @@ function IntroText({ visible, setVisible }: any) {
                   }),
                 }}
               >
-                Collaboration between Felt Zine and Copper. Four drops to be
-                anounced soon.
+                Collaboration between Felt Zine and Fjord Foundry. Four drops to
+                be anounced soon.
               </SplitChars>
             </motion.div>
           )}

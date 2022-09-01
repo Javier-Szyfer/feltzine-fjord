@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import { ConnectBtn } from "../components/common/ConnectBtn";
 //CONTEXT
 import useSoundContext from "../context/soundContext/soundCtx";
 import { useDrop1Context } from "../context/drop1Context/drop1Ctx";
@@ -8,156 +9,51 @@ import Header from "../components/common/Header";
 import News from "../components/common/News";
 //VIEWS
 import LostEchoesWL from "../components/lost-echoes/LostEchoesWL";
-import LostEchoesPM from "../components/lost-echoes/LostEchoesPM";
+import LELoading from "../components/lost-echoes/LELoading";
 import LEFjord from "../components/lost-echoes/LEFjord";
+import LostEchoesPM from "../components/lost-echoes/LostEchoesPM";
+import LEDisconnected from "../components/lost-echoes/LEDisconnected";
 //WAGMI
-import {
-  useAccount,
-  useBalance,
-  useContractWrite,
-  useNetwork,
-  usePrepareContractWrite,
-  useWaitForTransaction,
-  useContractRead,
-} from "wagmi";
-//DATA
-import { fjordDrop1ContractAddress } from "../constants/contractAddresses";
-import { fjordDrop1GoerliAbi } from "../contractABI/goerliABIS";
-import { ConnectBtn } from "../components/common/ConnectBtn";
+import { useAccount, useNetwork } from "wagmi";
 //
+import "react-toastify/dist/ReactToastify.css";
 import { useWhitelist } from "../hooks/useWhitelist";
 import { wlAddresses1 } from "../utils/merkle/wlAddresses1";
-import { getMerkleProof } from "../utils/merkle/merkle";
-import { toast, ToastContainer, Zoom } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { ethers } from "ethers";
-import LELoading from "../components/lost-echoes/LELoading";
-import LEDisconnected from "../components/lost-echoes/LEDisconnected";
+import { ToastContainer, Zoom } from "react-toastify";
 
 const LostEchoes = () => {
   //CONTEXT
   const {
     isSoundOn,
+    tv1SoundtrackStop,
     setIsSoundOn,
     toggleSound,
     tv1Soundtrack,
     tv1SoundtrackPause,
     tv1SoundtrackPlay,
-    tv1SoundtrackStop,
   } = useSoundContext();
-  const { endWLDateInSecs } = useDrop1Context();
+  const { endWLDateInSecs, isPublicMintActive } = useDrop1Context();
   //STATE
   const [loading, setLoading] = useState(true);
-  const [whiteListMintAmount, setWhiteListMintAmount] = useState(1);
-  const [publicMintAmount, setPublicMintAmount] = useState(1);
-  const [processing, setProcessing] = useState(false);
+
   const date = new Date();
-  const price = 0.02;
-  let totalWhitelistPrice = whiteListMintAmount * price;
-  let totalPublicPrice = publicMintAmount * price;
 
-  ////////////////////////////////
-  ///MOCK///
-  let publicMint = false;
-  ////////////////////////////////
-
-  //WAGMI READ
+  //WAGMI
   const { chain } = useNetwork();
   const { address } = useAccount();
-  const { data: balance } = useBalance({
-    addressOrName: address,
-  });
-  const { data: nftsOwned } = useContractRead({
-    addressOrName: fjordDrop1ContractAddress,
-    contractInterface: fjordDrop1GoerliAbi,
-    functionName: "mintPerWhitelistedWallet",
-    args: [address],
-  });
+
   const isWhitelisted = useWhitelist(address, wlAddresses1);
-  //WRITE
-  // WHITELIST MINT
-  const { config } = usePrepareContractWrite({
-    addressOrName: fjordDrop1ContractAddress,
-    contractInterface: fjordDrop1GoerliAbi,
-    functionName: "whitelistMint",
-    enabled: false,
-    args: [
-      whiteListMintAmount,
-      getMerkleProof(
-        address ? address : "0x000000000000000000000000",
-        wlAddresses1
-      ),
-      {
-        value: ethers.utils.parseEther(totalWhitelistPrice.toString()),
-      },
-    ],
-  });
-  const { data, write } = useContractWrite({
-    ...config,
-    onError(error) {
-      toast.error(error.message);
-      setProcessing(false);
-    },
-  });
-  useWaitForTransaction({
-    hash: data?.hash,
-    wait: data?.wait,
-    onSuccess() {
-      setProcessing(false);
-      toast.success("Transaction successful", { toastId: "mintSuccess-tv1" });
-    },
-  });
-  const handleWhitelistMint = () => {
-    setProcessing(true);
-    if (chain?.id !== 5) {
-      toast.error("Please connect to Goerli Testnet", {
-        toastId: "wrongNetwork-tv1",
-      });
-      setProcessing(false);
-      return;
-    } else if (!address) {
-      toast.error("Please connect your wallet", { toastId: "noWallet-tv1" });
-      setProcessing(false);
-      return;
-    } else if (balance && balance?.formatted < totalWhitelistPrice.toString()) {
-      toast.error("Insufficient funds", { toastId: "insufficientFunds-tv1" });
-      setProcessing(false);
-      return;
-    } else if (nftsOwned && Number(nftsOwned) + whiteListMintAmount > 2) {
-      toast.error("You can only mint 2 NFTs", {
-        toastId: "maxMintExceeded-tv1",
-      });
-      setProcessing(false);
-      return;
-    } else if (!isWhitelisted) {
-      toast.error("You are not whitelisted", { toastId: "notWhitelisted-tv1" });
-      setProcessing(false);
-      return;
-    } else if (date.getTime() >= endWLDateInSecs) {
-      toast.error("Whitelist period has ended", {
-        toastId: "whitelistEnded-tv1",
-      });
-      setProcessing(false);
-      return;
-    }
-    write?.();
-  };
-
-  //PUBLIC MINT
-
-  const handlePublicMint = () => {};
-  // HANDLE SOUND
-  const handleSoundOff = () => {
-    toggleSound(),
-      setIsSoundOn(!isSoundOn),
-      tv1Soundtrack ? tv1SoundtrackPause() : tv1SoundtrackPlay();
-  };
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 2000);
     return () => tv1SoundtrackStop();
   }, []);
+  const handleSoundOff = () => {
+    toggleSound(),
+      setIsSoundOn(!isSoundOn),
+      tv1Soundtrack ? tv1SoundtrackPause() : tv1SoundtrackPlay();
+  };
 
   return (
     <div className=" overflow-hidden">
@@ -214,48 +110,34 @@ const LostEchoes = () => {
           {!loading && (!address || chain?.id != 5) && (
             <LEDisconnected chainId={chain?.id} />
           )}
+          {/* WHITELIST ACTIVE AND NOT WHITELISTED ACC */}
+          {address &&
+            !isWhitelisted &&
+            !loading &&
+            date.getTime() < endWLDateInSecs &&
+            !isPublicMintActive && (
+              <div className=" text-drop1  relative  lg:min-h-none   text-sm md:text-[18px] lg:text-lg border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
+                <LEFjord />
+              </div>
+            )}
+
           {/* WHITELIST ACTIVE AND WHITELISTED ACC */}
           {address &&
             isWhitelisted &&
             date.getTime() < endWLDateInSecs &&
             chain?.id === 5 &&
             !loading &&
-            !publicMint && (
+            !isPublicMintActive && (
               <div className=" text-drop1  relative  lg:min-h-none   text-sm md:text-[18px] lg:text-lg border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
-                <LostEchoesWL
-                  handleWhitelistMint={handleWhitelistMint}
-                  whiteListMintAmount={whiteListMintAmount}
-                  setWhiteListMintAmount={setWhiteListMintAmount}
-                  totalPrice={totalWhitelistPrice}
-                  processing={processing}
-                />
+                <LostEchoesWL />
               </div>
             )}
-          {/* WHITELIST ACTIVE AND NOT WHITELISTED ACC */}
-          {address &&
-            !isWhitelisted &&
-            !loading &&
-            date.getTime() < endWLDateInSecs &&
-            !publicMint && (
-              <div className=" text-drop1  relative  lg:min-h-none   text-sm md:text-[18px] lg:text-lg border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
-                <LEFjord />
-              </div>
-            )}
-          {/* WHITELIST ENDED AND FJORD MINT ENDED */}
-          {address &&
-            date.getTime() < endWLDateInSecs &&
-            !loading &&
-            publicMint && (
-              <div className=" text-drop1 relative lg:min-h-none text-sm md:text-[18px] lg:text-lg border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
-                <LostEchoesPM
-                  publicMintAmount={publicMintAmount}
-                  setPublicMintAmount={setPublicMintAmount}
-                  handlePublicMint={handlePublicMint}
-                  processing={processing}
-                  totalPrice={totalPublicPrice}
-                />
-              </div>
-            )}
+          {/* PUBLIC MINT === WHITELIST ENDED AND FJORD MINT ENDED */}
+          {address && !loading && isPublicMintActive && (
+            <div className=" text-drop1 relative lg:min-h-none text-sm md:text-[18px] lg:text-lg border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
+              <LostEchoesPM />
+            </div>
+          )}
           {/* SOUND CONTROL */}
           {!loading && (
             <div className="flex w-full justify-start pb-6">

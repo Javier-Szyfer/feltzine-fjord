@@ -1,37 +1,115 @@
 import Link from "next/link";
+import { useState } from "react";
 import useSound from "use-sound";
 import useAllTvsContext from "../../context/allTvsContext/allTvsCtx";
 import useDrop1Context from "../../context/drop1Context/drop1Ctx";
 import useSoundContext from "../../context/soundContext/soundCtx";
+//DATA
+import { fjordDrop1ContractAddress } from "../../constants/contractAddresses";
+import { fjordDrop1GoerliAbi } from "../../contractABI/goerliABIS";
+//WAGMI
+import {
+  useAccount,
+  useBalance,
+  useContractWrite,
+  useNetwork,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
+import { ethers } from "ethers";
+import { toast } from "react-toastify";
 
-interface LostEchoesPMProps {
-  publicMintAmount: number;
-  setPublicMintAmount: (amount: number) => void;
-  processing: boolean;
-  handlePublicMint: () => void;
-  totalPrice: number;
-}
+const LostEchoesPM = () => {
+  //CONTEXT
+  const { isPublicMintActive } = useDrop1Context();
 
-const LostEchoesPM = ({
-  publicMintAmount,
-  setPublicMintAmount,
-  processing,
-  handlePublicMint,
-  totalPrice,
-}: LostEchoesPMProps) => {
+  //STATE
+  const [publicMintAmount, setPublicMintAmount] = useState(1);
+  const [processing, setProcessing] = useState(false);
+  const price = 0.02;
+  let totalPublicPrice = publicMintAmount * price;
+  //WAGMI
+  //READ
+  const { chain } = useNetwork();
+  const { address } = useAccount();
+  const { data: balance } = useBalance({
+    addressOrName: address,
+  });
+
+  //  //WRITE
+  // WHITELIST MINT
+  const { config } = usePrepareContractWrite({
+    addressOrName: fjordDrop1ContractAddress,
+    contractInterface: fjordDrop1GoerliAbi,
+    functionName: "publicMint",
+    enabled: false,
+    args: [
+      publicMintAmount,
+      {
+        value: ethers.utils.parseEther(
+          totalPublicPrice ? totalPublicPrice.toString() : "0"
+        ),
+      },
+    ],
+  });
+  const { data, write: publicMintWrite } = useContractWrite({
+    ...config,
+    onError(error) {
+      toast.error(error.message);
+      setProcessing(false);
+    },
+  });
+  useWaitForTransaction({
+    hash: data?.hash,
+    wait: data?.wait,
+    onSuccess() {
+      setProcessing(false);
+      toast.success("Transaction successful", { toastId: "mintSuccess-tv1" });
+    },
+  });
+
   //CONTEXT
   const { totalMintedDrop1 } = useDrop1Context();
   const { setEnter, setAllTVs } = useAllTvsContext();
-  const {
-    isSoundOn,
+  const { isSoundOn, tv1SoundtrackStop } = useSoundContext();
 
-    tv1SoundtrackStop,
-  } = useSoundContext();
   //SOUNDS
   const [back] = useSound(
     "https://res.cloudinary.com/aldi/video/upload/v1661351389/feltzine/back_o59yfu.mp3",
     { volume: 0.2 }
   );
+
+  //PUBLIC MINT
+  const handlePublicMint = () => {
+    console.log(
+      balance?.formatted && balance?.formatted,
+      totalPublicPrice.toString()
+    );
+    setProcessing(true);
+    if (!isPublicMintActive) {
+      toast.error("Public mint is not active yet");
+      setProcessing(false);
+    } else if (chain?.id !== 5) {
+      toast.error("Please connect to Goerli Testnet", {
+        toastId: "wrongNetwork-tv1-publicMint",
+      });
+      setProcessing(false);
+      return;
+    } else if (!address) {
+      toast.error("Please connect your wallet", {
+        toastId: "noWallet-tv1-publicMint",
+      });
+      setProcessing(false);
+      return;
+    } else if (balance && parseInt(balance?.formatted) < totalPublicPrice) {
+      toast.error("Insufficient funds", {
+        toastId: "insufficientFunds-tv1-publicMint",
+      });
+      setProcessing(false);
+      return;
+    }
+    publicMintWrite?.();
+  };
 
   return (
     <>
@@ -50,7 +128,7 @@ const LostEchoesPM = ({
           </div>
           <span>
             Artifacts found:
-            {totalMintedDrop1 ? `${totalMintedDrop1}/100` : "N/A"}
+            {totalMintedDrop1 ? `${totalMintedDrop1}/500` : "N/A"}
           </span>
           <h3 className="mt-8">
             Researchers discover Ina&apos;s memories in the year 3030.
@@ -120,7 +198,7 @@ const LostEchoesPM = ({
                 <span>PROCESSING...</span>
               </div>
             ) : (
-              `DISCOVER Ξ${totalPrice ? totalPrice.toFixed(2) : 0}`
+              `DISCOVER Ξ${totalPublicPrice ? totalPublicPrice.toFixed(2) : 0}`
             )}
           </button>
         </div>

@@ -1,25 +1,37 @@
 import Link from "next/link";
+import { useState } from "react";
 import useSound from "use-sound";
 import useAllTvsContext from "../../context/allTvsContext/allTvsCtx";
 import useDrop1Context from "../../context/drop1Context/drop1Ctx";
 import useSoundContext from "../../context/soundContext/soundCtx";
 import Timer from "../common/Timer";
+//WAGMI
+import {
+  useAccount,
+  useBalance,
+  useContractWrite,
+  useNetwork,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+  useContractRead,
+} from "wagmi";
+//DATA
+import { fjordDrop1ContractAddress } from "../../constants/contractAddresses";
+import { fjordDrop1GoerliAbi } from "../../contractABI/goerliABIS";
+import { wlAddresses1 } from "../../utils/merkle/wlAddresses1";
+import { getMerkleProof } from "../../utils/merkle/merkle";
+import { useWhitelist } from "../../hooks/useWhitelist";
+import { ethers } from "ethers";
+import { toast } from "react-toastify";
 
-interface LostEchoesWLProps {
-  handleWhitelistMint: () => void;
-  whiteListMintAmount: number;
-  setWhiteListMintAmount: (amount: number) => void;
-  processing: boolean;
-  totalPrice: number;
-}
+const LostEchoesWL = () => {
+  //STATE
+  const [whiteListMintAmount, setWhiteListMintAmount] = useState(1);
+  const [processing, setProcessing] = useState(false);
+  const date = new Date();
+  const price = 0.02;
+  let totalWhitelistPrice = whiteListMintAmount * price;
 
-const LostEchoesWL = ({
-  handleWhitelistMint,
-  whiteListMintAmount,
-  setWhiteListMintAmount,
-  processing,
-  totalPrice,
-}: LostEchoesWLProps) => {
   //CONTEXT
   const { totalMintedDrop1, endWLDateInSecs } = useDrop1Context();
   const { setEnter, setAllTVs } = useAllTvsContext();
@@ -41,6 +53,87 @@ const LostEchoesWL = ({
     "https://res.cloudinary.com/aldi/video/upload/v1661351389/feltzine/back_o59yfu.mp3",
     { volume: 0.2 }
   );
+  //WAGMI READ
+  const { chain } = useNetwork();
+  const { address } = useAccount();
+  const { data: balance } = useBalance({
+    addressOrName: address,
+  });
+  const { data: nftsOwned } = useContractRead({
+    addressOrName: fjordDrop1ContractAddress,
+    contractInterface: fjordDrop1GoerliAbi,
+    functionName: "mintPerWhitelistedWallet",
+    args: [address],
+  });
+  const isWhitelisted = useWhitelist(address, wlAddresses1);
+  //WRITE
+  // WHITELIST MINT
+  const { config } = usePrepareContractWrite({
+    addressOrName: fjordDrop1ContractAddress,
+    contractInterface: fjordDrop1GoerliAbi,
+    functionName: "whitelistMint",
+    enabled: false,
+    args: [
+      whiteListMintAmount,
+      getMerkleProof(
+        address ? address : "0x000000000000000000000000",
+        wlAddresses1
+      ),
+      {
+        value: ethers.utils.parseEther(totalWhitelistPrice.toString()),
+      },
+    ],
+  });
+  const { data, write } = useContractWrite({
+    ...config,
+    onError(error) {
+      toast.error(error.message);
+      setProcessing(false);
+    },
+  });
+  useWaitForTransaction({
+    hash: data?.hash,
+    wait: data?.wait,
+    onSuccess() {
+      setProcessing(false);
+      toast.success("Transaction successful", { toastId: "mintSuccess-tv1" });
+    },
+  });
+  const handleWhitelistMint = () => {
+    setProcessing(true);
+    if (chain?.id !== 5) {
+      toast.error("Please connect to Goerli Testnet", {
+        toastId: "wrongNetwork-tv1",
+      });
+      setProcessing(false);
+      return;
+    } else if (!address) {
+      toast.error("Please connect your wallet", { toastId: "noWallet-tv1" });
+      setProcessing(false);
+      return;
+    } else if (balance && balance?.formatted < totalWhitelistPrice.toString()) {
+      toast.error("Insufficient funds", { toastId: "insufficientFunds-tv1" });
+      setProcessing(false);
+      return;
+    } else if (nftsOwned && Number(nftsOwned) + whiteListMintAmount > 2) {
+      toast.error("You can only mint 2 NFTs", {
+        toastId: "maxMintExceeded-tv1",
+      });
+      setProcessing(false);
+      return;
+    } else if (!isWhitelisted) {
+      toast.error("You are not whitelisted", { toastId: "notWhitelisted-tv1" });
+      setProcessing(false);
+      return;
+    } else if (date.getTime() >= endWLDateInSecs) {
+      toast.error("Whitelist period has ended", {
+        toastId: "whitelistEnded-tv1",
+      });
+      setProcessing(false);
+      return;
+    }
+    write?.();
+  };
 
   return (
     <>
@@ -60,7 +153,7 @@ const LostEchoesWL = ({
           </div>
           <span>
             Artifacts found:
-            {totalMintedDrop1 ? `${totalMintedDrop1}/100` : "N/A"}
+            {totalMintedDrop1 ? `${totalMintedDrop1}/500` : "N/A"}
           </span>
           <h3 className="mt-8">
             Researchers discover Ina&apos;s memories in the year 3030.
@@ -141,7 +234,7 @@ const LostEchoesWL = ({
                 <span>PROCESSING...</span>
               </div>
             ) : (
-              `DISCOVER Ξ${totalPrice}`
+              `DISCOVER Ξ${totalWhitelistPrice}`
             )}
           </button>
         </div>
