@@ -19,7 +19,7 @@ const News = ({ size }: any) => {
         className="publicSans italic "
       >
         <span className="mx-2">
-          *:･ﾟ Lost Echoes *:･ﾟ Status:{" "}
+          <span className="font-bold">*:･ﾟLost Echoes *:･ﾟ</span> Status:{" "}
           <span className="font-bold">ACTIVE</span> - Total minted:{" "}
           {totalMintedDrop1}/500 ✧ ✧ ✧
         </span>

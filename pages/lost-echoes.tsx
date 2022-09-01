@@ -1,6 +1,5 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { ConnectBtn } from "../components/common/ConnectBtn";
 //CONTEXT
 import useSoundContext from "../context/soundContext/soundCtx";
 import { useDrop1Context } from "../context/drop1Context/drop1Ctx";
@@ -63,15 +62,6 @@ const LostEchoes = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* Mobile connect */}
-      <div className="mt-5 ml-4 lg:hidden cursor-fancy text-sm  fixed z-40 md:top-6 md:right-4">
-        <ConnectBtn />
-      </div>
-      {/* Desktop connect */}
-      <div className=" hidden lg:flex fixed z-40  top-8 right-4 cursor-fancy text-sm ">
-        <ConnectBtn />
-      </div>
-
       <ToastContainer
         position="bottom-right"
         autoClose={4000}
@@ -81,7 +71,7 @@ const LostEchoes = () => {
       />
       <div className="noise" />
       <div className="relative  text-md md:text-xl ">
-        <Header />
+        <Header enter={true} />
         {/* NEWS */}
         <div className="px-8 sm:px-4 md:max-w-4xl lg:px-0 mx-auto mt-2">
           <News size="xl" />
@@ -108,12 +98,13 @@ const LostEchoes = () => {
           {loading && <LELoading />}
           {/* DISCONNECTED OR WRONG CHAIN */}
           {!loading && (!address || chain?.id != 5) && (
-            <LEDisconnected chainId={chain?.id} />
+            <LEDisconnected chainId={chain?.id} address={address} />
           )}
           {/* WHITELIST ACTIVE AND NOT WHITELISTED ACC */}
           {address &&
             !isWhitelisted &&
             !loading &&
+            chain?.id === 5 &&
             date.getTime() < endWLDateInSecs &&
             !isPublicMintActive && (
               <div className=" text-drop1  relative  lg:min-h-none   text-sm md:text-[18px] lg:text-lg border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
@@ -133,7 +124,7 @@ const LostEchoes = () => {
               </div>
             )}
           {/* PUBLIC MINT === WHITELIST ENDED AND FJORD MINT ENDED */}
-          {address && !loading && isPublicMintActive && (
+          {address && !loading && isPublicMintActive && chain?.id === 5 && (
             <div className=" text-drop1 relative lg:min-h-none text-sm md:text-[18px] lg:text-lg border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
               <LostEchoesPM />
             </div>

@@ -2,7 +2,9 @@ import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
 import { motion } from "framer-motion";
 import useSoundContext from "../../context/soundContext/soundCtx";
 
-const LEDisconnected = ({ chainId }: any) => {
+const LEDisconnected = ({ chainId, address }: any) => {
+  console.log("chainId", chainId);
+  console.log("address", address);
   const { openConnectModal } = useConnectModal();
   const { openChainModal } = useChainModal();
   const { tv1SoundtrackPlay, tv1Soundtrack } = useSoundContext();
@@ -23,7 +25,7 @@ const LEDisconnected = ({ chainId }: any) => {
       />
       <div className="min-h-[70vh] lg:min-h-0 lg:absolute inset-0  flex flex-col justify-between shadow-xl shadow-stone-200/10 rounded-2xl bg-[url('../public/images/tv-bg.png')] p-8 ">
         <h1>Lost Echoes</h1>
-        {chainId === 5 && (
+        {!address && (
           <button
             type="button"
             onClick={() => {
@@ -34,7 +36,7 @@ const LEDisconnected = ({ chainId }: any) => {
             Connect wallet to proceed
           </button>
         )}
-        {chainId !== 5 && (
+        {chainId && chainId !== 5 && (
           <button
             type="button"
             onClick={() => {
