@@ -17,6 +17,7 @@ import { wlAddresses1 } from "../utils/merkle/wlAddresses1";
 //WAGMI
 import { useAccount, useNetwork } from "wagmi";
 import useAllTvsContext from "../context/allTvsContext/allTvsCtx";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 const DropsGrid = () => {
   //CONTEXT
@@ -24,6 +25,8 @@ const DropsGrid = () => {
 
   const { isSoundOn, setIsSoundOn, toggleSound, tv1SoundtrackPlay } =
     useSoundContext();
+  const date = new Date();
+  const { openConnectModal } = useConnectModal();
 
   //DROP1
   const { endWLDateInSecs, formattedWLEndDate } = useDrop1Context();
@@ -62,7 +65,10 @@ const DropsGrid = () => {
 
   //HANDLE TVS
   const handleEnterTv = (tv: number) => {
-    if (!chain) {
+    if (!address) {
+      toast.error("Connect wallet first");
+      return;
+    } else if (!chain) {
       toast.error("Please connect wallet to continue", {
         toastId: "walletDisconnected-4tvs",
       });
@@ -171,6 +177,7 @@ const DropsGrid = () => {
                 className="text-shadowFirstCollection relative w-full h-full "
               >
                 <div className="absolute border-[0.5px] border-[#0e0e0e84] inset-0  rounded-2xl bg-gradient-to-t  from-[#31333e31] to-[#76737325] w-full h-full hover:blur-sm" />
+                {/* WHITELISTED */}
                 {isWhitelisted && (
                   <Link href={"/lost-echoes"}>
                     <button
@@ -190,18 +197,22 @@ const DropsGrid = () => {
                     </button>
                   </Link>
                 )}
+                {/* NOT WHITELISTED */}
                 {!isWhitelisted && address && (
                   <a
                     href={"https://copperlaunch.com/"}
                     rel="noopener noreferrer"
                     target="_blank"
                   >
-                    <button className="text-shadowFirstCollection cursor-fancy relative shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center ">
+                    <button
+                      onClick={() => stop1()}
+                      className="text-shadowFirstCollection cursor-fancy relative shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center "
+                    >
                       <h2 className="text-[#ff0000] ">LOST ECHOES</h2>
-                      {!tv1Hover && (
+                      {!tv1Hover && endWLDateInSecs > date.getTime() && (
                         <Timer deadline={endWLDateInSecs} size="2xl" />
                       )}
-                      {tv1Hover && (
+                      {tv1Hover && endWLDateInSecs > date.getTime() && (
                         <p className="text-2xl">{formattedWLEndDate}</p>
                       )}
                       {!isWhitelisted && address && tv1Hover && (
@@ -211,6 +222,24 @@ const DropsGrid = () => {
                       )}
                     </button>
                   </a>
+                )}
+                {/* DISCONNECTED */}
+                {!address && (
+                  <button
+                    onClick={openConnectModal}
+                    className="text-shadowFirstCollection cursor-fancy relative shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center "
+                  >
+                    <h2 className="text-[#ff0000] ">LOST ECHOES</h2>
+                    {!tv1Hover && endWLDateInSecs > date.getTime() && (
+                      <Timer deadline={endWLDateInSecs} size="2xl" />
+                    )}
+                    {tv1Hover && endWLDateInSecs > date.getTime() && (
+                      <p className="text-2xl">{formattedWLEndDate}</p>
+                    )}
+                    {tv1Hover && (
+                      <p className="absolute bottom-4 ">CONNECT WALLET</p>
+                    )}
+                  </button>
                 )}
               </motion.div>
             </motion.div>
