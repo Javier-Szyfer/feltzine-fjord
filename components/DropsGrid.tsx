@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { useContext, useState } from "react";
-import { SoundContext } from "../context/soundContext/soundContext";
+import { useState } from "react";
+import useSoundContext from "../context/soundContext/soundCtx";
 import { useDrop1Context } from "../context/drop1Context/drop1Ctx";
 import { useDrop2Context } from "../context/drop2Context/drop2Ctx";
 import { motion } from "framer-motion";
@@ -9,44 +9,32 @@ import useSound from "use-sound";
 import { Zoom, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 //COMPONENTS
-import News from "./News";
-import { ConnectBtn } from "./ConnectBtn";
-import Timer from "./Timer";
-import Drop1Tv from "./Drop1Tv";
+import News from "./common/News";
+import Timer from "./common/Timer";
 //WHITELIST
-import { wlAddresses1 } from "../utils/merkle/wlAddresses1";
 import { useWhitelist } from "../hooks/useWhitelist";
+import { wlAddresses1 } from "../utils/merkle/wlAddresses1";
 //WAGMI
 import { useAccount, useNetwork } from "wagmi";
+import useAllTvsContext from "../context/allTvsContext/allTvsCtx";
 
-interface DropsGridProps {
-  enter: boolean;
-}
-
-const DropsGrid = ({ enter }: DropsGridProps) => {
+const DropsGrid = () => {
   //CONTEXT
-  const { soundState, setSoundOn } = useContext(SoundContext);
-  const { isSoundOn } = soundState;
-  //STATE
-  const [allTVS, setAllTVs] = useState(true);
+  const { enter, allTVS, setAllTVs } = useAllTvsContext();
+
+  const { isSoundOn, setIsSoundOn, toggleSound, tv1SoundtrackPlay } =
+    useSoundContext();
+
   //DROP1
   const { endWLDateInSecs, formattedWLEndDate } = useDrop1Context();
   const [tv1Hover, setTv1Hover] = useState(false);
-  const [enterTV1, setEnterTV1] = useState(false);
-  const [isTV1Soundtrack, setIsTV1Soundtrack] = useState(false);
   //DROP2
   const { endWL2DateInSecs, formattedWL2EndDate } = useDrop2Context();
   const [tv2Hover, setTv2Hover] = useState(false);
-  const [enterTV2, setEnterTV2] = useState(false);
-  const [isTV2Soundtrack, setIsTV2Soundtrack] = useState(false);
   //DROP3
   const [tv3Hover, setTv3Hover] = useState(false);
-  const [enterTV3, setEnterTV3] = useState(false);
-  const [isTV3Soundtrack, setIsTV3Soundtrack] = useState(false);
   //DROP4
-  const [enterTV4, setEnterTV4] = useState(false);
   const [tv4Hover, setTv4Hover] = useState(false);
-  const [isTV4Soundtrack, setIsTV4Soundtrack] = useState(false);
 
   //AUDIOS FOR DROPS
   const [play1, { stop: stop1 }] = useSound(
@@ -65,35 +53,12 @@ const DropsGrid = ({ enter }: DropsGridProps) => {
     "https://res.cloudinary.com/aldi/video/upload/v1660499727/feltzine/tv3_icptgi.mp3",
     { volume: 0.1 }
   );
-  const [muteSound] = useSound(
-    "https://res.cloudinary.com/aldi/video/upload/v1660491891/feltzine/toggle1_ibppkc.mp3",
-    { volume: 0.1 }
-  );
-  const [
-    tv1SoundtrackPlay,
-    { pause: tv1SoundtrackPause, stop: tv1SoundtrackStop },
-  ] = useSound(
-    "https://res.cloudinary.com/aldi/video/upload/v1661350979/feltzine/tv1soundtrack_uottyq.mp3",
-    {
-      volume: 0.2,
-
-      onplay: () => {
-        setIsTV1Soundtrack(true);
-      },
-      onpause: () => {
-        setIsTV1Soundtrack(false);
-      },
-    }
-  );
 
   //WAMGI HOOKS
   const { address } = useAccount();
   const { chain } = useNetwork();
-  //MERKLE HOOK
-  const merkleCheck1 = useWhitelist(address, wlAddresses1);
-  const merkleCheck2 = useWhitelist(address, wlAddresses1);
-  const merkleCheck3 = useWhitelist(address, wlAddresses1);
-  const merkleCheck4 = useWhitelist(address, wlAddresses1);
+  //CHECK IF ADDRESS IS IN WHITELIST
+  const isWhitelisted = useWhitelist(address, wlAddresses1);
 
   //HANDLE TVS
   const handleEnterTv = (tv: number) => {
@@ -107,28 +72,21 @@ const DropsGrid = ({ enter }: DropsGridProps) => {
         toastId: "switchNetwork-4tvs",
       });
       return;
-    } else if (!merkleCheck1?.isIncluded) {
-      stop1();
-      window.open(
-        "https://copperlaunch.com/drops/goerli/0x117EeD5828f799a816D27cfdeEE5c6c2bBadc8A7"
-      );
-      return;
     }
     setAllTVs(false);
     switch (tv) {
       case 1:
-        stop1(), setTv1Hover(false);
-        merkleCheck1?.isIncluded && setEnterTV1(true);
         isSoundOn && tv1SoundtrackPlay();
+        stop1(), setTv1Hover(false);
         break;
       case 2:
-        setEnterTV2(true);
+        stop2(), setTv2Hover(false);
         break;
       case 3:
-        setEnterTV3(true);
+        stop3(), setTv3Hover(false);
         break;
       case 4:
-        setEnterTV4(true);
+        stop4(), setTv4Hover(false);
         break;
       default:
         break;
@@ -150,27 +108,21 @@ const DropsGrid = ({ enter }: DropsGridProps) => {
         transition={Zoom}
         limit={2}
       />
-      {/* Desktop connect */}
-      {enter && (
-        <div className=" hidden lg:flex fixed  top-8 right-4 cursor-fancy text-sm ">
-          <ConnectBtn />
-        </div>
-      )}
       {/* NEWS  */}
       {enter && (
         <div className="px-8 sm:px-4 md:max-w-4xl lg:px-0 mx-auto mt-2">
           <News size="xl" />
-          {merkleCheck1?.isIncluded && allTVS && (
+          {isWhitelisted && allTVS && (
             <span className=" mt-4 text-[#00eeff] tracking-tighter text-[10px] sm:text-xs text-shadowFirst flex flex-col sm:flex-row justify-center items-center">
               You are whitelisted for:{" "}
               <span className="italic ml-1 flex flex-col justify-center items-center ">
-                {merkleCheck1?.isIncluded && "Endangered Memories"}
+                {isWhitelisted && "Endangered Memories"}
                 {/* {merkleCheck1?.isIncluded && "- Second Chance"}
                 {merkleCheck1?.isIncluded && "- Third Monster"} */}
               </span>
             </span>
           )}
-          {!merkleCheck1?.isIncluded && address && (
+          {!isWhitelisted && address && (
             <span className=" mt-4 text-[#00eeff] tracking-tighter text-xs text-shadowFirst flex flex-col sm:flex-row justify-center items-center">
               Not whitelisted
             </span>
@@ -185,33 +137,8 @@ const DropsGrid = ({ enter }: DropsGridProps) => {
           allTVS
             ? "grid grid-col-1 gap-6 md:grid-cols-2 place-content-center md:gap-1"
             : "flex flex-col justify-center items-center  "
-        } md:max-w-4xl md:py-4 h-full lg:shadow-xl lg:shadow-stone-600/50 sm:max-w-6xl  2xl:max-w-7xl  font-bold`}
+        } md:max-w-4xl md:py-4 h-full min-h-[80vh] lg:shadow-xl lg:shadow-stone-600/50 sm:max-w-6xl  2xl:max-w-7xl  font-bold`}
       >
-        {/* TV1 ONLY */}
-        {enterTV1 && !allTVS && (
-          <>
-            <Drop1Tv
-              setEnterTV1={setEnterTV1}
-              setAllTVs={setAllTVs}
-              proof={merkleCheck1?.proof as unknown as string}
-              address={address as unknown as string}
-              tv1SoundtrackStop={tv1SoundtrackStop}
-              isSoundOn={isSoundOn}
-              isIncluded={merkleCheck1?.isIncluded as unknown as boolean}
-            />
-            <div className="flex w-full justify-start pb-6">
-              <button
-                onClick={() => {
-                  isTV1Soundtrack ? tv1SoundtrackPause() : tv1SoundtrackPlay();
-                  setSoundOn(!isSoundOn), muteSound();
-                }}
-                className=" cursor-fancy text-shadowFirst border border-gray-400 py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none w-auto sm:w-32 mt-8 text-xs"
-              >
-                {isSoundOn ? "sound off" : "sound on"}
-              </button>
-            </div>
-          </>
-        )}
         {/* ALL TVS TOGETHER */}
         {enter && allTVS && (
           <>
@@ -219,7 +146,7 @@ const DropsGrid = ({ enter }: DropsGridProps) => {
             <motion.div
               variants={fadeInUp}
               transition={{ delay: 0.5 }}
-              className=" border-[0.9px] mt-4 md:mt-0 border-[#36353584] shadow-md shadow-stone-200/10 hover:shadow-[#ff0000]/50 text-[#ff0000] p-4 h-64 w-96 2xl:h-80 md:w-full bg-[#00000055]  opacity-95"
+              className=" border-[0.9px] mt-4 md:mt-0 border-[#36353584] shadow-md shadow-stone-200/10 hover:shadow-[#ff0000]/50 text-[#ff0000] p-4 h-64  w-72 xs:w-80 sm:w-96 2xl:h-80 md:w-full bg-[#00000055]  opacity-95"
             >
               <motion.div
                 onMouseEnter={() => {
@@ -244,30 +171,47 @@ const DropsGrid = ({ enter }: DropsGridProps) => {
                 className="text-shadowFirstCollection relative w-full h-full "
               >
                 <div className="absolute border-[0.5px] border-[#0e0e0e84] inset-0  rounded-2xl bg-gradient-to-t  from-[#31333e31] to-[#76737325] w-full h-full hover:blur-sm" />
-                <button
-                  onClick={() => handleEnterTv(1)}
-                  className="text-shadowFirstCollection cursor-fancy relative shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center "
-                >
-                  <h2 className="text-[#ff0000] ">ENDANGERED MEMORIES</h2>
-                  {!tv1Hover && <Timer deadline={endWLDateInSecs} size="2xl" />}
-                  {tv1Hover && <p className="text-2xl">{formattedWLEndDate}</p>}
-                  {tv1Hover && merkleCheck1?.isIncluded && (
-                    <p className=" absolute bottom-4 ">ACCESS</p>
-                  )}
-                  {!merkleCheck1?.isIncluded && address && (
-                    <Link href={"https://copperlaunch.com/"} passHref>
-                      <a
-                        target="blank"
-                        rel="noopener"
-                        className="absolute bottom-4 "
-                      >
-                        <p className="text-sm md:text-lg ml-2 ">
+                {isWhitelisted && (
+                  <Link href={"/lost-echoes"}>
+                    <button
+                      className="text-shadowFirstCollection cursor-fancy relative shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center"
+                      onClick={() => handleEnterTv(1)}
+                    >
+                      <h2 className="text-[#ff0000] ">LOST ECHOES</h2>
+                      {!tv1Hover && (
+                        <Timer deadline={endWLDateInSecs} size="2xl" />
+                      )}
+                      {tv1Hover && (
+                        <p className="text-2xl">{formattedWLEndDate}</p>
+                      )}
+                      {tv1Hover && (
+                        <p className=" absolute bottom-4 ">ACCESS</p>
+                      )}
+                    </button>
+                  </Link>
+                )}
+                {!isWhitelisted && address && (
+                  <a
+                    href={"https://copperlaunch.com/"}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <button className="text-shadowFirstCollection cursor-fancy relative shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center ">
+                      <h2 className="text-[#ff0000] ">LOST ECHOES</h2>
+                      {!tv1Hover && (
+                        <Timer deadline={endWLDateInSecs} size="2xl" />
+                      )}
+                      {tv1Hover && (
+                        <p className="text-2xl">{formattedWLEndDate}</p>
+                      )}
+                      {!isWhitelisted && address && tv1Hover && (
+                        <p className="absolute bottom-4 ">
                           MINT THROUGH COPPER
                         </p>
-                      </a>
-                    </Link>
-                  )}
-                </button>
+                      )}
+                    </button>
+                  </a>
+                )}
               </motion.div>
             </motion.div>
             {/* TV2 */}
@@ -366,7 +310,7 @@ const DropsGrid = ({ enter }: DropsGridProps) => {
             <div className="pb-8  text-shadowFirst md:col-span-2 flex flex-col w-full md:flex-row  items-center justify-between mt-4 text-xs">
               <button
                 onClick={() => {
-                  setSoundOn(!isSoundOn), muteSound();
+                  setIsSoundOn(!isSoundOn), toggleSound();
                 }}
                 className="bg-transparent  border border-[#555555] hover:border-[#999999] cursor-fancy text-shadowFirst py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none  "
               >

@@ -1,5 +1,5 @@
 import Marquee from "react-fast-marquee";
-import useDrop1Context from "../context/drop1Context/drop1Ctx";
+import useDrop1Context from "../../context/drop1Context/drop1Ctx";
 
 const News = ({ size }: any) => {
   const { totalMintedDrop1 } = useDrop1Context();
@@ -18,8 +18,8 @@ const News = ({ size }: any) => {
         gradientWidth={50}
         className="publicSans italic "
       >
-        FJORD Drop1 - Endangered Memories - Status: ACTIVE - Total minted:{" "}
-        {totalMintedDrop1}/100 | FJORD Drop2 - Status: NOT STARTED | FJORD Drop3
+        FJORD Drop1 - Lost Echoes - Status: ACTIVE - Total minted:{" "}
+        {totalMintedDrop1}/500 | FJORD Drop2 - Status: NOT STARTED | FJORD Drop3
         - Status: NOT STARTED | FJORD Drop4 - Status: NOT STARTED |{" "}
       </Marquee>
     </div>

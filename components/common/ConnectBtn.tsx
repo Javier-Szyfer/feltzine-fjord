@@ -71,7 +71,7 @@ export const ConnectBtn = () => {
                           height: "20px",
                           marginRight: "8px",
                         }}
-                        className="rounded-full shadow-sm shadow-[#f9f9f9]/50"
+                        className="rounded-full shadow-md shadow-[#f9f9f9]/50"
                       />
                     ) : (
                       <span className="mr-2 w-6 h-6 bg-[#070606] flex  justify-center items-center rounded-full shadow-sm shadow-[#f9f9f9]/50">

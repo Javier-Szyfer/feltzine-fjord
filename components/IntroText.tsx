@@ -8,8 +8,8 @@ function IntroText({ visible, setVisible }: any) {
     setVisible(true);
   });
   return (
-    <div className="flex mb-10 justify-center items-center px-0 lg:px-20">
-      <div className="text-shadowFirst text-center tracking-tighter text-[20px] md:text-2xl ">
+    <div className="flex mt-10 md:mt-5 justify-center items-center px-0 lg:px-20">
+      <div className="text-shadowFirst text-center tracking-tighter text-[14px] xs:text-[20px] md:text-2xl ">
         <AnimatePresence>
           {visible && (
             <motion.div

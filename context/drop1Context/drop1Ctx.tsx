@@ -12,6 +12,7 @@ interface Drop1ContextProps {
   totalMintedDrop1?: number;
   endWLDateInSecs: number;
   formattedWLEndDate: string;
+  isPublicMintActive?: boolean;
 }
 
 interface props {
@@ -31,6 +32,13 @@ export function Drop1Wrapper({ children }: props) {
     functionName: "totalSupply",
     watch: true,
   });
+  const { data: isPublicMintActive } = useContractRead({
+    addressOrName: fjordDrop1ContractAddress,
+    contractInterface: fjordDrop1GoerliAbi,
+    functionName: "isPublicMintActive",
+    watch: true,
+  });
+  console.log("isPublicMintActive", isPublicMintActive);
   //HADNLE TIME
   const whitelistEndDateToNumber = whitelistEndDate
     ? ethers.BigNumber.from(whitelistEndDate).toNumber()
@@ -41,12 +49,14 @@ export function Drop1Wrapper({ children }: props) {
   //FORMAT NUMBER
   const totalMintedDrop1 =
     totalMintedDrop && ethers.BigNumber.from(totalMintedDrop).toNumber();
+
   return (
     <Drop1Context.Provider
       value={{
         totalMintedDrop1,
         endWLDateInSecs,
         formattedWLEndDate,
+        isPublicMintActive: isPublicMintActive ? true : false,
       }}
     >
       {children}
