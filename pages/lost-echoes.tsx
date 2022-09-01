@@ -58,7 +58,7 @@ const LostEchoes = () => {
 
   ////////////////////////////////
   ///MOCK///
-  let publicMint = true;
+  let publicMint = false;
   ////////////////////////////////
 
   //WAGMI READ
