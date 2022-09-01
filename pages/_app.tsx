@@ -1,6 +1,7 @@
 import type { AppProps } from "next/app";
 //Context
-import { SoundProvider } from "../context/soundContext/soundCtxProvider";
+import { AllTvsWrapper } from "../context/allTvsContext/allTvsCtx";
+import { SoundWrapper } from "../context/soundContext/soundCtx";
 import { Drop1Wrapper } from "../context/drop1Context/drop1Ctx";
 import { Drop2Wrapper } from "../context/drop2Context/drop2Ctx";
 import { useState, useEffect } from "react";
@@ -53,13 +54,15 @@ function MyApp({ Component, pageProps }: AppProps) {
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains} theme={fjordTheme}>
         <AnimatePresence exitBeforeEnter>
-          <SoundProvider>
-            <Drop1Wrapper>
-              <Drop2Wrapper>
-                <Component {...pageProps} />
-              </Drop2Wrapper>
-            </Drop1Wrapper>
-          </SoundProvider>
+          <AllTvsWrapper>
+            <SoundWrapper>
+              <Drop1Wrapper>
+                <Drop2Wrapper>
+                  <Component {...pageProps} />
+                </Drop2Wrapper>
+              </Drop1Wrapper>
+            </SoundWrapper>
+          </AllTvsWrapper>
         </AnimatePresence>
       </RainbowKitProvider>
     </WagmiConfig>

@@ -12,7 +12,17 @@
 * {
   box-sizing: border-box;
 }
+/* REMOVE ARROWS INPUT NR Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
+/* REMOVE ARROWS INPUT NR Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
 html,
 body {
   padding: 0;
@@ -45,6 +55,9 @@ body {
   font-family: "Fira Sans Condensed", sans-serif;
 }
 .text-shadowInit1 {
+  text-shadow: 0px 0px 10px #cccccc;
+}
+.text-shadowTitle {
   text-shadow: 0px 0px 10px #cccccc;
 }
 .text-shadowFirstCollection {
