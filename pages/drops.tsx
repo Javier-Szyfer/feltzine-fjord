@@ -24,6 +24,7 @@ import { useWhitelist } from "../hooks/useWhitelist";
 import { wlAddresses1 } from "../utils/merkle/wlAddresses1";
 //WAGMI
 import { useAccount, useNetwork } from "wagmi";
+import Timer from "../components/common/Timer";
 
 const Drops = () => {
   //CONTEXT
@@ -64,6 +65,7 @@ const Drops = () => {
 
   //WAMGI HOOKS
   const { address } = useAccount();
+  console.log(address);
   const { chain } = useNetwork();
   //CHECK IF ADDRESS IS IN WHITELIST
   const isWhitelisted = useWhitelist(address, wlAddresses1);
@@ -190,6 +192,33 @@ const Drops = () => {
                       handleEnterTv={handleEnterTv}
                     />
                   )}
+                {/* NOT WHITELISTED and WHITELIST ACTIVE */}
+                {!isWhitelisted &&
+                  endWLDateInSecs > date.getTime() &&
+                  address &&
+                  chain?.id === chainID && (
+                    <a
+                      href={"https://copperlaunch.com/"}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      <button
+                        onClick={() => stop1()}
+                        className="text-shadowFirstCollection cursor-fancy relative shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center "
+                      >
+                        <h2 className="text-[#ff0000] ">LOST ECHOES</h2>
+                        {!tv1Hover && endWLDateInSecs > date.getTime() && (
+                          <Timer deadline={endWLDateInSecs} size="2xl" />
+                        )}
+                        {tv1Hover && endWLDateInSecs > date.getTime() && (
+                          <p className="text-2xl">STARTING SOON</p>
+                        )}
+                        {tv1Hover && (
+                          <p className="absolute bottom-4 ">VISIT FJORD DROP</p>
+                        )}
+                      </button>
+                    </a>
+                  )}
                 {/* FJORD MINT == WHITELIST ENDED && PUBLIC MINT INACTIVE*/}
                 {!isPublicMintActive &&
                   endWLDateInSecs < date.getTime() &&
@@ -207,7 +236,7 @@ const Drops = () => {
                     />
                   )}
                 {/* DISCONNECTED */}
-                {!address && chain?.id === chainID && (
+                {!address && (
                   <button
                     onClick={openConnectModal}
                     className="text-shadowFirstCollection cursor-fancy relative shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center "
