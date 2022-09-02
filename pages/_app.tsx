@@ -1,6 +1,5 @@
 import type { AppProps } from "next/app";
 //Context
-import { AllTvsWrapper } from "../context/allTvsContext/allTvsCtx";
 import { SoundWrapper } from "../context/soundContext/soundCtx";
 import { Drop1Wrapper } from "../context/drop1Context/drop1Ctx";
 import { Drop2Wrapper } from "../context/drop2Context/drop2Ctx";
@@ -54,15 +53,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains} theme={fjordTheme}>
         <AnimatePresence exitBeforeEnter>
-          <AllTvsWrapper>
-            <SoundWrapper>
-              <Drop1Wrapper>
-                <Drop2Wrapper>
-                  <Component {...pageProps} />
-                </Drop2Wrapper>
-              </Drop1Wrapper>
-            </SoundWrapper>
-          </AllTvsWrapper>
+          <SoundWrapper>
+            <Drop1Wrapper>
+              <Drop2Wrapper>
+                <Component {...pageProps} />
+              </Drop2Wrapper>
+            </Drop1Wrapper>
+          </SoundWrapper>
         </AnimatePresence>
       </RainbowKitProvider>
     </WagmiConfig>

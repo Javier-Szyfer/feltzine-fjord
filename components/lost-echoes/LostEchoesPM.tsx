@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { useState } from "react";
 import useSound from "use-sound";
-import useAllTvsContext from "../../context/allTvsContext/allTvsCtx";
 import useDrop1Context from "../../context/drop1Context/drop1Ctx";
 import useSoundContext from "../../context/soundContext/soundCtx";
 //DATA
@@ -70,7 +69,6 @@ const LostEchoesPM = () => {
 
   //CONTEXT
   const { totalMintedDrop1 } = useDrop1Context();
-  const { setEnter, setAllTVs } = useAllTvsContext();
   const { isSoundOn, tv1SoundtrackStop } = useSoundContext();
 
   //SOUNDS
@@ -125,6 +123,18 @@ const LostEchoesPM = () => {
         <div>
           <div className="flex flex-col md:flex-row justify-between md:items-center">
             <h2>LOST ECHOES</h2>
+            {/* STATUS */}
+            {isPublicMintActive ? (
+              <span className="flex items-center text-[#00ff00] text-xs">
+                <span className=" animate-pulse w-2 h-2 bg-[#00ff00] mr-2 rounded-full" />{" "}
+                Active
+              </span>
+            ) : (
+              <span className="flex items-center text-[#ff0000] text-xs">
+                <span className=" animate-pulse w-2 h-2 bg-[#ff0000] mr-2 rounded-full" />{" "}
+                Inactive
+              </span>
+            )}
           </div>
           <span>
             Artifacts found:
@@ -150,19 +160,16 @@ const LostEchoesPM = () => {
               onChange={(e) => {
                 setPublicMintAmount(e.target.valueAsNumber);
               }}
-              className="w-20 bg-transparent text-right px-4"
+              className="w-20 bg-transparent text-right px-4   focus:ring-opacity-50"
             />
           </div>
         </div>
         <div className=" flex w-full  justify-between items-center mt-6">
-          <Link href={"/"}>
+          <Link href={"/drops"}>
             <button
               className="text-drop1 hover:text-[#ff3700] cursor-fancy "
               onClick={() => {
-                isSoundOn && back(),
-                  tv1SoundtrackStop(),
-                  setAllTVs(true),
-                  setEnter(true);
+                isSoundOn && back(), tv1SoundtrackStop();
               }}
             >
               BACK

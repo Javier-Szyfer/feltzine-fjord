@@ -38,7 +38,6 @@ export function Drop1Wrapper({ children }: props) {
     functionName: "isPublicMintActive",
     watch: true,
   });
-  console.log("isPublicMintActive", isPublicMintActive);
   //HADNLE TIME
   const whitelistEndDateToNumber = whitelistEndDate
     ? ethers.BigNumber.from(whitelistEndDate).toNumber()

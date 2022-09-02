@@ -1,15 +1,13 @@
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import useSound from "use-sound";
 //COMPONENTS
 import IntroText from "./IntroText";
 import News from "./common/News";
-import useAllTvsContext from "../context/allTvsContext/allTvsCtx";
 
 const InitView = () => {
-  const { enter, setEnter } = useAllTvsContext();
-
   const [visible, setVisible] = useState(false);
   const [enterSound] = useSound(
     "https://res.cloudinary.com/aldi/video/upload/v1660491197/feltzine/enter_w9keap.mp3",
@@ -37,17 +35,20 @@ const InitView = () => {
           priority={true}
         />
       </div>
-      <motion.button
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, ease: "easeInOut" }}
-        onClick={() => {
-          enterSound(), setEnter(true), setVisible(false);
-        }}
-        className=" text-lg bg-[#202020] text-[#dddddd] hover:text-[#f6f6f6] my-8 md:my-4 cursor-fancy text-shadowFirst py-2 px-4 shadow-md shadow-gray-50/80 rounded-none "
-      >
-        ENTER
-      </motion.button>
+      <Link href={"/drops"} passHref>
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, ease: "easeInOut" }}
+          whileHover={{ scale: 1.1, transition: { duration: 0.4 } }}
+          onClick={() => {
+            enterSound(), setVisible(false);
+          }}
+          className=" text-lg bg-[#202020] text-[#dddddd] hover:text-[#f6f6f6] my-8 md:my-4 cursor-fancy text-shadowFirst py-2 px-4 shadow-md shadow-gray-50/80 rounded-none "
+        >
+          ENTER
+        </motion.button>
+      </Link>
     </motion.div>
   );
 };
