@@ -53,7 +53,7 @@ const LEFjord = () => {
           </p>
         </div>
         <div className=" flex w-full  justify-between items-center mt-6">
-          <Link href={"/"}>
+          <Link href={"/drops"}>
             <button
               className="text-drop1 hover:text-[#ff3700] cursor-fancy "
               onClick={() => {
@@ -69,7 +69,7 @@ const LEFjord = () => {
             rel="noopener noreferrer"
           >
             <button className="border border-[#ff0000] px-3 py-1 text-drop1 hover:shadow-sm hover:shadow-red-400 cursor-fancy ">
-              MINT THROUGH FJORD
+              VISIT FJORD DROP
             </button>
           </a>
         </div>
