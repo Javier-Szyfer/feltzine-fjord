@@ -4,6 +4,7 @@ import useSound from "use-sound";
 import useDrop1Context from "../../context/drop1Context/drop1Ctx";
 import useSoundContext from "../../context/soundContext/soundCtx";
 import Timer from "../common/Timer";
+import { chainID } from "../../constants/chainId";
 //WAGMI
 import {
   useAccount,
@@ -18,10 +19,10 @@ import {
 import { fjordDrop1ContractAddress } from "../../constants/contractAddresses";
 import { fjordDrop1GoerliAbi } from "../../contractABI/goerliABIS";
 import { wlAddresses1 } from "../../utils/merkle/wlAddresses1";
-import { getMerkleProof } from "../../utils/merkle/merkle";
 import { useWhitelist } from "../../hooks/useWhitelist";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
+import { useMerkleTree } from "../../hooks/useMerkleTree";
 
 const LostEchoesWL = () => {
   //STATE
@@ -64,19 +65,17 @@ const LostEchoesWL = () => {
     args: [address],
   });
   const isWhitelisted = useWhitelist(address, wlAddresses1);
+  const { root, proof }: any = useMerkleTree(address, wlAddresses1);
+  console.log(proof);
   //WRITE
   // WHITELIST MINT
   const { config } = usePrepareContractWrite({
     addressOrName: fjordDrop1ContractAddress,
     contractInterface: fjordDrop1GoerliAbi,
     functionName: "whitelistMint",
-    enabled: false,
     args: [
       whiteListMintAmount,
-      getMerkleProof(
-        address ? address : "0x000000000000000000000000",
-        wlAddresses1
-      ),
+      proof,
       {
         value: ethers.utils.parseEther(totalWhitelistPrice.toString()),
       },
@@ -99,7 +98,7 @@ const LostEchoesWL = () => {
   });
   const handleWhitelistMint = () => {
     setProcessing(true);
-    if (chain?.id !== 5) {
+    if (chain?.id !== chainID) {
       toast.error("Please connect to Goerli Testnet", {
         toastId: "wrongNetwork-tv1",
       });
