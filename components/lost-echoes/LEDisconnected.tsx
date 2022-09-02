@@ -1,10 +1,9 @@
 import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
 import { motion } from "framer-motion";
 import useSoundContext from "../../context/soundContext/soundCtx";
+import { chainID } from "../../constants/chainId";
 
 const LEDisconnected = ({ chainId, address }: any) => {
-  console.log("chainId", chainId);
-  console.log("address", address);
   const { openConnectModal } = useConnectModal();
   const { openChainModal } = useChainModal();
   const { tv1SoundtrackPlay, tv1Soundtrack } = useSoundContext();
@@ -36,7 +35,7 @@ const LEDisconnected = ({ chainId, address }: any) => {
             Connect wallet to proceed
           </button>
         )}
-        {chainId && chainId !== 5 && (
+        {chainId && chainID && (
           <button
             type="button"
             onClick={() => {
