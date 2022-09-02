@@ -42,12 +42,14 @@ const LostEchoes = () => {
   const { address } = useAccount();
 
   const isWhitelisted = useWhitelist(address, wlAddresses1);
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 2000);
     return () => tv1SoundtrackStop();
   }, []);
+
   const handleSoundOff = () => {
     toggleSound(),
       setIsSoundOn(!isSoundOn),
@@ -71,11 +73,11 @@ const LostEchoes = () => {
       />
       <div className="noise" />
       <div className="relative  text-md md:text-xl ">
-        <Header enter={true} />
+        <Header />
         {/* NEWS */}
         <div className="px-8 sm:px-4 md:max-w-4xl lg:px-0 mx-auto mt-2">
           <News size="xl" />
-          {isWhitelisted && (
+          {isWhitelisted && endWLDateInSecs > date.getTime() && (
             <span className=" mt-4 text-[#00eeff] tracking-tighter text-[10px] sm:text-xs text-shadowFirst flex flex-col sm:flex-row justify-center items-center">
               You are whitelisted for:{" "}
               <span className="italic ml-1 flex flex-col justify-center items-center ">
@@ -92,7 +94,7 @@ const LostEchoes = () => {
 
         <div
           className={` relative px-4 w-full mx-auto flex flex-col justify-start 2xl:justify-center items-center 
-          md:py-4 lg:shadow-xl  lg:shadow-stone-600/50 sm:max-w-6xl md:max-w-4xl 2xl:max-w-7xl min-h-[100vh]  font-bold`}
+          md:py-4 lg:shadow-xl  lg:shadow-stone-600/50 sm:max-w-6xl md:max-w-4xl 2xl:max-w-7xl text-sm md:text-[18px] lg:text-lg  2xl:text-2xl min-h-[100vh]  font-bold`}
         >
           {/* LOADING */}
           {loading && <LELoading />}
@@ -107,7 +109,7 @@ const LostEchoes = () => {
             chain?.id === 5 &&
             date.getTime() < endWLDateInSecs &&
             !isPublicMintActive && (
-              <div className=" text-drop1  relative  lg:min-h-none   text-sm md:text-[18px] lg:text-lg border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
+              <div className=" text-drop1  relative  lg:min-h-none   border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
                 <LEFjord />
               </div>
             )}
@@ -117,18 +119,21 @@ const LostEchoes = () => {
             isWhitelisted &&
             date.getTime() < endWLDateInSecs &&
             chain?.id === 5 &&
-            !loading &&
-            !isPublicMintActive && (
-              <div className=" text-drop1  relative  lg:min-h-none   text-sm md:text-[18px] lg:text-lg border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
+            !loading && (
+              <div className=" text-drop1  relative  lg:min-h-none  border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
                 <LostEchoesWL />
               </div>
             )}
           {/* PUBLIC MINT === WHITELIST ENDED AND FJORD MINT ENDED */}
-          {address && !loading && isPublicMintActive && chain?.id === 5 && (
-            <div className=" text-drop1 relative lg:min-h-none text-sm md:text-[18px] lg:text-lg border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
-              <LostEchoesPM />
-            </div>
-          )}
+          {address &&
+            date.getTime() > endWLDateInSecs &&
+            !loading &&
+            // isPublicMintActive &&
+            chain?.id === 5 && (
+              <div className=" text-drop1 relative lg:min-h-none  border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
+                <LostEchoesPM />
+              </div>
+            )}
           {/* SOUND CONTROL */}
           {!loading && (
             <div className="flex w-full justify-start pb-6">

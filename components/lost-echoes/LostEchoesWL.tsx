@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { useState } from "react";
 import useSound from "use-sound";
-import useAllTvsContext from "../../context/allTvsContext/allTvsCtx";
 import useDrop1Context from "../../context/drop1Context/drop1Ctx";
 import useSoundContext from "../../context/soundContext/soundCtx";
 import Timer from "../common/Timer";
@@ -34,7 +33,6 @@ const LostEchoesWL = () => {
 
   //CONTEXT
   const { totalMintedDrop1, endWLDateInSecs } = useDrop1Context();
-  const { setEnter, setAllTVs } = useAllTvsContext();
   const {
     isSoundOn,
 
@@ -191,14 +189,11 @@ const LostEchoesWL = () => {
           </div>
         </div>
         <div className=" flex w-full  justify-between items-center mt-6">
-          <Link href={"/"}>
+          <Link href={"/drops"}>
             <button
               className="text-drop1 hover:text-[#ff3700] cursor-fancy "
               onClick={() => {
-                isSoundOn && back(),
-                  tv1SoundtrackStop(),
-                  setAllTVs(true),
-                  setEnter(true);
+                isSoundOn && back(), tv1SoundtrackStop();
               }}
             >
               BACK

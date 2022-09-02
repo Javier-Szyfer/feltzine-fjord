@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
 import useSoundContext from "../context/soundContext/soundCtx";
@@ -9,19 +10,18 @@ import useSound from "use-sound";
 import { Zoom, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 //COMPONENTS
-import News from "./common/News";
-import Timer from "./common/Timer";
+import News from "../components/common/News";
+import Timer from "../components/common/Timer";
 //WHITELIST
 import { useWhitelist } from "../hooks/useWhitelist";
 import { wlAddresses1 } from "../utils/merkle/wlAddresses1";
 //WAGMI
 import { useAccount, useNetwork } from "wagmi";
-import useAllTvsContext from "../context/allTvsContext/allTvsCtx";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
+import Header from "../components/common/Header";
 
-const DropsGrid = () => {
+const Drops = () => {
   //CONTEXT
-  const { enter, allTVS, setAllTVs } = useAllTvsContext();
 
   const { isSoundOn, setIsSoundOn, toggleSound, tv1SoundtrackPlay } =
     useSoundContext();
@@ -79,7 +79,6 @@ const DropsGrid = () => {
       });
       return;
     }
-    setAllTVs(false);
     switch (tv) {
       case 1:
         isSoundOn && tv1SoundtrackPlay();
@@ -100,31 +99,39 @@ const DropsGrid = () => {
   };
 
   return (
-    <motion.div
-      exit={{ opacity: 0 }}
-      initial="initial"
-      animate="animate"
-      className="relative overflow-hidden h-full w-full text-md md:text-xl "
-      id="dropsGrid"
-    >
-      <ToastContainer
-        position="bottom-right"
-        autoClose={4000}
-        theme="dark"
-        transition={Zoom}
-        limit={2}
-      />
-      {/* NEWS  */}
-      {enter && (
+    <div className=" flex flex-col justify-center items-center overflow-hidden  ">
+      <Head>
+        <title>FeltZine - Fjord</title>
+        <meta name="description" content="FeltZine - 4 Fjord Drops" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <div className="noise"></div>
+      <Header />
+      <motion.div
+        exit={{ opacity: 0 }}
+        initial="initial"
+        animate="animate"
+        className="relative overflow-hidden h-full w-full text-md md:text-xl "
+        id="dropsGrid"
+      >
+        <ToastContainer
+          position="bottom-right"
+          autoClose={4000}
+          theme="dark"
+          transition={Zoom}
+          limit={2}
+        />
+        {/* NEWS  */}
+
         <div className="px-8 sm:px-4 md:max-w-4xl lg:px-0 mx-auto mt-2">
           <News size="xl" />
-          {isWhitelisted && allTVS && (
+          {isWhitelisted && (
             <span className=" mt-4 text-[#00eeff] tracking-tighter text-[10px] sm:text-xs text-shadowFirst flex flex-col sm:flex-row justify-center items-center">
               You are whitelisted for:{" "}
               <span className="italic ml-1 flex flex-col justify-center items-center ">
                 {isWhitelisted && "Endangered Memories"}
                 {/* {merkleCheck1?.isIncluded && "- Second Chance"}
-                {merkleCheck1?.isIncluded && "- Third Monster"} */}
+              {merkleCheck1?.isIncluded && "- Third Monster"} */}
               </span>
             </span>
           )}
@@ -134,19 +141,13 @@ const DropsGrid = () => {
             </span>
           )}
         </div>
-      )}
 
-      <motion.div
-        variants={stagger}
-        className={` px-4 w-full mx-auto 
-        ${
-          allTVS
-            ? "grid grid-col-1 gap-6 md:grid-cols-2 place-content-center md:gap-1"
-            : "flex flex-col justify-center items-center  "
-        } md:max-w-4xl md:py-4 h-full min-h-[80vh] lg:shadow-xl lg:shadow-stone-600/50 sm:max-w-6xl  2xl:max-w-7xl  font-bold`}
-      >
-        {/* ALL TVS TOGETHER */}
-        {enter && allTVS && (
+        <motion.div
+          variants={stagger}
+          className={` px-4 w-full mx-auto 
+      ${"grid grid-col-1 gap-6 md:grid-cols-2 place-content-center md:gap-1"} md:max-w-4xl md:py-4 h-full min-h-[80vh] lg:shadow-xl lg:shadow-stone-600/50 sm:max-w-6xl  2xl:max-w-7xl  font-bold`}
+        >
+          {/* ALL TVS TOGETHER */}
           <>
             {/* //TV1 */}
             <motion.div
@@ -177,7 +178,7 @@ const DropsGrid = () => {
                 className="text-shadowFirstCollection relative w-full h-full "
               >
                 <div className="absolute border-[0.5px] border-[#0e0e0e84] inset-0 bg-cover rounded-2xl opacity-70 grayscale bg-[url('https://res.cloudinary.com/aldi/image/upload/v1662031129/feltzine/gifBg1_aeastj.gif')]  from-[#31333e31] to-[#76737325] w-full h-full hover:blur-sm" />
-                {/* WHITELISTED */}
+                {/* WHITELISTED or WHITELIST ENDS */}
                 {isWhitelisted && (
                   <Link href={"/lost-echoes"}>
                     <button
@@ -185,10 +186,10 @@ const DropsGrid = () => {
                       onClick={() => handleEnterTv(1)}
                     >
                       <h2 className="text-[#ff0000] ">LOST ECHOES</h2>
-                      {!tv1Hover && (
+                      {!tv1Hover && endWLDateInSecs > date.getTime() && (
                         <Timer deadline={endWLDateInSecs} size="2xl" />
                       )}
-                      {tv1Hover && (
+                      {tv1Hover && endWLDateInSecs > date.getTime() && (
                         <p className="text-2xl">{formattedWLEndDate}</p>
                       )}
                       {tv1Hover && (
@@ -368,10 +369,10 @@ const DropsGrid = () => {
               </div>
             </div>
           </>
-        )}
+        </motion.div>
       </motion.div>
-    </motion.div>
+    </div>
   );
 };
 
-export default DropsGrid;
+export default Drops;
