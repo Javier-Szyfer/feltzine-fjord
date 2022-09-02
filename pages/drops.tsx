@@ -1,35 +1,40 @@
+import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { useState } from "react";
+import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
+import { chainID } from "../constants/chainId";
+//CONTEXT
 import useSoundContext from "../context/soundContext/soundCtx";
 import { useDrop1Context } from "../context/drop1Context/drop1Ctx";
 import { useDrop2Context } from "../context/drop2Context/drop2Ctx";
+//
 import { motion } from "framer-motion";
 import { fadeInUp, stagger } from "../animations/animations";
 import useSound from "use-sound";
 import { Zoom, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 //COMPONENTS
+import Header from "../components/common/Header";
 import News from "../components/common/News";
-import Timer from "../components/common/Timer";
+import Tv1Whitelist from "../components/drops/tv1/Tv1Whitelist";
+import Tv1FjordMint from "../components/drops/tv1/Tv1FjordMint";
+import TV1PublicMint from "../components/drops/tv1/TV1PublicMint";
 //WHITELIST
 import { useWhitelist } from "../hooks/useWhitelist";
 import { wlAddresses1 } from "../utils/merkle/wlAddresses1";
 //WAGMI
 import { useAccount, useNetwork } from "wagmi";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
-import Header from "../components/common/Header";
 
 const Drops = () => {
   //CONTEXT
-
   const { isSoundOn, setIsSoundOn, toggleSound, tv1SoundtrackPlay } =
     useSoundContext();
   const date = new Date();
   const { openConnectModal } = useConnectModal();
+  const { openChainModal } = useChainModal();
 
   //DROP1
-  const { endWLDateInSecs, formattedWLEndDate } = useDrop1Context();
+  const { endWLDateInSecs, isPublicMintActive } = useDrop1Context();
   const [tv1Hover, setTv1Hover] = useState(false);
   //DROP2
   const { endWL2DateInSecs, formattedWL2EndDate } = useDrop2Context();
@@ -73,7 +78,7 @@ const Drops = () => {
         toastId: "walletDisconnected-4tvs",
       });
       return;
-    } else if (chain?.id != 5) {
+    } else if (chain?.id !== chainID) {
       toast.error("Please switch to Goerli network", {
         toastId: "switchNetwork-4tvs",
       });
@@ -122,10 +127,9 @@ const Drops = () => {
           limit={2}
         />
         {/* NEWS  */}
-
         <div className="px-8 sm:px-4 md:max-w-4xl lg:px-0 mx-auto mt-2">
           <News size="xl" />
-          {isWhitelisted && (
+          {isWhitelisted && endWLDateInSecs > date.getTime() && (
             <span className=" mt-4 text-[#00eeff] tracking-tighter text-[10px] sm:text-xs text-shadowFirst flex flex-col sm:flex-row justify-center items-center">
               You are whitelisted for:{" "}
               <span className="italic ml-1 flex flex-col justify-center items-center ">
@@ -135,7 +139,7 @@ const Drops = () => {
               </span>
             </span>
           )}
-          {!isWhitelisted && address && (
+          {!isWhitelisted && address && endWLDateInSecs > date.getTime() && (
             <span className=" mt-4 text-[#00eeff] tracking-tighter text-xs text-shadowFirst flex flex-col sm:flex-row justify-center items-center">
               Not whitelisted
             </span>
@@ -144,8 +148,7 @@ const Drops = () => {
 
         <motion.div
           variants={stagger}
-          className={` px-4 w-full mx-auto 
-      ${"grid grid-col-1 gap-6 md:grid-cols-2 place-content-center md:gap-1"} md:max-w-4xl md:py-4 h-full min-h-[80vh] lg:shadow-xl lg:shadow-stone-600/50 sm:max-w-6xl  2xl:max-w-7xl  font-bold`}
+          className=" px-4 w-full mx-auto grid grid-col-1 gap-6 md:grid-cols-2 place-content-center md:gap-1 md:max-w-4xl md:py-4 h-full min-h-[80vh] lg:shadow-xl lg:shadow-stone-600/50 sm:max-w-6xl  2xl:max-w-7xl  font-bold"
         >
           {/* ALL TVS TOGETHER */}
           <>
@@ -178,67 +181,52 @@ const Drops = () => {
                 className="text-shadowFirstCollection relative w-full h-full "
               >
                 <div className="absolute border-[0.5px] border-[#0e0e0e84] inset-0 bg-cover rounded-2xl opacity-70 grayscale bg-[url('https://res.cloudinary.com/aldi/image/upload/v1662031129/feltzine/gifBg1_aeastj.gif')]  from-[#31333e31] to-[#76737325] w-full h-full hover:blur-sm" />
-                {/* WHITELISTED or WHITELIST ENDS */}
-                {isWhitelisted && (
-                  <Link href={"/lost-echoes"}>
-                    <button
-                      className="text-shadowFirstCollection cursor-fancy relative shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center"
-                      onClick={() => handleEnterTv(1)}
-                    >
-                      <h2 className="text-[#ff0000] ">LOST ECHOES</h2>
-                      {!tv1Hover && endWLDateInSecs > date.getTime() && (
-                        <Timer deadline={endWLDateInSecs} size="2xl" />
-                      )}
-                      {tv1Hover && endWLDateInSecs > date.getTime() && (
-                        <p className="text-2xl">{formattedWLEndDate}</p>
-                      )}
-                      {tv1Hover && (
-                        <p className=" absolute bottom-4 ">ACCESS</p>
-                      )}
-                    </button>
-                  </Link>
-                )}
-                {/* NOT WHITELISTED */}
-                {!isWhitelisted && address && (
-                  <a
-                    href={"https://copperlaunch.com/"}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    <button
-                      onClick={() => stop1()}
-                      className="text-shadowFirstCollection cursor-fancy relative shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center "
-                    >
-                      <h2 className="text-[#ff0000] ">LOST ECHOES</h2>
-                      {!tv1Hover && endWLDateInSecs > date.getTime() && (
-                        <Timer deadline={endWLDateInSecs} size="2xl" />
-                      )}
-                      {tv1Hover && endWLDateInSecs > date.getTime() && (
-                        <p className="text-2xl">{formattedWLEndDate}</p>
-                      )}
-                      {!isWhitelisted && address && tv1Hover && (
-                        <p className="absolute bottom-4 ">
-                          MINT THROUGH COPPER
-                        </p>
-                      )}
-                    </button>
-                  </a>
-                )}
+                {/* WHITELISTED and WHITELIST ACTIVE */}
+                {isWhitelisted &&
+                  endWLDateInSecs > date.getTime() &&
+                  chain?.id === chainID && (
+                    <Tv1Whitelist
+                      tv1Hover={tv1Hover}
+                      handleEnterTv={handleEnterTv}
+                    />
+                  )}
+                {/* FJORD MINT == WHITELIST ENDED && PUBLIC MINT INACTIVE*/}
+                {!isPublicMintActive &&
+                  endWLDateInSecs < date.getTime() &&
+                  chain?.id === chainID &&
+                  address && <Tv1FjordMint tv1Hover={tv1Hover} stop1={stop1} />}
+
+                {/* PUBLIC MINT ACTIVE*/}
+                {address &&
+                  endWLDateInSecs < date.getTime() &&
+                  isPublicMintActive &&
+                  chain?.id === chainID && (
+                    <TV1PublicMint
+                      handleEnterTv={handleEnterTv}
+                      tv1Hover={tv1Hover}
+                    />
+                  )}
                 {/* DISCONNECTED */}
-                {!address && (
+                {!address && chain?.id === chainID && (
                   <button
                     onClick={openConnectModal}
                     className="text-shadowFirstCollection cursor-fancy relative shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center "
                   >
                     <h2 className="text-[#ff0000] ">LOST ECHOES</h2>
-                    {!tv1Hover && endWLDateInSecs > date.getTime() && (
-                      <Timer deadline={endWLDateInSecs} size="2xl" />
-                    )}
-                    {tv1Hover && endWLDateInSecs > date.getTime() && (
-                      <p className="text-2xl">{formattedWLEndDate}</p>
-                    )}
                     {tv1Hover && (
                       <p className="absolute bottom-4 ">CONNECT WALLET</p>
+                    )}
+                  </button>
+                )}
+                {/* WRONG NETWORK */}
+                {chain?.id !== chainID && address && (
+                  <button
+                    onClick={openChainModal}
+                    className="text-shadowFirstCollection cursor-fancy relative shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center "
+                  >
+                    <h2 className="text-[#ff0000] ">LOST ECHOES</h2>
+                    {tv1Hover && (
+                      <p className="absolute bottom-4 ">WRONG NETWORK</p>
                     )}
                   </button>
                 )}
@@ -338,6 +326,7 @@ const Drops = () => {
               </motion.div>
             </motion.div>
             <div className="pb-8  text-shadowFirst md:col-span-2 flex flex-col w-full md:flex-row  items-center justify-between mt-4 text-xs">
+              {/* SOUND TOGGLE */}
               <button
                 onClick={() => {
                   setIsSoundOn(!isSoundOn), toggleSound();

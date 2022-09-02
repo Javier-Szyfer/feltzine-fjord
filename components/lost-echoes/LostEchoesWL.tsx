@@ -143,7 +143,7 @@ const LostEchoesWL = () => {
         className=" opacity-60 contrast-80 hue-rotate-50 bg-black mix-blend-exclusion hidden lg:flex"
       />
 
-      <div className="lg:min-h-0 lg:absolute inset-0  flex flex-col justify-between shadow-xl shadow-stone-200/10 rounded-2xl bg-[url('../public/images/tv-bg.png')] p-8 ">
+      <div className="lg:min-h-0 lg:absolute inset-0  flex flex-col justify-between shadow-xl shadow-stone-200/10 rounded-2xl bg-[url('../public/images/tv-bg.png')] p-4 sm:p-8  ">
         <div>
           <div className="flex flex-col md:flex-row justify-between md:items-center">
             <h2>LOST ECHOES</h2>

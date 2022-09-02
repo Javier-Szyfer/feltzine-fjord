@@ -36,6 +36,7 @@ body {
     #030303 95%
   );
 
+  background-color: #080808;
   height: 100%;
   color: white;
   cursor: url("../public/cursor/cursor.svg"), auto;

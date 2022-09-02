@@ -13,7 +13,10 @@ export const fjordDrop1GoerliAbi = [
     type: "constructor",
   },
   { inputs: [], name: "FJORD_InexactPayment", type: "error" },
+  { inputs: [], name: "FJORD_MaxMintExceeded", type: "error" },
+  { inputs: [], name: "FJORD_PublicMintisNotActive", type: "error" },
   { inputs: [], name: "FJORD_TotalMinted", type: "error" },
+  { inputs: [], name: "FJORD_WhitelistMaxSupplyExceeded", type: "error" },
   { inputs: [], name: "FJORD_WhitelistMintEnded", type: "error" },
   {
     anonymous: false,
@@ -165,6 +168,13 @@ export const fjordDrop1GoerliAbi = [
   },
   {
     inputs: [],
+    name: "isPublicMintActive",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "mint",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "nonpayable",
@@ -203,6 +213,13 @@ export const fjordDrop1GoerliAbi = [
     name: "ownerOf",
     outputs: [{ internalType: "address", name: "", type: "address" }],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "_amount", type: "uint256" }],
+    name: "publicMint",
+    outputs: [],
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -292,6 +309,31 @@ export const fjordDrop1GoerliAbi = [
       { internalType: "address", name: "erc20TokenAddress_", type: "address" },
     ],
     name: "setErc20TokenAddress",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "bool", name: "isPublicMintActive_", type: "bool" },
+    ],
+    name: "setIsPublicMintActive",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "payThroughSplits_", type: "address" },
+    ],
+    name: "setPayThroughSplits",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "price", type: "uint256" }],
+    name: "setPublicMintPrice",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

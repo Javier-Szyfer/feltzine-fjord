@@ -5,10 +5,10 @@ const Header = () => {
   const router = useRouter();
   const route = router.pathname;
   return (
-    <div className="flex w-full flex-col gap-4 md:gap-0 md:flex-row items-center md:justify-center pt-2 md:pt-8">
+    <div className="flex w-full flex-col gap-4  items-center  pt-8">
       {/* Mobile connect */}
       {route !== "/" && (
-        <div className="mt-4 sm:mt-0 lg:hidden h-auto  cursor-fancy text-sm md:pl-4  md:fixed z-40 md:top-8 md:right-4">
+        <div className=" md:pl-4  md:fixed z-40 md:right-4  lg:hidden h-auto  cursor-fancy text-sm ">
           <ConnectBtn />
         </div>
       )}

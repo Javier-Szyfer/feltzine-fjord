@@ -1,5 +1,5 @@
 export const fjordDrop1ContractAddress =
-  "0x269Eb20452593c3643C6f92F43a6AC588691F8Be";
+  "0xbA648b2E37296279ca918Fa66597fC7C175efC74";
 export const fjordDrop2ContractAddress = "";
 export const fjordDrop3ContractAddress = "";
 export const fjordDrop4ContractAddress = "";

@@ -15,10 +15,11 @@ import LEDisconnected from "../components/lost-echoes/LEDisconnected";
 //WAGMI
 import { useAccount, useNetwork } from "wagmi";
 //
-import "react-toastify/dist/ReactToastify.css";
+import { chainID } from "../constants/chainId";
 import { useWhitelist } from "../hooks/useWhitelist";
 import { wlAddresses1 } from "../utils/merkle/wlAddresses1";
 import { ToastContainer, Zoom } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const LostEchoes = () => {
   //CONTEXT
@@ -60,10 +61,9 @@ const LostEchoes = () => {
     <div className=" overflow-hidden">
       <Head>
         <title>FeltZine - Fjord</title>
-        <meta name="description" content="FeltZine - 4 Fjord Drops" />
+        <meta name="description" content="FeltZine - Lost Echoes" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <ToastContainer
         position="bottom-right"
         autoClose={4000}
@@ -93,20 +93,20 @@ const LostEchoes = () => {
         </div>
 
         <div
-          className={` relative px-4 w-full mx-auto flex flex-col justify-start 2xl:justify-center items-center 
-          md:py-4 lg:shadow-xl  lg:shadow-stone-600/50 sm:max-w-6xl md:max-w-4xl 2xl:max-w-7xl text-sm md:text-[18px] lg:text-lg  2xl:text-2xl min-h-[100vh]  font-bold`}
+          className="relative px-4 w-full mx-auto flex flex-col justify-start 2xl:justify-center items-center 
+          md:py-4 lg:shadow-xl  lg:shadow-stone-600/50 sm:max-w-6xl md:max-w-4xl 2xl:max-w-7xl text-[10px] xs:text-sm md:text-[18px] lg:text-lg  2xl:text-2xl min-h-[100vh]  font-bold"
         >
           {/* LOADING */}
           {loading && <LELoading />}
           {/* DISCONNECTED OR WRONG CHAIN */}
-          {!loading && (!address || chain?.id != 5) && (
+          {!loading && (!address || chain?.id != chainID) && (
             <LEDisconnected chainId={chain?.id} address={address} />
           )}
           {/* WHITELIST ACTIVE AND NOT WHITELISTED ACC */}
           {address &&
             !isWhitelisted &&
             !loading &&
-            chain?.id === 5 &&
+            chain?.id === chainID &&
             date.getTime() < endWLDateInSecs &&
             !isPublicMintActive && (
               <div className=" text-drop1  relative  lg:min-h-none   border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
@@ -118,7 +118,7 @@ const LostEchoes = () => {
           {address &&
             isWhitelisted &&
             date.getTime() < endWLDateInSecs &&
-            chain?.id === 5 &&
+            chain?.id === chainID &&
             !loading && (
               <div className=" text-drop1  relative  lg:min-h-none  border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
                 <LostEchoesWL />
@@ -129,7 +129,7 @@ const LostEchoes = () => {
             date.getTime() > endWLDateInSecs &&
             !loading &&
             // isPublicMintActive &&
-            chain?.id === 5 && (
+            chain?.id === chainID && (
               <div className=" text-drop1 relative lg:min-h-none  border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
                 <LostEchoesPM />
               </div>
