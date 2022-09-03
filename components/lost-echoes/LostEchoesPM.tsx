@@ -62,7 +62,9 @@ const LostEchoesPM = () => {
     },
     onSuccess() {
       setInterval(() => {
-        toast.info("Waiting for tx confirmations...");
+        toast.info("Waiting for tx confirmations...", {
+          toastId: "tv1-PM-txConfirm",
+        });
       }, 2000);
     },
   });

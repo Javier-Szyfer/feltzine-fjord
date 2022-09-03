@@ -12,6 +12,7 @@ const LEFjord = ({ isPublicMintActive }: Props) => {
   //CONTEXT
   const { totalMintedDrop1, endWLDateInSecs } = useDrop1Context();
   const { isSoundOn, tv1SoundtrackStop } = useSoundContext();
+  const date = new Date();
   //SOUNDS
   const [back] = useSound(
     "https://res.cloudinary.com/aldi/video/upload/v1661351389/feltzine/back_o59yfu.mp3",
@@ -33,7 +34,9 @@ const LEFjord = ({ isPublicMintActive }: Props) => {
           <div>
             <div className="flex flex-col md:flex-row justify-between md:items-center">
               <h2>LOST ECHOES</h2>
-              <Timer deadline={endWLDateInSecs} />
+              {endWLDateInSecs > date.getTime() && (
+                <Timer deadline={endWLDateInSecs} />
+              )}
             </div>
             <span>
               Artifacts found:
