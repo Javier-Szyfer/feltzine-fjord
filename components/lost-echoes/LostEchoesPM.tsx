@@ -17,6 +17,7 @@ import {
 } from "wagmi";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
+import { formatHash } from "../../utils/formatters";
 
 const LostEchoesPM = () => {
   //CONTEXT
@@ -25,6 +26,8 @@ const LostEchoesPM = () => {
   //STATE
   const [publicMintAmount, setPublicMintAmount] = useState(1);
   const [processing, setProcessing] = useState(false);
+  const [showTxHash, setShowTXHash] = useState(false);
+
   const price = 0.02;
   let totalPublicPrice = publicMintAmount * price;
   //WAGMI
@@ -57,8 +60,13 @@ const LostEchoesPM = () => {
       toast.error(error.message);
       setProcessing(false);
     },
+    onSuccess() {
+      setInterval(() => {
+        toast.info("Waiting for tx confirmations...");
+      }, 2000);
+    },
   });
-  useWaitForTransaction({
+  const { data: txConfirmed } = useWaitForTransaction({
     hash: data?.hash,
     wait: data?.wait,
     onSuccess() {
@@ -214,6 +222,23 @@ const LostEchoesPM = () => {
           </div>
         </div>
       </div>
+      {showTxHash && (
+        <Link
+          href={`https://goerli.etherscan.io/tx/${txConfirmed?.transactionHash}`}
+          passHref
+        >
+          <a target="_blank" rel="noopener noreferrer">
+            <div className="relative flex xs:flex-col md:flex-row  font-bold text-[10px] text-[#00eeff]    px-2 py-1 bg-[#10101077]  gap-0 text-center leading-3 border text-shadowFirst border-[#00eeff] mt-4  ">
+              <span className="mr-8">
+                SEE YOUR TX ON ETHERSCAN, YOU SHALL RECEIVE YOUR NFT PRETTY SOON
+              </span>
+              <span>
+                {txConfirmed && formatHash(txConfirmed?.transactionHash)}
+              </span>
+            </div>
+          </a>
+        </Link>
+      )}
     </>
   );
 };

@@ -85,7 +85,7 @@ const LostEchoes = () => {
               </span>
             </span>
           )}
-          {!isWhitelisted && address && date.getTime() < endWLDateInSecs && (
+          {!isWhitelisted && address && endWLDateInSecs > date.getTime() && (
             <span className=" mt-4 text-[#00eeff] tracking-tighter text-xs text-shadowFirst flex flex-col sm:flex-row justify-center items-center">
               Not whitelisted
             </span>
@@ -100,9 +100,11 @@ const LostEchoes = () => {
           {loading && <LELoading />}
           {/* DISCONNECTED OR WRONG CHAIN */}
           {!loading && (!address || chain?.id != chainID) && (
-            <LEDisconnected chainId={chain?.id} address={address} />
+            <div className=" text-drop1  relative  lg:min-h-none   border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
+              <LEDisconnected chainId={chain?.id} address={address} />
+            </div>
           )}
-          {/* WHITELIST ACTIVE AND NOT WHITELISTED ACC */}
+          {/*VISIT FJORD: WHITELIST ACTIVE AND NOT WHITELISTED ACC */}
           {address &&
             !isWhitelisted &&
             !loading &&
@@ -110,7 +112,17 @@ const LostEchoes = () => {
             date.getTime() < endWLDateInSecs &&
             !isPublicMintActive && (
               <div className=" text-drop1  relative  lg:min-h-none   border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
-                <LEFjord />
+                <LEFjord isPublicMintActive={isPublicMintActive} />
+              </div>
+            )}
+          {/* MINT FJORD: WHITELIST INACTIVE && PUBLICMINT INACTIVE */}
+          {address &&
+            !loading &&
+            chain?.id === chainID &&
+            date.getTime() > endWLDateInSecs &&
+            !isPublicMintActive && (
+              <div className=" text-drop1  relative  lg:min-h-none   border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
+                <LEFjord isPublicMintActive={isPublicMintActive} />
               </div>
             )}
 
