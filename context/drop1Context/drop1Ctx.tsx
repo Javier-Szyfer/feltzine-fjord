@@ -13,6 +13,7 @@ interface Drop1ContextProps {
   endWLDateInSecs: number;
   formattedWLEndDate: string;
   isPublicMintActive?: boolean;
+  readTMinted: () => void;
 }
 
 interface props {
@@ -26,11 +27,12 @@ export function Drop1Wrapper({ children }: props) {
     contractInterface: fjordDrop1GoerliAbi,
     functionName: "whitelistEndDate",
   });
-  const { data: totalMintedDrop } = useContractRead({
+  const { data: totalMintedDrop, refetch: readTMinted } = useContractRead({
     addressOrName: fjordDrop1ContractAddress,
     contractInterface: fjordDrop1GoerliAbi,
     functionName: "totalSupply",
     watch: true,
+    cacheTime: 5,
   });
   const { data: isPublicMintActive } = useContractRead({
     addressOrName: fjordDrop1ContractAddress,
@@ -52,6 +54,7 @@ export function Drop1Wrapper({ children }: props) {
   return (
     <Drop1Context.Provider
       value={{
+        readTMinted,
         totalMintedDrop1,
         endWLDateInSecs,
         formattedWLEndDate,

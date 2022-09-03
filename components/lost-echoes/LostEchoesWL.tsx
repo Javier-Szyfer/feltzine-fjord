@@ -23,17 +23,19 @@ import { useWhitelist } from "../../hooks/useWhitelist";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
 import { useMerkleTree } from "../../hooks/useMerkleTree";
+import { formatHash } from "../../utils/formatters";
 
 const LostEchoesWL = () => {
   //STATE
   const [whiteListMintAmount, setWhiteListMintAmount] = useState(1);
   const [processing, setProcessing] = useState(false);
+  const [showTxHash, setShowTXHash] = useState(false);
   const date = new Date();
   const price = 0.02;
   let totalWhitelistPrice = whiteListMintAmount * price;
 
   //CONTEXT
-  const { totalMintedDrop1, endWLDateInSecs } = useDrop1Context();
+  const { totalMintedDrop1, endWLDateInSecs, readTMinted } = useDrop1Context();
   const {
     isSoundOn,
 
@@ -86,13 +88,22 @@ const LostEchoesWL = () => {
       toast.error(error.message);
       setProcessing(false);
     },
+    onSuccess() {
+      setInterval(() => {
+        toast.info("Waiting for tx confirmations...");
+      }, 2000);
+    },
   });
-  useWaitForTransaction({
+  const { data: txConfirmed } = useWaitForTransaction({
     hash: data?.hash,
     wait: data?.wait,
+    confirmations: 2,
     onSuccess() {
       setProcessing(false);
       toast.success("Transaction successful", { toastId: "mintSuccess-tv1" });
+      setShowTXHash(true);
+      //refetch
+      readTMinted();
     },
   });
   const handleWhitelistMint = () => {
@@ -169,7 +180,9 @@ const LostEchoesWL = () => {
                   whiteListMintAmount === 1 ? "bg-[#ff000066]" : "bg-none"
                 } text-drop1 w-7 h-7 md:w-10 md:h-10 border-r border-[#ff0000] rounded-l cursor-fancy `}
                 onClick={() => {
-                  setWhiteListMintAmount(1), isSoundOn && mint1();
+                  setWhiteListMintAmount(1),
+                    isSoundOn && mint1(),
+                    setShowTXHash(false);
                 }}
               >
                 1
@@ -179,7 +192,9 @@ const LostEchoesWL = () => {
                   whiteListMintAmount === 2 ? "bg-[#ff000066]" : "bg-none"
                 } text-drop1 w-7 h-7 md:w-10 md:h-10 border-r border-[#ff0000] rounded-l cursor-fancy `}
                 onClick={() => {
-                  isSoundOn && mint2(), setWhiteListMintAmount(2);
+                  isSoundOn && mint2(),
+                    setWhiteListMintAmount(2),
+                    setShowTXHash(false);
                 }}
               >
                 2
@@ -233,6 +248,23 @@ const LostEchoesWL = () => {
           </div>
         </div>
       </div>
+      {showTxHash && (
+        <Link
+          href={`https://goerli.etherscan.io/tx/${txConfirmed?.transactionHash}`}
+          passHref
+        >
+          <a target="_blank" rel="noopener noreferrer">
+            <div className="relative flex xs:flex-col md:flex-row  font-bold text-[10px] text-[#00eeff]    px-2 py-1 bg-[#10101077]  gap-0 text-center leading-3 border text-shadowFirst border-[#00eeff] mt-4  ">
+              <span className="mr-8">
+                SEE YOUR TX ON ETHERSCAN, YOU SHALL RECEIVE YOUR NFT PRETTY SOON
+              </span>
+              <span>
+                {txConfirmed && formatHash(txConfirmed?.transactionHash)}
+              </span>
+            </div>
+          </a>
+        </Link>
+      )}
     </>
   );
 };

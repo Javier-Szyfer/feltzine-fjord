@@ -65,7 +65,6 @@ const Drops = () => {
 
   //WAMGI HOOKS
   const { address } = useAccount();
-  console.log(address);
   const { chain } = useNetwork();
   //CHECK IF ADDRESS IS IN WHITELIST
   const isWhitelisted = useWhitelist(address, wlAddresses1);

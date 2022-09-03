@@ -168,6 +168,13 @@ body {
   color: #ff0000 !important;
   text-shadow: 0px 0px 10px #ff000087;
 }
+.Toastify__toast--info {
+  background-color: #101010 !important;
+  border-radius: 0 !important;
+  box-shadow: 0 0 8px #f1f1f177 !important;
+  color: #00eeff !important;
+  text-shadow: 0px 0px 10px #ff000087;
+}
 .Toastify__toast--success {
   background-color: #10101090 !important;
   border-radius: 0 !important;
@@ -176,6 +183,9 @@ body {
 }
 .Toastify__progress-bar--error {
   background-color: #ff0000 !important;
+}
+.Toastify__progress-bar--info {
+  background-color: #00eeff !important;
 }
 .Toastify__toast-icon {
   display: none !important;
