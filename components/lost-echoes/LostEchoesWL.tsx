@@ -90,13 +90,6 @@ const LostEchoesWL = () => {
       toast.error(error.message);
       setProcessing(false);
     },
-    onSuccess() {
-      setInterval(() => {
-        toast.info("Waiting for tx confirmations...", {
-          toastId: "tv1-txConfirm",
-        });
-      }, 2000);
-    },
   });
   const { data: txConfirmed } = useWaitForTransaction({
     hash: data?.hash,
