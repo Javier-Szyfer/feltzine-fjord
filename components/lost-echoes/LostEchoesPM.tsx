@@ -18,17 +18,18 @@ import {
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
 import { formatHash } from "../../utils/formatters";
+import { chainID } from "../../constants/chainId";
 
 const LostEchoesPM = () => {
   //CONTEXT
-  const { isPublicMintActive } = useDrop1Context();
+  const { isPublicMintActive, readTMinted } = useDrop1Context();
 
   //STATE
   const [publicMintAmount, setPublicMintAmount] = useState(1);
   const [processing, setProcessing] = useState(false);
   const [showTxHash, setShowTXHash] = useState(false);
 
-  const price = 0.02;
+  const price = 0.001;
   let totalPublicPrice = publicMintAmount * price;
   //WAGMI
   //READ
@@ -44,7 +45,6 @@ const LostEchoesPM = () => {
     addressOrName: fjordDrop1ContractAddress,
     contractInterface: fjordDrop1GoerliAbi,
     functionName: "publicMint",
-    enabled: false,
     args: [
       publicMintAmount,
       {
@@ -60,19 +60,16 @@ const LostEchoesPM = () => {
       toast.error(error.message);
       setProcessing(false);
     },
-    onSuccess() {
-      setInterval(() => {
-        toast.info("Waiting for tx confirmations...", {
-          toastId: "tv1-PM-txConfirm",
-        });
-      }, 2000);
-    },
   });
   const { data: txConfirmed } = useWaitForTransaction({
     hash: data?.hash,
     wait: data?.wait,
+    confirmations: 2,
     onSuccess() {
       setProcessing(false);
+      //refetch
+      readTMinted();
+      setShowTXHash(true);
       toast.success("Transaction successful", { toastId: "mintSuccess-tv1" });
     },
   });
@@ -97,7 +94,7 @@ const LostEchoesPM = () => {
     if (!isPublicMintActive) {
       toast.error("Public mint is not active yet");
       setProcessing(false);
-    } else if (chain?.id !== 5) {
+    } else if (chain?.id !== chainID) {
       toast.error("Please connect to Goerli Testnet", {
         toastId: "wrongNetwork-tv1-publicMint",
       });
@@ -217,7 +214,7 @@ const LostEchoesPM = () => {
                 </div>
               ) : (
                 `DISCOVER Ξ${
-                  totalPublicPrice ? totalPublicPrice.toFixed(2) : 0
+                  totalPublicPrice ? totalPublicPrice.toFixed(3) : 0
                 }`
               )}
             </button>
