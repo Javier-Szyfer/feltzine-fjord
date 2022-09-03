@@ -87,8 +87,8 @@ const Drops = () => {
     }
     switch (tv) {
       case 1:
-        isSoundOn && tv1SoundtrackPlay();
         stop1(), setTv1Hover(false);
+        isSoundOn && tv1SoundtrackPlay();
         break;
       case 2:
         stop2(), setTv2Hover(false);
@@ -355,14 +355,28 @@ const Drops = () => {
             </motion.div>
             <div className="pb-8  text-shadowFirst md:col-span-2 flex flex-col w-full md:flex-row  items-center justify-between mt-4 text-xs">
               {/* SOUND TOGGLE */}
-              <button
-                onClick={() => {
-                  setIsSoundOn(!isSoundOn), toggleSound();
-                }}
-                className="bg-transparent  border border-[#555555] hover:border-[#999999] cursor-fancy text-shadowFirst py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none  "
-              >
-                {isSoundOn ? "sound off" : "sound on"}
-              </button>
+              <div className="">
+                <button
+                  onClick={() => {
+                    setIsSoundOn(!isSoundOn);
+                    toggleSound();
+                  }}
+                  className=" cursor-fancy   border border-gray-400 py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none w-auto  text-xs"
+                >
+                  <div className="">
+                    <span className="mr-3 text-shadowFirst">SOUND</span>
+                    {isSoundOn ? (
+                      <span className="">
+                        <span className="text-[#5d5d5df4]">OFF</span> | ON
+                      </span>
+                    ) : (
+                      <span className="">
+                        OFF | <span className="text-[#5d5d5df4]">ON</span>
+                      </span>
+                    )}
+                  </div>
+                </button>
+              </div>
               <div className="flex items-center justify-center mt-8 md:mt-0">
                 <Link href={"https://twitter.com/FeltZine"} passHref>
                   <a

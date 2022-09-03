@@ -54,7 +54,8 @@ const LostEchoes = () => {
   const handleSoundOff = () => {
     toggleSound(),
       setIsSoundOn(!isSoundOn),
-      tv1Soundtrack ? tv1SoundtrackPause() : tv1SoundtrackPlay();
+      tv1Soundtrack && tv1SoundtrackPause();
+    !tv1Soundtrack && !isSoundOn && tv1SoundtrackPlay();
   };
 
   return (
@@ -81,7 +82,7 @@ const LostEchoes = () => {
             <span className=" mt-4 text-[#00eeff] tracking-tighter text-[10px] sm:text-xs text-shadowFirst flex flex-col sm:flex-row justify-center items-center">
               You are whitelisted for:{" "}
               <span className="italic ml-1 flex flex-col justify-center items-center ">
-                {isWhitelisted && "Endangered Memories"}
+                {isWhitelisted && "Lost Echoes"}
               </span>
             </span>
           )}
@@ -140,7 +141,7 @@ const LostEchoes = () => {
           {address &&
             date.getTime() > endWLDateInSecs &&
             !loading &&
-            // isPublicMintActive &&
+            isPublicMintActive &&
             chain?.id === chainID && (
               <div className=" text-drop1 relative lg:min-h-none  border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
                 <LostEchoesPM />
@@ -153,9 +154,20 @@ const LostEchoes = () => {
                 onClick={() => {
                   handleSoundOff();
                 }}
-                className=" cursor-fancy text-shadowFirst border border-gray-400 py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none w-auto sm:w-32 mt-8 text-xs"
+                className=" cursor-fancy   border border-gray-400 py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none w-auto  mt-4 text-xs"
               >
-                {isSoundOn ? "sound off" : "sound on"}
+                <div className="flex items-center justify-center">
+                  <span className="mr-3 text-shadowFirst">SOUND</span>
+                  {isSoundOn ? (
+                    <span className="">
+                      <span className="text-[#5d5d5df4]">OFF</span> | ON
+                    </span>
+                  ) : (
+                    <span className="">
+                      OFF | <span className="text-[#5d5d5df4]">ON</span>
+                    </span>
+                  )}
+                </div>
               </button>
             </div>
           )}
