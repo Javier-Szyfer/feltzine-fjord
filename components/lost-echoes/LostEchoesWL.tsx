@@ -171,7 +171,6 @@ const LostEchoesWL = () => {
             </p>
           </div>
           <div className="text-drop1  flex justify-end items-center mt-6 ">
-            {nftsOwned && nftsOwned && Number(nftsOwned) === 2}{" "}
             <h3 className="mr-10">Artifacts quantity</h3>
             <div className="border border-[#ff0000] flex">
               <button
@@ -190,20 +189,18 @@ const LostEchoesWL = () => {
                   "1"
                 )}
               </button>
-              {nftsOwned && Number(nftsOwned) === 1 && (
-                <button
-                  className={` ${
-                    whiteListMintAmount === 2 ? "bg-[#ff000066]" : "bg-none"
-                  } text-drop1 w-7 h-7 md:w-auto px-4 md:h-10 border-r border-[#ff0000] rounded-l cursor-fancy `}
-                  onClick={() => {
-                    isSoundOn && mint2(),
-                      setWhiteListMintAmount(2),
-                      setShowTXHash(false);
-                  }}
-                >
-                  2
-                </button>
-              )}
+              <button
+                className={` ${
+                  whiteListMintAmount === 2 ? "bg-[#ff000066]" : "bg-none"
+                } text-drop1 w-7 h-7 md:w-auto px-4 md:h-10 border-r border-[#ff0000] rounded-l cursor-fancy `}
+                onClick={() => {
+                  isSoundOn && mint2(),
+                    setWhiteListMintAmount(2),
+                    setShowTXHash(false);
+                }}
+              >
+                2
+              </button>
             </div>
           </div>
           <div className=" flex w-full  justify-between items-center mt-6">
