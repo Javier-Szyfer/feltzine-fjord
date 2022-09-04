@@ -86,12 +86,12 @@ const LostEchoesPM = () => {
 
   //PUBLIC MINT
   const handlePublicMint = () => {
-    console.log(
-      balance?.formatted && balance?.formatted,
-      totalPublicPrice.toString()
-    );
     setProcessing(true);
-    if (!isPublicMintActive) {
+    if (!publicMintAmount || publicMintAmount == 0) {
+      toast.error("Please enter a valid amount");
+      setProcessing(false);
+      return;
+    } else if (!isPublicMintActive) {
       toast.error("Public mint is not active yet");
       setProcessing(false);
     } else if (chain?.id !== chainID) {
@@ -168,6 +168,7 @@ const LostEchoesPM = () => {
                 onChange={(e) => {
                   setPublicMintAmount(e.target.valueAsNumber);
                 }}
+                onFocus={() => setShowTXHash(false)}
                 className="w-20 bg-transparent text-right px-4 py-1 focus:ring-opacity-50"
               />
             </div>
