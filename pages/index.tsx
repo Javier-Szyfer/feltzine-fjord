@@ -8,6 +8,7 @@ const Home: NextPage = () => {
     <div className=" flex flex-col justify-center items-center overflow-hidden  ">
       <Head>
         <title>Felt Zine x FJORD NFT</title>
+        <meta charSet="utf-8" />
         <link rel="icon" href="https://fjord.feltzine.art/assets/favicon.jpg" />
         <meta
           property="og:title"
@@ -62,7 +63,7 @@ const Home: NextPage = () => {
         />
         <meta
           name="twitter:image"
-          content="https://fjord.feltzine.art/assets/preview.jpg"
+          content="https://res.cloudinary.com/aldi/image/upload/v1662413609/feltzine/preview_e5djw6.jpg"
           key="twimage"
         />
       </Head>
