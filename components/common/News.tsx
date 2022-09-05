@@ -21,7 +21,7 @@ const News = ({ size }: any) => {
         <span className="mx-1">
           <span className="font-bold">*:･ﾟLost Echoes *:･ﾟ</span> Status:{" "}
           <span className="font-bold">LIVE</span> - Total minted:{" "}
-          {totalMintedDrop1}/500 ✧✧✧
+          {totalMintedDrop1}/525 ✧✧✧
         </span>
         <span className="mr-1">FJORD Drop2 - Status: NOT STARTED ✧✧✧ </span>
         <span className="mr-1"> FJORD Drop3 - Status: NOT STARTED ✧✧✧</span>
