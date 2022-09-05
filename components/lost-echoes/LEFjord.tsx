@@ -34,8 +34,10 @@ const LEFjord = ({ isPublicMintActive }: Props) => {
           <div>
             <div className="flex flex-col md:flex-row justify-between md:items-center">
               <h2>LOST ECHOES</h2>
-              {endWLDateInSecs > date.getTime() && (
+              {endWLDateInSecs > date.getTime() ? (
                 <Timer deadline={endWLDateInSecs} />
+              ) : (
+                <a href="https://fjordnfts.com/create/">whitelist ended</a>
               )}
             </div>
             <span>
@@ -68,7 +70,7 @@ const LEFjord = ({ isPublicMintActive }: Props) => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <button className="border border-[#ff0000] px-3 py-1 text-drop1 hover:shadow-sm hover:shadow-red-400 cursor-fancy ">
+              <button className="text-[#80ff9e] border  border-[#80ff9e] px-3 py-1 text-drop1 hover:shadow-sm hover:shadow-red-400 cursor-fancy ">
                 {isPublicMintActive ? "MINT TRHOUGH FJORD" : "VISIT FJORD DROP"}
               </button>
             </a>
