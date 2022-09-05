@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 //CONTEXT
@@ -32,7 +33,11 @@ const LostEchoes = () => {
     tv1SoundtrackPause,
     tv1SoundtrackPlay,
   } = useSoundContext();
-  const { endWLDateInSecs, isPublicMintActive } = useDrop1Context();
+  const { endWLDateInSecs, isPublicMintActive, nftsInWallet } =
+    useDrop1Context();
+  const tokens = nftsInWallet?.tokens.nodes;
+  console.log("nftsInWallet", tokens);
+
   //STATE
   const [loading, setLoading] = useState(true);
 
@@ -75,6 +80,10 @@ const LostEchoes = () => {
           key="ogdesc"
         />
         <meta property="og:type" content="website" key="ogtype" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta name="twitter:image:alt" content="Felt Zine x Fjord open graph" />
+
         <meta
           property="og:url"
           content="https://fjord.feltzine.art/lost-echoes"
@@ -117,7 +126,7 @@ const LostEchoes = () => {
           content="https://fjord.feltzine.art/assets/inapreview.jpg"
           key="twimage"
         />
-      </Head>{" "}
+      </Head>
       <ToastContainer
         position="bottom-right"
         autoClose={4000}
@@ -202,7 +211,7 @@ const LostEchoes = () => {
             )}
           {/* SOUND CONTROL */}
           {!loading && (
-            <div className="flex w-full justify-start pb-6">
+            <div className="flex w-full justify-between items-center pb-6 px-4">
               <button
                 onClick={() => {
                   handleSoundOff();
@@ -222,6 +231,13 @@ const LostEchoes = () => {
                   )}
                 </div>
               </button>
+              {tokens?.length > 0 && (
+                <Link href={"/nfts"}>
+                  <button className=" cursor-fancy  border border-gray-400 py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none w-auto  mt-4 text-xs">
+                    See NFTs
+                  </button>
+                </Link>
+              )}
             </div>
           )}
         </div>

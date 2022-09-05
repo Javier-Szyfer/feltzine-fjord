@@ -1,6 +1,6 @@
 import { ConnectBtn } from "./ConnectBtn";
 import { useRouter } from "next/router";
-import { IoMdWallet } from "react-icons/io";
+import { AiOutlineWallet } from "react-icons/ai";
 import Link from "next/link";
 
 const Header = () => {
@@ -13,7 +13,7 @@ const Header = () => {
         <div className=" md:pl-4  md:fixed z-40 md:right-4  lg:hidden h-auto flex items-center gap-4 cursor-fancy text-sm ">
           <ConnectBtn />
           <Link href={"/nfts"}>
-            <IoMdWallet className="w-6 h-6 text-shadowFirst" />
+            <AiOutlineWallet className="w-6 h-6 text-shadowFirst text-[#cccccc] shadow-md shadow-[#f8f8f8]/30" />
           </Link>
         </div>
       )}
@@ -22,7 +22,7 @@ const Header = () => {
         <div className=" hidden lg:flex fixed  items-end flex-col top-8 right-4 gap-2 cursor-fancy text-sm ">
           <ConnectBtn />
           <Link href={"/nfts"}>
-            <IoMdWallet className="w-6 h-6 text-shadowFirst" />
+            <AiOutlineWallet className="w-6 h-6 text-shadowFirst text-[#cccccc] shadow-md shadow-[#f8f8f8]/30" />
           </Link>
         </div>
       )}

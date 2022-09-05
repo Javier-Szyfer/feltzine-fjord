@@ -19,6 +19,9 @@ const Home: NextPage = () => {
           content="Revolutionizing NFT Drops With Felt Zine and Fjord NFTs Liquidity Bootstrapping Pools"
           key="ogdesc"
         />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta name="twitter:image:alt" content="Felt Zine x Fjord open graph" />
         <meta property="og:type" content="website" key="ogtype" />
         <meta
           property="og:url"

@@ -42,7 +42,7 @@ const LEFjord = ({ isPublicMintActive }: Props) => {
             </div>
             <span>
               Artifacts found:
-              {totalMintedDrop1 ? `${totalMintedDrop1}/500` : "N/A"}
+              {totalMintedDrop1 ? `${totalMintedDrop1}/525` : "N/A"}
             </span>
             <h3 className="mt-8">
               Researchers discover Ina&apos;s memories in the year 3030.
