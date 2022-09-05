@@ -26,7 +26,7 @@ const Header = () => {
           </Link>
         </div>
       )}
-      <Link href={"/"}>
+      <Link href={"/drops"}>
         <h1 className="relative text-[#fdfdfd] mt-2  md:mt-0 text-shadowTitle  2xs:text-xl xs:text-2xl  md:text-3xl lg:text-5xl xl:text-6xl">
           Fjord x Felt Zine
         </h1>
