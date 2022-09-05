@@ -154,7 +154,7 @@ const LostEchoes = () => {
                 onClick={() => {
                   handleSoundOff();
                 }}
-                className=" cursor-fancy   border border-gray-400 py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none w-auto  mt-4 text-xs"
+                className=" cursor-fancy  border border-gray-400 py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none w-auto  mt-4 text-xs"
               >
                 <div className="flex items-center justify-center">
                   <span className="mr-3 text-shadowFirst">SOUND</span>

@@ -171,12 +171,12 @@ const LostEchoesWL = () => {
             </p>
           </div>
           <div className="text-drop1  flex justify-end items-center mt-6 ">
-            <h3 className="mr-10">Artifacts quantity</h3>
-            <div className="border border-[#ff0000] flex">
+            <h3 className="mr-10 text-[#f1f1f1]">Artifacts quantity</h3>
+            <div className="border border-[#80ff9e] text-center text-[#80ff9e] flex">
               <button
                 className={` ${
-                  whiteListMintAmount === 1 ? "bg-[#ff000066]" : "bg-none"
-                } text-drop1 md:w-auto px-4 md:h-10 border-r border-[#ff0000] rounded-l cursor-fancy `}
+                  whiteListMintAmount === 1 ? "bg-[#80ff9e47]" : "bg-none"
+                } text-drop1 md:w-auto px-4 md:h-10 border-r py-2 border-[#80ff9e] rounded-l cursor-fancy `}
                 onClick={() => {
                   setWhiteListMintAmount(1),
                     isSoundOn && mint1(),
@@ -191,8 +191,8 @@ const LostEchoesWL = () => {
               </button>
               <button
                 className={` ${
-                  whiteListMintAmount === 2 ? "bg-[#ff000066]" : "bg-none"
-                } text-drop1 w-7 h-7 md:w-auto px-4 md:h-10 border-r border-[#ff0000] rounded-l cursor-fancy `}
+                  whiteListMintAmount === 2 ? "bg-[#80ff9e47]" : "bg-none"
+                } text-drop1 md:w-auto px-4 md:h-10 border-r border-[#80ff9e] rounded-l cursor-fancy `}
                 onClick={() => {
                   isSoundOn && mint2(),
                     setWhiteListMintAmount(2),
@@ -215,14 +215,14 @@ const LostEchoesWL = () => {
               </button>
             </Link>
             <button
-              className="border border-[#ff0000] px-3 py-1 text-drop1 hover:shadow-sm hover:shadow-red-400 cursor-fancy "
+              className="border border-[#80ff9e] text-[#80ff9e] px-3 py-1 text-drop1 hover:shadow-sm hover:shadow-red-400 cursor-fancy "
               onClick={() => handleWhitelistMint()}
               disabled={processing}
             >
               {processing ? (
                 <div className="flex items-center justify-center">
                   <svg
-                    className="animate-spin -ml-1 mr-3 h-6 w-6 text-[#ff0000]"
+                    className="animate-spin -ml-1 mr-3 h-6 w-6 text-[#80ff9e]"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -258,7 +258,7 @@ const LostEchoesWL = () => {
           <a target="_blank" rel="noopener noreferrer">
             <div className=" relative flex xs:flex-col md:flex-row  font-bold text-[10px] text-[#00eeff]    px-2 py-1 bg-[#10101077]  gap-0 text-center leading-3 border text-shadowFirst border-[#00eeff] mt-4  ">
               <span className="mr-8">
-                SEE YOUR TX ON ETHERSCAN, YOU SHALL RECEIVE YOUR NFT PRETTY SOON
+                SEE YOUR TX ON ETHERSCAN, YOU SHALL RECEIVE YOUR NFT SOON
               </span>
               <span>
                 {txConfirmed && formatHash(txConfirmed?.transactionHash)}

@@ -52,6 +52,9 @@ body {
 .publicSans {
   font-family: "Public Sans", sans-serif;
 }
+.pixeledNews {
+  font-family: "VT323", monospace;
+}
 .firaSans {
   font-family: "Fira Sans Condensed", sans-serif;
 }

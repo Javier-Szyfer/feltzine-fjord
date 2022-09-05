@@ -230,7 +230,7 @@ const LostEchoesPM = () => {
           <a target="_blank" rel="noopener noreferrer">
             <div className="relative flex xs:flex-col md:flex-row  font-bold text-[10px] text-[#00eeff]    px-2 py-1 bg-[#10101077]  gap-0 text-center leading-3 border text-shadowFirst border-[#00eeff] mt-4  ">
               <span className="mr-8">
-                SEE YOUR TX ON ETHERSCAN, YOU SHALL RECEIVE YOUR NFT PRETTY SOON
+                SEE YOUR TX ON ETHERSCAN, YOU SHALL RECEIVE YOUR NFT SOON
               </span>
               <span>
                 {txConfirmed && formatHash(txConfirmed?.transactionHash)}

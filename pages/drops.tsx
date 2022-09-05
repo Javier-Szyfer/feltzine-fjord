@@ -179,7 +179,7 @@ const Drops = () => {
                 }}
                 onHoverStart={() => setTv1Hover(true)}
                 onHoverEnd={() => setTv1Hover(false)}
-                className="text-shadowFirstCollection relative w-full h-full "
+                className="text-shadowFirstCollection relative w-full h-full shadow-md shadow-[#80ff9e]/50 rounded-2xl"
               >
                 <div className="absolute border-[0.5px] border-[#0e0e0e84] inset-0 bg-cover rounded-2xl opacity-70 grayscale bg-[url('https://res.cloudinary.com/aldi/image/upload/v1662031129/feltzine/gifBg1_aeastj.gif')]  from-[#31333e31] to-[#76737325] w-full h-full hover:blur-sm" />
                 {/* WHITELISTED and WHITELIST ACTIVE */}
