@@ -61,10 +61,63 @@ const LostEchoes = () => {
   return (
     <div className=" overflow-hidden">
       <Head>
-        <title>FeltZine - Fjord</title>
-        <meta name="description" content="FeltZine - Lost Echoes" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+        <title>Lost Echoes by Felt Zine</title>
+        <link rel="icon" href="https://fjord.feltzine.art/assets/favicon.jpg" />
+
+        <meta
+          property="og:title"
+          content="Lost Echoes by Felt Zine"
+          key="ogtitle"
+        />
+        <meta
+          property="og:description"
+          content="Original art by Ina Vare with production by Felt Zine. Lost Echoes explores the implicit bias of anthropologists, speculative futures, and retrofuturism as researchers discover an artist’s memories in the year 3030 without context."
+          key="ogdesc"
+        />
+        <meta property="og:type" content="website" key="ogtype" />
+        <meta
+          property="og:url"
+          content="https://fjord.feltzine.art/lost-echoes"
+          key="ogurl"
+        />
+        <meta
+          property="og:image"
+          content="https://fjord.feltzine.art/assets/inapreview.jpg"
+          key="ogimage"
+        />
+        <meta
+          property="og:site_name"
+          content="https://fjord.feltzine.art/lost-echoes"
+          key="ogsitename"
+        />
+
+        <meta name="twitter:card" content="summary_large_image" key="twcard" />
+        <meta
+          property="twitter:domain"
+          content="fjord.feltzine.art"
+          key="twdomain"
+        />
+        <meta
+          property="twitter:url"
+          content="https://fjord.feltzine.art/lost-echoes"
+          key="twurl"
+        />
+        <meta
+          name="twitter:title"
+          content="Lost Echoes by Felt Zine"
+          key="twtitle"
+        />
+        <meta
+          name="twitter:description"
+          content="Original art by Ina Vare with production by Felt Zine. Lost Echoes explores the implicit bias of anthropologists, speculative futures, and retrofuturism as researchers discover an artist’s memories in the year 3030 without context."
+          key="twdesc"
+        />
+        <meta
+          name="twitter:image"
+          content="https://fjord.feltzine.art/assets/inapreview.jpg"
+          key="twimage"
+        />
+      </Head>{" "}
       <ToastContainer
         position="bottom-right"
         autoClose={4000}

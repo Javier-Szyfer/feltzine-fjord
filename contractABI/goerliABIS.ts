@@ -137,6 +137,13 @@ export const fjordDrop1GoerliAbi = [
   },
   {
     inputs: [],
+    name: "contractURI",
+    outputs: [{ internalType: "string", name: "", type: "string" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "customBaseURI",
     outputs: [{ internalType: "string", name: "", type: "string" }],
     stateMutability: "view",
@@ -318,15 +325,6 @@ export const fjordDrop1GoerliAbi = [
       { internalType: "bool", name: "isPublicMintActive_", type: "bool" },
     ],
     name: "setIsPublicMintActive",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "address", name: "payThroughSplits_", type: "address" },
-    ],
-    name: "setPayThroughSplits",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

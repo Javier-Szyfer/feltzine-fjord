@@ -19,7 +19,7 @@ const NftsInWallet = () => {
       </Head>
       <div className="noise"></div>
       <Header />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 px-8 mt-12">
         {tokens?.map((t: any) => {
           const token = t.token;
           return (
