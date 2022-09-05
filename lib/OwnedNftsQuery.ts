@@ -1,7 +1,7 @@
 import { fjordDrop1ContractAddress } from "../constants/contractAddresses";
 
 export const getNFTsInWallet = `{
-    tokens(where:{collectionAddresses: "0x5180db8F5c931aaE63c74266b211F580155ecac8", ownerAddresses: "0xe31069e61802d37795e7dd4a816e827e00704cc4"}, networks:{
+    tokens(where:{collectionAddresses: "0x32887799bA0d479fa9495c4f1dd28178b37068e5", ownerAddresses: "0x5e080D8b14c1DA5936509c2c9EF0168A19304202"}, networks:{
       network: ETHEREUM, chain:MAINNET
     }){
       nodes{
@@ -10,8 +10,6 @@ export const getNFTsInWallet = `{
           owner
           image {
             url
-            mimeType
-            size
           }
         }
       }

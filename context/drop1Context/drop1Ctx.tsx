@@ -7,12 +7,16 @@ import { useContractRead } from "wagmi";
 
 import { ethers } from "ethers";
 import { format, fromUnixTime } from "date-fns";
+import request, { RequestDocument } from "graphql-request";
+import useSWR from "swr";
+import { getNFTsInWallet } from "../../lib/OwnedNftsQuery";
 
 interface Drop1ContextProps {
   totalMintedDrop1?: number;
   endWLDateInSecs: number;
   formattedWLEndDate: string;
   isPublicMintActive?: boolean;
+  nftsInWallet?: any;
   readTMinted: () => void;
 }
 
@@ -22,6 +26,13 @@ interface props {
 const Drop1Context = createContext<Drop1ContextProps>({} as Drop1ContextProps);
 
 export function Drop1Wrapper({ children }: props) {
+  const fetcher = (query: RequestDocument) =>
+    request("https://api.zora.co/graphql", query);
+
+  const { data: nftsInWallet } = useSWR(getNFTsInWallet, fetcher, {
+    refreshInterval: 64000,
+  });
+
   const { data: whitelistEndDate } = useContractRead({
     addressOrName: fjordDrop1ContractAddress,
     contractInterface: fjordDrop1GoerliAbi,
@@ -58,6 +69,7 @@ export function Drop1Wrapper({ children }: props) {
         totalMintedDrop1,
         endWLDateInSecs,
         formattedWLEndDate,
+        nftsInWallet,
         isPublicMintActive: isPublicMintActive ? true : false,
       }}
     >

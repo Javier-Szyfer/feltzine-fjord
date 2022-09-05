@@ -35,7 +35,8 @@ const Drops = () => {
   const { openChainModal } = useChainModal();
 
   //DROP1
-  const { endWLDateInSecs, isPublicMintActive } = useDrop1Context();
+  const { endWLDateInSecs, isPublicMintActive, nftsInWallet } =
+    useDrop1Context();
   const [tv1Hover, setTv1Hover] = useState(false);
   //DROP2
   const { endWL2DateInSecs, formattedWL2EndDate } = useDrop2Context();
