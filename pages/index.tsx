@@ -31,7 +31,7 @@ const Home: NextPage = () => {
         />
         <meta
           property="og:image"
-          content="https://fjord.feltzine.art/assets/preview.jpg"
+          content="https://res.cloudinary.com/aldi/image/upload/v1662413609/feltzine/preview_e5djw6.jpg"
           key="ogimage"
         />
         <meta

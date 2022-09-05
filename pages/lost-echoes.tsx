@@ -123,7 +123,7 @@ const LostEchoes = () => {
         />
         <meta
           name="twitter:image"
-          content="https://fjord.feltzine.art/assets/inapreview.jpg"
+          content="https://res.cloudinary.com/aldi/image/upload/v1662413533/feltzine/inapreview_nlsl9z.jpg"
           key="twimage"
         />
       </Head>
