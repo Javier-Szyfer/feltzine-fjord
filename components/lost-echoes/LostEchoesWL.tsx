@@ -172,36 +172,36 @@ const LostEchoesWL = () => {
           </div>
           <div className="text-drop1  flex justify-end items-center mt-6 ">
             <h3 className="mr-10 text-[#f1f1f1]">Artifacts quantity</h3>
-            <div className="border border-[#80ff9e] text-center text-[#80ff9e] flex">
-              <button
-                className={` ${
-                  whiteListMintAmount === 1 ? "bg-[#80ff9e47]" : "bg-none"
-                } text-drop1 md:w-auto px-4 md:h-10 border-r py-2 border-[#80ff9e] rounded-l cursor-fancy `}
-                onClick={() => {
-                  setWhiteListMintAmount(1),
-                    isSoundOn && mint1(),
-                    setShowTXHash(false);
-                }}
-              >
-                {nftsOwned && Number(nftsOwned) === 2 ? (
-                  <span className="text-sm ">Mint completed</span>
-                ) : (
-                  "1"
-                )}
-              </button>
-              <button
-                className={` ${
-                  whiteListMintAmount === 2 ? "bg-[#80ff9e47]" : "bg-none"
-                } text-drop1 md:w-auto px-4 md:h-10 border-r border-[#80ff9e] rounded-l cursor-fancy `}
-                onClick={() => {
-                  isSoundOn && mint2(),
-                    setWhiteListMintAmount(2),
-                    setShowTXHash(false);
-                }}
-              >
-                2
-              </button>
-            </div>
+            {nftsOwned && Number(nftsOwned) === 2 ? (
+              <span className="text-sm ">Mint completed</span>
+            ) : (
+              <div className="border border-[#80ff9e] text-center text-[#80ff9e] flex">
+                <button
+                  className={` ${
+                    whiteListMintAmount === 1 ? "bg-[#80ff9e47]" : "bg-none"
+                  } text-drop1 md:w-auto px-4 md:h-10 border-r py-2 border-[#80ff9e] rounded-l cursor-fancy `}
+                  onClick={() => {
+                    setWhiteListMintAmount(1),
+                      isSoundOn && mint1(),
+                      setShowTXHash(false);
+                  }}
+                >
+                  1
+                </button>
+                <button
+                  className={` ${
+                    whiteListMintAmount === 2 ? "bg-[#80ff9e47]" : "bg-none"
+                  } text-drop1 md:w-auto px-4 md:h-10 border-r border-[#80ff9e] rounded-l cursor-fancy `}
+                  onClick={() => {
+                    isSoundOn && mint2(),
+                      setWhiteListMintAmount(2),
+                      setShowTXHash(false);
+                  }}
+                >
+                  2
+                </button>
+              </div>
+            )}
           </div>
           <div className=" flex w-full  justify-between items-center mt-6">
             <Link href={"/drops"}>

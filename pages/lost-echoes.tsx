@@ -33,8 +33,7 @@ const LostEchoes = () => {
     tv1SoundtrackPause,
     tv1SoundtrackPlay,
   } = useSoundContext();
-  const { endWLDateInSecs, isPublicMintActive, nftsInWallet } =
-    useDrop1Context();
+  const { endWLDateInSecs, stage, nftsInWallet } = useDrop1Context();
   const tokens = nftsInWallet?.tokens.nodes;
   console.log("nftsInWallet", tokens);
 
@@ -91,7 +90,7 @@ const LostEchoes = () => {
         />
         <meta
           property="og:image"
-          content="https://res.cloudinary.com/aldi/image/upload/v1662413533/feltzine/inapreview_nlsl9z.jpg"
+          content="https://res.cloudinary.com/aldi/image/upload/v1662486659/feltzine/b4Vq8Lw8_gnabpc.jpg"
           key="ogimage"
         />
         <meta
@@ -123,7 +122,7 @@ const LostEchoes = () => {
         />
         <meta
           name="twitter:image"
-          content="https://res.cloudinary.com/aldi/image/upload/v1662413533/feltzine/inapreview_nlsl9z.jpg"
+          content="https://res.cloudinary.com/aldi/image/upload/v1662486659/feltzine/b4Vq8Lw8_gnabpc.jpg"
           key="twimage"
         />
       </Head>
@@ -173,9 +172,9 @@ const LostEchoes = () => {
             !loading &&
             chain?.id === chainID &&
             date.getTime() < endWLDateInSecs &&
-            !isPublicMintActive && (
+            stage === 2 && (
               <div className=" text-drop1  relative  lg:min-h-none   border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
-                <LEFjord isPublicMintActive={isPublicMintActive} />
+                <LEFjord stage={stage} />
               </div>
             )}
           {/* MINT FJORD: WHITELIST INACTIVE && PUBLICMINT INACTIVE */}
@@ -183,9 +182,9 @@ const LostEchoes = () => {
             !loading &&
             chain?.id === chainID &&
             date.getTime() > endWLDateInSecs &&
-            !isPublicMintActive && (
+            stage === 2 && (
               <div className=" text-drop1  relative  lg:min-h-none   border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
-                <LEFjord isPublicMintActive={isPublicMintActive} />
+                <LEFjord stage={stage} />
               </div>
             )}
 
@@ -203,7 +202,7 @@ const LostEchoes = () => {
           {address &&
             date.getTime() > endWLDateInSecs &&
             !loading &&
-            isPublicMintActive &&
+            stage === 4 &&
             chain?.id === chainID && (
               <div className=" text-drop1 relative lg:min-h-none  border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
                 <LostEchoesPM />

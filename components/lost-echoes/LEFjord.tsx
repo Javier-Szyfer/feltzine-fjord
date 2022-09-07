@@ -3,12 +3,11 @@ import useDrop1Context from "../../context/drop1Context/drop1Ctx";
 import useSoundContext from "../../context/soundContext/soundCtx";
 import Timer from "../common/Timer";
 import useSound from "use-sound";
-
 interface Props {
-  isPublicMintActive?: boolean;
+  stage: number;
 }
 
-const LEFjord = ({ isPublicMintActive }: Props) => {
+const LEFjord = ({ stage }: Props) => {
   //CONTEXT
   const { totalMintedDrop1, endWLDateInSecs } = useDrop1Context();
   const { isSoundOn, tv1SoundtrackStop } = useSoundContext();
@@ -71,7 +70,7 @@ const LEFjord = ({ isPublicMintActive }: Props) => {
               rel="noopener noreferrer"
             >
               <button className="text-[#80ff9e] border  border-[#80ff9e] px-3 py-1 text-drop1 hover:shadow-sm hover:shadow-red-400 cursor-fancy ">
-                {isPublicMintActive ? "MINT TRHOUGH FJORD" : "VISIT FJORD DROP"}
+                {stage === 3 ? "VISIT FJORD DROP" : "MINT TRHOUGH FJORD"}
               </button>
             </a>
           </div>

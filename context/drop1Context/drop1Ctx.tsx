@@ -15,7 +15,7 @@ interface Drop1ContextProps {
   totalMintedDrop1?: number;
   endWLDateInSecs: number;
   formattedWLEndDate: string;
-  isPublicMintActive?: boolean;
+  stage?: any;
   nftsInWallet?: any;
   readTMinted: () => void;
 }
@@ -45,11 +45,12 @@ export function Drop1Wrapper({ children }: props) {
     watch: true,
     cacheTime: 5,
   });
-  const { data: isPublicMintActive } = useContractRead({
+  const { data: stage } = useContractRead({
     addressOrName: fjordDrop1ContractAddress,
     contractInterface: fjordDrop1GoerliAbi,
-    functionName: "isPublicMintActive",
+    functionName: "stage",
     watch: true,
+    cacheTime: 5,
   });
   //HADNLE TIME
   const whitelistEndDateToNumber = whitelistEndDate
@@ -70,7 +71,7 @@ export function Drop1Wrapper({ children }: props) {
         endWLDateInSecs,
         formattedWLEndDate,
         nftsInWallet,
-        isPublicMintActive: isPublicMintActive ? true : false,
+        stage,
       }}
     >
       {children}

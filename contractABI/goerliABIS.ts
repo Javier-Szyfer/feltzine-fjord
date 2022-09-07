@@ -12,6 +12,7 @@ export const fjordDrop1GoerliAbi = [
     stateMutability: "nonpayable",
     type: "constructor",
   },
+  { inputs: [], name: "FJORD_FjordIsNotActive", type: "error" },
   { inputs: [], name: "FJORD_InexactPayment", type: "error" },
   { inputs: [], name: "FJORD_MaxMintExceeded", type: "error" },
   { inputs: [], name: "FJORD_PublicMintisNotActive", type: "error" },
@@ -175,13 +176,6 @@ export const fjordDrop1GoerliAbi = [
   },
   {
     inputs: [],
-    name: "isPublicMintActive",
-    outputs: [{ internalType: "bool", name: "", type: "bool" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "mint",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "nonpayable",
@@ -292,19 +286,6 @@ export const fjordDrop1GoerliAbi = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "goerliCopperAddress_",
-        type: "address",
-      },
-    ],
-    name: "setCopperAddress",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     inputs: [{ internalType: "uint256", name: "time_", type: "uint256" }],
     name: "setEndDateWhitelist",
     outputs: [],
@@ -322,9 +303,9 @@ export const fjordDrop1GoerliAbi = [
   },
   {
     inputs: [
-      { internalType: "bool", name: "isPublicMintActive_", type: "bool" },
+      { internalType: "enum FjordDrop.MintPhase", name: "val_", type: "uint8" },
     ],
-    name: "setIsPublicMintActive",
+    name: "setMintStage",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -334,6 +315,15 @@ export const fjordDrop1GoerliAbi = [
     name: "setPublicMintPrice",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "stage",
+    outputs: [
+      { internalType: "enum FjordDrop.MintPhase", name: "", type: "uint8" },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
