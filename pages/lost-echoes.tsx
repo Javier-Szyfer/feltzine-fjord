@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Head from "next/head";
+import { NextSeo } from "next-seo";
 import { useEffect, useState } from "react";
 //CONTEXT
 import useSoundContext from "../context/soundContext/soundCtx";
@@ -64,68 +65,32 @@ const LostEchoes = () => {
 
   return (
     <div className=" overflow-hidden">
-      <Head>
-        <title>Lost Echoes by Felt Zine</title>
-        <link rel="icon" href="https://fjord.feltzine.art/assets/favicon.jpg" />
-
-        <meta
-          property="og:title"
-          content="Lost Echoes by Felt Zine"
-          key="ogtitle"
-        />
-        <meta
-          property="og:description"
-          content="Original art by Ina Vare with production by Felt Zine. Lost Echoes explores the implicit bias of anthropologists, speculative futures, and retrofuturism as researchers discover an artist’s memories in the year 3030 without context."
-          key="ogdesc"
-        />
-        <meta property="og:type" content="website" key="ogtype" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta name="twitter:image:alt" content="Felt Zine x Fjord open graph" />
-
-        <meta
-          property="og:url"
-          content="https://fjord.feltzine.art/lost-echoes"
-          key="ogurl"
-        />
-        <meta
-          property="og:image"
-          content="https://res.cloudinary.com/aldi/image/upload/v1662486659/feltzine/b4Vq8Lw8_gnabpc.jpg"
-          key="ogimage"
-        />
-        <meta
-          property="og:site_name"
-          content="https://fjord.feltzine.art/lost-echoes"
-          key="ogsitename"
-        />
-
-        <meta name="twitter:card" content="summary_large_image" key="twcard" />
-        <meta
-          property="twitter:domain"
-          content="fjord.feltzine.art"
-          key="twdomain"
-        />
-        <meta
-          property="twitter:url"
-          content="https://fjord.feltzine.art/lost-echoes"
-          key="twurl"
-        />
-        <meta
-          name="twitter:title"
-          content="Lost Echoes by Felt Zine"
-          key="twtitle"
-        />
-        <meta
-          name="twitter:description"
-          content="Original art by Ina Vare with production by Felt Zine. Lost Echoes explores the implicit bias of anthropologists, speculative futures, and retrofuturism as researchers discover an artist’s memories in the year 3030 without context."
-          key="twdesc"
-        />
-        <meta
-          name="twitter:image"
-          content="https://res.cloudinary.com/aldi/image/upload/v1662486659/feltzine/b4Vq8Lw8_gnabpc.jpg"
-          key="twimage"
-        />
-      </Head>
+      <NextSeo
+        title="Lost Echoes by Felt Zine"
+        description="Original art by Ina Vare with production by Felt Zine. Lost Echoes explores the implicit bias of anthropologists, speculative futures, and retrofuturism as researchers discover an artist's memories in the year 3030 without context."
+        canonical="https://fjord.feltzine.art/lost-echoes"
+        openGraph={{
+          url: "https://fjord.feltzine.art/lost-echoes",
+          title: "Lost Echoes by Felt Zine",
+          description:
+            "Original art by Ina Vare with production by Felt Zine. Lost Echoes explores the implicit bias of anthropologists, speculative futures, and retrofuturism as researchers discover an artist’s memories in the year 3030 without context.",
+          images: [
+            {
+              url: "https://res.cloudinary.com/aldi/image/upload/v1662486659/feltzine/b4Vq8Lw8_gnabpc.jpg",
+              width: 1200,
+              height: 630,
+              alt: "Lost Echoes open graph",
+              type: "image/jpeg",
+            },
+          ],
+          site_name: "Lost Echoes by Felt Zine",
+        }}
+        twitter={{
+          handle: "@FeltZine",
+          site: "@FeltZine",
+          cardType: "summary_large_image",
+        }}
+      />
       <ToastContainer
         position="bottom-right"
         autoClose={4000}
