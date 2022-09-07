@@ -35,8 +35,7 @@ const Drops = () => {
   const { openChainModal } = useChainModal();
 
   //DROP1
-  const { endWLDateInSecs, isPublicMintActive, nftsInWallet } =
-    useDrop1Context();
+  const { endWLDateInSecs, stage, nftsInWallet } = useDrop1Context();
   const [tv1Hover, setTv1Hover] = useState(false);
   //DROP2
   const { endWL2DateInSecs, formattedWL2EndDate } = useDrop2Context();
@@ -220,7 +219,7 @@ const Drops = () => {
                     </a>
                   )}
                 {/* FJORD MINT == WHITELIST ENDED && PUBLIC MINT INACTIVE*/}
-                {!isPublicMintActive &&
+                {stage === 3 &&
                   endWLDateInSecs < date.getTime() &&
                   chain?.id === chainID &&
                   address && <Tv1FjordMint tv1Hover={tv1Hover} stop1={stop1} />}
@@ -228,7 +227,7 @@ const Drops = () => {
                 {/* PUBLIC MINT ACTIVE*/}
                 {address &&
                   endWLDateInSecs < date.getTime() &&
-                  isPublicMintActive &&
+                  stage === 4 &&
                   chain?.id === chainID && (
                     <TV1PublicMint
                       handleEnterTv={handleEnterTv}

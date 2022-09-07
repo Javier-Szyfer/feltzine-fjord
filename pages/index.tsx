@@ -31,7 +31,7 @@ const Home: NextPage = () => {
         />
         <meta
           property="og:image"
-          content="https://res.cloudinary.com/aldi/image/upload/v1662413609/feltzine/preview_e5djw6.jpg"
+          content="https://res.cloudinary.com/aldi/image/upload/v1662551284/feltzine/preview_nsva8h.jpg"
           key="ogimage"
         />
         <meta
@@ -63,7 +63,7 @@ const Home: NextPage = () => {
         />
         <meta
           name="twitter:image"
-          content="https://res.cloudinary.com/aldi/image/upload/v1662413609/feltzine/preview_e5djw6.jpg"
+          content="https://res.cloudinary.com/aldi/image/upload/v1662551284/feltzine/preview_nsva8h.jpg"
           key="twimage"
         />
       </Head>

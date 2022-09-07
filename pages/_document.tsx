@@ -27,7 +27,7 @@ export default function Document() {
         />
         <meta
           property="og:image"
-          content="https://res.cloudinary.com/aldi/image/upload/v1662413609/feltzine/preview_e5djw6.jpg"
+          content="https://res.cloudinary.com/aldi/image/upload/v1662551284/feltzine/preview_nsva8h.jpg"
           key="ogimage"
         />
         <meta
@@ -59,7 +59,7 @@ export default function Document() {
         />
         <meta
           name="twitter:image"
-          content="https://fjord.feltzine.art/assets/preview.jpg"
+          content="https://res.cloudinary.com/aldi/image/upload/v1662551284/feltzine/preview_nsva8h.jpg"
           key="twimage"
         />
 

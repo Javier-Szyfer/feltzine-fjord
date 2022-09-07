@@ -22,7 +22,7 @@ import { chainID } from "../../constants/chainId";
 
 const LostEchoesPM = () => {
   //CONTEXT
-  const { isPublicMintActive, readTMinted } = useDrop1Context();
+  const { stage, readTMinted } = useDrop1Context();
 
   //STATE
   const [publicMintAmount, setPublicMintAmount] = useState(1);
@@ -91,7 +91,7 @@ const LostEchoesPM = () => {
       toast.error("Please enter a valid amount");
       setProcessing(false);
       return;
-    } else if (!isPublicMintActive) {
+    } else if (stage !== 4) {
       toast.error("Public mint is not active yet");
       setProcessing(false);
     } else if (chain?.id !== chainID) {
@@ -132,7 +132,7 @@ const LostEchoesPM = () => {
             <div className="flex gap-4 flex-col-reverse md:flex-row justify-between md:items-center">
               <h2>LOST ECHOES</h2>
               {/* STATUS */}
-              {isPublicMintActive ? (
+              {stage === 4 ? (
                 <span className="flex  items-center text-[#00ff00] text-[10px] sm:text-sm">
                   <span className=" animate-pulse w-2 h-2 bg-[#00ff00] mr-2 rounded-full" />{" "}
                   Active

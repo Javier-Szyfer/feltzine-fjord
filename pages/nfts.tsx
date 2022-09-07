@@ -2,6 +2,7 @@ import Head from "next/head";
 import useDrop1Context from "../context/drop1Context/drop1Ctx";
 import Header from "../components/common/Header";
 import Link from "next/link";
+import Image from "next/image";
 
 const NftsInWallet = () => {
   //DROP 1
@@ -21,12 +22,19 @@ const NftsInWallet = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 px-8 mt-12">
           {tokens?.map((t: any) => {
             const token = t.token;
+            const animationURL = token.metadata.animation_url.split("/").pop();
+            const formatedAnimationURL = `https://ipfs.io/ipfs/${animationURL}`;
             return (
               <div
                 key={token.tokenId}
-                className="flex flex-col justify-start items-center  border border-[#f8f8f8] p-2 text-white w-full object-cover"
+                className="relative flex flex-col justify-start items-center  border border-[#f8f8f8] p-2 text-white w-full object-cover"
               >
-                <img src={token.image.url} alt="owner's nfts" />
+                <video
+                  src={formatedAnimationURL}
+                  autoPlay
+                  loop
+                  className=" w-full h-64 object-cover"
+                />
                 <div className=" mt-8 text-sm">Token id: {token.tokenId}</div>
               </div>
             );
