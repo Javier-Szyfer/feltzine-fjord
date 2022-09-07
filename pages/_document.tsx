@@ -6,7 +6,7 @@ export default function Document() {
       <Head>
         <meta charSet="utf-8" />
         <link rel="icon" href="https://fjord.feltzine.art/assets/favicon.jpg" />
-        <meta
+        {/* <meta
           property="og:title"
           content="FELT Zine x FJORD NFT"
           key="ogtitle"
@@ -61,7 +61,7 @@ export default function Document() {
           name="twitter:image"
           content="https://res.cloudinary.com/aldi/image/upload/v1662551284/feltzine/preview_nsva8h.jpg"
           key="twimage"
-        />
+        /> */}
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
