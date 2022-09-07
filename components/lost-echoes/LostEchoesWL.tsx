@@ -173,7 +173,7 @@ const LostEchoesWL = () => {
           <div className="text-drop1  flex justify-end items-center mt-6 ">
             <h3 className="mr-10 text-[#f1f1f1]">Artifacts quantity</h3>
             {nftsOwned && Number(nftsOwned) === 2 ? (
-              <span className="text-sm ">Mint completed</span>
+              <span className="text-sm "></span>
             ) : (
               <div className="border border-[#80ff9e] text-center text-[#80ff9e] flex">
                 <button
@@ -219,7 +219,7 @@ const LostEchoesWL = () => {
               onClick={() => handleWhitelistMint()}
               disabled={processing}
             >
-              {processing ? (
+              {processing && (
                 <div className="flex items-center justify-center">
                   <svg
                     className="animate-spin -ml-1 mr-3 h-6 w-6 text-[#80ff9e]"
@@ -243,16 +243,18 @@ const LostEchoesWL = () => {
                   </svg>
                   <span>PROCESSING...</span>
                 </div>
-              ) : (
-                `DISCOVER Ξ${totalWhitelistPrice}`
               )}
+
+              {nftsOwned && Number(nftsOwned) !== 2
+                ? `DISCOVER Ξ${totalWhitelistPrice}`
+                : "MINT COMPLETED"}
             </button>
           </div>
         </div>
       </div>
       {showTxHash && (
         <Link
-          href={`https://goerli.etherscan.io/tx/${txConfirmed?.transactionHash}`}
+          href={`https://etherscan.io/tx/${txConfirmed?.transactionHash}`}
           passHref
         >
           <a target="_blank" rel="noopener noreferrer">

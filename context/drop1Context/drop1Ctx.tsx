@@ -3,7 +3,7 @@ import { createContext, useContext } from "react";
 import { fjordDrop1ContractAddress } from "../../constants/contractAddresses";
 import { fjordDrop1MainnetAbi } from "../../contractABI/mainnetABIS";
 //WAGMI
-import { useContractRead } from "wagmi";
+import { useContractRead, useAccount } from "wagmi";
 
 import { ethers } from "ethers";
 import { format, fromUnixTime } from "date-fns";
@@ -26,11 +26,30 @@ interface props {
 const Drop1Context = createContext<Drop1ContextProps>({} as Drop1ContextProps);
 
 export function Drop1Wrapper({ children }: props) {
+  const { address } = useAccount();
+  const query = `{
+    tokens(
+      where: { collectionAddresses: { _eq: "${fjordDrop1ContractAddress}"}, ownerAddresses: { _eq: "${address}" } }
+      order_by: { tokenId: asc }
+      networks: { network: ETHEREUM, chain: MAINNET }
+    )
+    {
+      token {
+        tokenId
+        metadata
+        owner
+        image {
+          url
+        }
+      }
+    }
+  }`;
+
   const fetcher = (query: RequestDocument) =>
     request("https://api.zora.co/graphql", query);
 
-  const { data: nftsInWallet } = useSWR(getNFTsInWallet, fetcher, {
-    refreshInterval: 64000,
+  const { data: nftsInWallet } = useSWR(query, fetcher, {
+    refreshInterval: 10,
   });
 
   const { data: whitelistEndDate } = useContractRead({

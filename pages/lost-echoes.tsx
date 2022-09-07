@@ -137,7 +137,7 @@ const LostEchoes = () => {
             !loading &&
             chain?.id === chainID &&
             date.getTime() < endWLDateInSecs &&
-            stage === 3 && (
+            stage === 2 && (
               <div className=" text-drop1  relative  lg:min-h-none   border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
                 <LEFjord stage={stage} />
               </div>
