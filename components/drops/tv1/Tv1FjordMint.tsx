@@ -6,7 +6,9 @@ interface FjordMintProps {
 const Tv1FjordMint = ({ stop1, tv1Hover }: FjordMintProps) => {
   return (
     <a
-      href={"https://copperlaunch.com/"}
+      href={
+        "https://fjordnfts.com/drops/mainnet/0xC1656a25591d440b88275E5D36Ad921F2048A9Cb"
+      }
       rel="noopener noreferrer"
       target="_blank"
     >
