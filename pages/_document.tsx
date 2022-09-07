@@ -6,7 +6,10 @@ export default function Document() {
       <Head>
         <meta charSet="utf-8" />
         <link rel="icon" href="https://fjord.feltzine.art/assets/favicon.jpg" />
-        {/* <meta
+        <meta content="#000000" name="theme-color" />
+        <meta content="#000000" name="msapplication-TileColor" />
+        {/* 
+        <meta
           property="og:title"
           content="FELT Zine x FJORD NFT"
           key="ogtitle"
@@ -63,7 +66,7 @@ export default function Document() {
           key="twimage"
         /> */}
 
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preload" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
           href="https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed&family=Public+Sans:ital,wght@1,200&family=VT323&display=swap"
