@@ -65,7 +65,7 @@ const LEFjord = ({ stage }: Props) => {
               </button>
             </Link>
             <a
-              href="https://copperlaunch.com/"
+              href="https://fjordnfts.com/drops/mainnet/0xC1656a25591d440b88275E5D36Ad921F2048A9Cb"
               target="_blank"
               rel="noopener noreferrer"
             >
