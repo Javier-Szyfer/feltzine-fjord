@@ -29,9 +29,9 @@ const LEFjord = ({ stage }: Props) => {
       />
 
       <div className=" lg:absolute inset-0  flex flex-col justify-between shadow-xl shadow-stone-200/10 rounded-2xl bg-[url('../public/images/tv-bg.png')] lg:p-8 ">
-        <div className="bg-[url(https://res.cloudinary.com/aldi/image/upload/v1662486659/feltzine/b4Vq8Lw8_gnabpc.jpg)] bg-cover bg-opacity-10  lg:bg-none p-4 sm:p-8 lg:p-0 h-full flex flex-col justify-between">
+        <div className="bg-[url('https://res.cloudinary.com/aldi/image/upload/v1662031129/feltzine/gifBg1_aeastj.gif')] bg-cover bg-opacity-10  lg:bg-none p-4 sm:p-8 lg:p-0 h-full flex flex-col justify-between">
           <div>
-            <div className="flex flex-col md:flex-row justify-between md:items-center text-white">
+            <div className="flex flex-col md:flex-row justify-between md:items-center ">
               <h2>LOST ECHOES</h2>
               {endWLDateInSecs > date.getTime() ? (
                 <Timer deadline={endWLDateInSecs} />
@@ -39,14 +39,14 @@ const LEFjord = ({ stage }: Props) => {
                 <a href="https://fjordnfts.com/create/">whitelist ended</a>
               )}
             </div>
-            <span className="text-white">
+            <span className="">
               Artifacts found:
               {totalMintedDrop1 ? `${totalMintedDrop1}/525` : "N/A"}
             </span>
-            <h3 className="mt-8 text-white">
+            <h3 className="mt-8 ">
               Researchers discover Ina&apos;s memories in the year 3030.
             </h3>
-            <p className="mt-8 text-white">
+            <p className="mt-8 ">
               They are not aware of today&apos;s cultural context and must
               categorize their findings based on what they imagine life was like
               for Ina, a child who lived 1000 years before them with no other
