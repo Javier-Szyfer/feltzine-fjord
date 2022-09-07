@@ -7,7 +7,7 @@ import { useContractRead, useAccount } from "wagmi";
 
 import { ethers } from "ethers";
 import { format, fromUnixTime } from "date-fns";
-import request, { RequestDocument } from "graphql-request";
+import request, { gql, RequestDocument } from "graphql-request";
 import useSWR from "swr";
 import { getNFTsInWallet } from "../../lib/OwnedNftsQuery";
 
@@ -27,31 +27,14 @@ const Drop1Context = createContext<Drop1ContextProps>({} as Drop1ContextProps);
 
 export function Drop1Wrapper({ children }: props) {
   const { address } = useAccount();
-  const query = `{
-    tokens(
-      where: { collectionAddresses: { _eq: "${fjordDrop1ContractAddress}"}, ownerAddresses: { _eq: "${address}" } }
-      order_by: { tokenId: asc }
-      networks: { network: ETHEREUM, chain: MAINNET }
-    )
-    {
-      token {
-        tokenId
-        metadata
-        owner
-        image {
-          url
-        }
-      }
-    }
-  }`;
 
-  const fetcher = (query: RequestDocument) =>
-    request("https://api.zora.co/graphql", query);
+  // const fetcher = (query: RequestDocument) =>
+  //   request("https://api.zora.co/graphql", query);
 
-  const { data: nftsInWallet } = useSWR(query, fetcher, {
-    refreshInterval: 10,
-  });
-
+  // const { data: nftsInWallet } = useSWR(query, fetcher, {
+  //   refreshInterval: 1000,
+  // });
+  // console.log(nftsInWallet);
   const { data: whitelistEndDate } = useContractRead({
     addressOrName: fjordDrop1ContractAddress,
     contractInterface: fjordDrop1MainnetAbi,
@@ -89,7 +72,7 @@ export function Drop1Wrapper({ children }: props) {
         totalMintedDrop1,
         endWLDateInSecs,
         formattedWLEndDate,
-        nftsInWallet,
+        // nftsInWallet,
         stage,
       }}
     >

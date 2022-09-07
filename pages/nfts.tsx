@@ -5,8 +5,8 @@ import Link from "next/link";
 
 const NftsInWallet = () => {
   //DROP 1
-  const { nftsInWallet } = useDrop1Context();
-  const tokens = nftsInWallet?.tokens.nodes;
+  // const { nftsInWallet } = useDrop1Context();
+  // const tokens = nftsInWallet?.tokens.nodes;
 
   return (
     <div className=" max-w-6xl mx-auto ">
@@ -17,11 +17,13 @@ const NftsInWallet = () => {
       </Head>
       <div className="noise"></div>
       <Header />
-      {tokens?.length > 0 && (
+      {/* {tokens?.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 px-8 mt-12">
           {tokens?.map((t: any) => {
             const token = t.token;
-            const animationURL = token.metadata.animation_url.split("/").pop();
+            const ipfsURL = `https://ipfs.io/ipfs/Qmag7Hgh3C2igYajdYFtLgE132yjEgwjAda4x4HBXj8tNv/1`;
+            console.log(ipfsURL);
+            const animationURL = token.metadata?.animation_url.split("/").pop();
             const formatedAnimationURL = `https://ipfs.io/ipfs/${animationURL}`;
             return (
               <div
@@ -51,7 +53,7 @@ const NftsInWallet = () => {
             </button>
           </Link>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
