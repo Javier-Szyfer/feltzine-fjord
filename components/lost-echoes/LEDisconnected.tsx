@@ -1,12 +1,9 @@
 import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
-import { motion } from "framer-motion";
-import useSoundContext from "../../context/soundContext/soundCtx";
 import { chainID } from "../../constants/chainId";
 
 const LEDisconnected = ({ chainId, address }: any) => {
   const { openConnectModal } = useConnectModal();
   const { openChainModal } = useChainModal();
-  const { tv1SoundtrackPlay, tv1Soundtrack } = useSoundContext();
   return (
     <>
       <video
@@ -41,7 +38,7 @@ const LEDisconnected = ({ chainId, address }: any) => {
               }}
               className=" border border-[#ff0000] my-auto  flex justify-center items-center px-3 py-1 hover:shadow-sm hover:shadow-red-400 cursor-fancy mx-auto "
             >
-              Switch to GOERLI
+              Switch to MAINNET
             </button>
           )}
         </div>

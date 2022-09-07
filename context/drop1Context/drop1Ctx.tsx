@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 //FJORD DROP1
 import { fjordDrop1ContractAddress } from "../../constants/contractAddresses";
-import { fjordDrop1GoerliAbi } from "../../contractABI/goerliABIS";
+import { fjordDrop1MainnetAbi } from "../../contractABI/mainnetABIS";
 //WAGMI
 import { useContractRead } from "wagmi";
 
@@ -35,19 +35,19 @@ export function Drop1Wrapper({ children }: props) {
 
   const { data: whitelistEndDate } = useContractRead({
     addressOrName: fjordDrop1ContractAddress,
-    contractInterface: fjordDrop1GoerliAbi,
+    contractInterface: fjordDrop1MainnetAbi,
     functionName: "whitelistEndDate",
   });
   const { data: totalMintedDrop, refetch: readTMinted } = useContractRead({
     addressOrName: fjordDrop1ContractAddress,
-    contractInterface: fjordDrop1GoerliAbi,
+    contractInterface: fjordDrop1MainnetAbi,
     functionName: "totalSupply",
     watch: true,
     cacheTime: 5,
   });
   const { data: stage } = useContractRead({
     addressOrName: fjordDrop1ContractAddress,
-    contractInterface: fjordDrop1GoerliAbi,
+    contractInterface: fjordDrop1MainnetAbi,
     functionName: "stage",
     watch: true,
     cacheTime: 5,

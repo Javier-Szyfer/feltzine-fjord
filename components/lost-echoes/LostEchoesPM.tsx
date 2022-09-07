@@ -5,7 +5,7 @@ import useDrop1Context from "../../context/drop1Context/drop1Ctx";
 import useSoundContext from "../../context/soundContext/soundCtx";
 //DATA
 import { fjordDrop1ContractAddress } from "../../constants/contractAddresses";
-import { fjordDrop1GoerliAbi } from "../../contractABI/goerliABIS";
+import { fjordDrop1MainnetAbi } from "../../contractABI/mainnetABIS";
 //WAGMI
 import {
   useAccount,
@@ -43,7 +43,7 @@ const LostEchoesPM = () => {
   // WHITELIST MINT
   const { config } = usePrepareContractWrite({
     addressOrName: fjordDrop1ContractAddress,
-    contractInterface: fjordDrop1GoerliAbi,
+    contractInterface: fjordDrop1MainnetAbi,
     functionName: "publicMint",
     args: [
       publicMintAmount,
@@ -132,7 +132,7 @@ const LostEchoesPM = () => {
             <div className="flex gap-4 flex-col-reverse md:flex-row justify-between md:items-center">
               <h2>LOST ECHOES</h2>
               {/* STATUS */}
-              {stage === 4 ? (
+              {stage == 4 ? (
                 <span className="flex  items-center text-[#00ff00] text-[10px] sm:text-sm">
                   <span className=" animate-pulse w-2 h-2 bg-[#00ff00] mr-2 rounded-full" />{" "}
                   Active
