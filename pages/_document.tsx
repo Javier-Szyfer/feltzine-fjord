@@ -3,7 +3,7 @@ import { Html, Head, Main, NextScript } from "next/document";
 export default function Document() {
   return (
     <Html lang="en">
-      <Head>
+      {/* <Head>
         <meta charSet="utf-8" />
         <link rel="icon" href="https://fjord.feltzine.art/assets/favicon.jpg" />
         <meta
@@ -69,7 +69,7 @@ export default function Document() {
           href="https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed&family=Public+Sans:ital,wght@1,200&family=VT323&display=swap"
           rel="stylesheet"
         />
-      </Head>
+      </Head> */}
       <body>
         <Main />
         <NextScript />
