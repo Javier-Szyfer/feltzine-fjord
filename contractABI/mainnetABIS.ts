@@ -1,4 +1,4 @@
-export const fjordDrop1GoerliAbi = [
+export const fjordDrop1MainnetAbi = [
   {
     inputs: [
       { internalType: "string", name: "customBaseURI_", type: "string" },

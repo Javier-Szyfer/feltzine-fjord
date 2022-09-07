@@ -2,7 +2,6 @@ import Head from "next/head";
 import useDrop1Context from "../context/drop1Context/drop1Ctx";
 import Header from "../components/common/Header";
 import Link from "next/link";
-import Image from "next/image";
 
 const NftsInWallet = () => {
   //DROP 1

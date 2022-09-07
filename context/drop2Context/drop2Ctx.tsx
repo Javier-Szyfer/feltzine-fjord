@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 //FJORD DROP1
 import { fjordDrop2ContractAddress } from "../../constants/contractAddresses";
-import { fjordDrop2GoerliAbi } from "../../contractABI/goerliABIS";
+import { fjordDrop2GoerliAbi } from "../../contractABI/mainnetABIS";
 //WAGMI
 import { useContractRead } from "wagmi";
 

@@ -17,7 +17,7 @@ import {
 } from "wagmi";
 //DATA
 import { fjordDrop1ContractAddress } from "../../constants/contractAddresses";
-import { fjordDrop1GoerliAbi } from "../../contractABI/goerliABIS";
+import { fjordDrop1MainnetAbi } from "../../contractABI/mainnetABIS";
 import { wlAddresses1 } from "../../utils/merkle/wlAddresses1";
 import { useWhitelist } from "../../hooks/useWhitelist";
 import { ethers } from "ethers";
@@ -62,7 +62,7 @@ const LostEchoesWL = () => {
   });
   const { data: nftsOwned, refetch: refetchNFTs } = useContractRead({
     addressOrName: fjordDrop1ContractAddress,
-    contractInterface: fjordDrop1GoerliAbi,
+    contractInterface: fjordDrop1MainnetAbi,
     functionName: "mintPerWhitelistedWallet",
     args: [address],
     cacheTime: 5,
@@ -74,7 +74,7 @@ const LostEchoesWL = () => {
   // WHITELIST MINT
   const { config } = usePrepareContractWrite({
     addressOrName: fjordDrop1ContractAddress,
-    contractInterface: fjordDrop1GoerliAbi,
+    contractInterface: fjordDrop1MainnetAbi,
     functionName: "whitelistMint",
     args: [
       whiteListMintAmount,

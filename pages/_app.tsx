@@ -22,7 +22,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => setMounted(true), []);
 
   const { chains, provider } = configureChains(
-    [chain.goerli],
+    [chain.mainnet],
     [infuraProvider({ apiKey: process.env.INFURA_API_KEY }), publicProvider()]
   );
   const connectors = connectorsForWallets([
