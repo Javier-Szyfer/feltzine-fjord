@@ -68,7 +68,6 @@ const Drops = () => {
   const { chain } = useNetwork();
   //CHECK IF ADDRESS IS IN WHITELIST
   const isWhitelisted = useWhitelist(address, wlAddresses1);
-
   //HANDLE TVS
   const handleEnterTv = (tv: number) => {
     if (!address) {
@@ -134,7 +133,7 @@ const Drops = () => {
             <span className=" mt-4 text-[#00eeff] tracking-tighter text-[10px] sm:text-xs text-shadowFirst flex flex-col sm:flex-row justify-center items-center">
               You are whitelisted for:{" "}
               <span className="italic ml-1 flex flex-col justify-center items-center ">
-                {isWhitelisted && "Endangered Memories"}
+                {isWhitelisted && "LOST ECHOES"}
                 {/* {merkleCheck1?.isIncluded && "- Second Chance"}
               {merkleCheck1?.isIncluded && "- Third Monster"} */}
               </span>
