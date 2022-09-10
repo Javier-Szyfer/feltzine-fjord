@@ -54,10 +54,12 @@ const NftsInWallet = () => {
 
   if (error) {
     return (
-      <div className="flex flex-col min-h-screen text-shadowTitle  items-center">
+      <div className="flex flex-col min-h-screen text-shadowTitle  items-center px-8">
         <div className="noise"></div>
         <Header />
-        <News size="xl" />
+        <div className="max-w-4xl mx-auto">
+          <News size="2xl" />
+        </div>
 
         <div className="flex flex-col justify-center min-h-[90vh]">
           Error fetching your NFTs ...
@@ -67,7 +69,7 @@ const NftsInWallet = () => {
   }
 
   return (
-    <div className=" max-w-7xl mx-auto ">
+    <div className=" max-w-7xl mx-auto px-4">
       <Head>
         <title>FeltZine - Fjord</title>
         <meta name="description" content="Lost echoes - NFTs owned" />
@@ -75,9 +77,11 @@ const NftsInWallet = () => {
       </Head>
       <div className="noise"></div>
       <Header />
-      <News size="2xl" />
+      <div className="max-w-4xl mx-auto">
+        <News size="2xl" />
+      </div>
       {data && (
-        <div className="mt-8 text-shadowTitle px-4 pb-12">
+        <div className="mt-8 text-shadowTitle pb-12">
           <div className=" relative flex items-center justify-between">
             <span>Your NFTs</span>
             <Link href="/drops">&larr;BACK</Link>
