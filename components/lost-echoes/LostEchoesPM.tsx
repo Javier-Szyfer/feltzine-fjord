@@ -8,10 +8,7 @@ import { fjordDrop1ContractAddress } from "../../constants/contractAddresses";
 import { fjordDrop1MainnetAbi } from "../../contractABI/mainnetABIS";
 //WAGMI
 import {
-  useAccount,
-  useBalance,
   useContractWrite,
-  useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
@@ -19,10 +16,12 @@ import { ethers } from "ethers";
 import { toast } from "react-toastify";
 import { formatHash } from "../../utils/formatters";
 import { chainID } from "../../constants/chainId";
+import { useAuth } from "../../hooks/useAuth";
 
 const LostEchoesPM = () => {
   //CONTEXT
   const { stage, readTMinted } = useDrop1Context();
+  const { address, balance, chain } = useAuth();
 
   //STATE
   const [publicMintAmount, setPublicMintAmount] = useState(1);
@@ -32,12 +31,6 @@ const LostEchoesPM = () => {
   const price = 0.001;
   let totalPublicPrice = publicMintAmount * price;
   //WAGMI
-  //READ
-  const { chain } = useNetwork();
-  const { address } = useAccount();
-  const { data: balance } = useBalance({
-    addressOrName: address,
-  });
 
   //  //WRITE
   // WHITELIST MINT

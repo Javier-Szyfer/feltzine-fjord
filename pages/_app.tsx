@@ -16,6 +16,11 @@ import { publicProvider } from "wagmi/providers/public";
 import { infuraProvider } from "wagmi/providers/infura";
 import "../styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
+import { createClient as urqlClient, Provider } from "urql";
+
+const client = urqlClient({
+  url: "https://api.zora.co/graphql",
+});
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [mounted, setMounted] = useState(false);
@@ -54,11 +59,13 @@ function MyApp({ Component, pageProps }: AppProps) {
       <RainbowKitProvider chains={chains} theme={fjordTheme}>
         <AnimatePresence exitBeforeEnter>
           <SoundWrapper>
-            <Drop1Wrapper>
-              <Drop2Wrapper>
-                <Component {...pageProps} />
-              </Drop2Wrapper>
-            </Drop1Wrapper>
+            <Provider value={client}>
+              <Drop1Wrapper>
+                <Drop2Wrapper>
+                  <Component {...pageProps} />
+                </Drop2Wrapper>
+              </Drop1Wrapper>
+            </Provider>
           </SoundWrapper>
         </AnimatePresence>
       </RainbowKitProvider>

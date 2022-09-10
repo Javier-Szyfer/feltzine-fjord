@@ -1,14 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useAccount, useEnsAvatar, useEnsName } from "wagmi";
+import { useAuth } from "../../hooks/useAuth";
 export const ConnectBtn = () => {
-  const { address } = useAccount();
-  const ensName = useEnsName({
-    address: address,
-  });
-  const { data: avatar } = useEnsAvatar({
-    addressOrName: address,
-  });
+  const { ensAvatar, ensName } = useAuth();
   return (
     <ConnectButton.Custom>
       {({
@@ -62,9 +56,9 @@ export const ConnectBtn = () => {
                     type="button"
                     className="flex items-center font-sans font-semibold tracking-tight text-shadowFirst text-[#ebebebef] hover:text-white"
                   >
-                    {avatar ? (
+                    {ensAvatar ? (
                       <img
-                        src={avatar}
+                        src={ensAvatar}
                         alt="avatar"
                         style={{
                           width: "20px",
@@ -78,10 +72,7 @@ export const ConnectBtn = () => {
                         👤
                       </span>
                     )}
-                    {ensName.data ? ensName.data : account.displayName}
-                    {/* {account.displayBalance
-                      ? ` (${account.displayBalance})`
-                      : ""} */}
+                    {ensName ? ensName : account.displayName}
                   </button>
                 </div>
               );

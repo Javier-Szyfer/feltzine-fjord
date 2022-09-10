@@ -22,11 +22,11 @@ import TV1PublicMint from "../components/drops/tv1/TV1PublicMint";
 //WHITELIST
 import { useWhitelist } from "../hooks/useWhitelist";
 import { wlAddresses1 } from "../utils/merkle/wlAddresses1";
-//WAGMI
-import { useAccount, useNetwork } from "wagmi";
 import Timer from "../components/common/Timer";
+import { useAuth } from "../hooks/useAuth";
 
 const Drops = () => {
+  const { address, chain } = useAuth();
   //CONTEXT
   const { isSoundOn, setIsSoundOn, toggleSound, tv1SoundtrackPlay } =
     useSoundContext();
@@ -63,9 +63,6 @@ const Drops = () => {
     { volume: 0.1 }
   );
 
-  //WAMGI HOOKS
-  const { address } = useAccount();
-  const { chain } = useNetwork();
   //CHECK IF ADDRESS IS IN WHITELIST
   const isWhitelisted = useWhitelist(address, wlAddresses1);
   //HANDLE TVS
