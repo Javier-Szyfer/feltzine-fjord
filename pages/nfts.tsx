@@ -1,59 +1,129 @@
 import Head from "next/head";
-import useDrop1Context from "../context/drop1Context/drop1Ctx";
+import { fjordDrop1ContractAddress } from "../constants/contractAddresses";
 import Header from "../components/common/Header";
 import Link from "next/link";
+import { gql } from "graphql-request";
+import { useQuery } from "urql";
+import { useMemo } from "react";
+import { useAuth } from "../hooks/useAuth";
+import { motion } from "framer-motion";
+import News from "../components/common/News";
 
 const NftsInWallet = () => {
-  //DROP 1
-  // const { nftsInWallet } = useDrop1Context();
-  // const tokens = nftsInWallet?.tokens.nodes;
+  const { address } = useAuth();
+
+  const OWNED_NFTS = gql`
+    query ($col: [String!], $add: [String!]) {
+      tokens(
+        where: { collectionAddresses: $col, ownerAddresses: $add }
+        networks: { network: ETHEREUM, chain: MAINNET }
+      ) {
+        nodes {
+          token {
+            tokenId
+            metadata
+          }
+        }
+      }
+    }
+  `;
+  const [result] = useQuery({
+    query: OWNED_NFTS,
+    variables: { col: fjordDrop1ContractAddress, add: address },
+    context: useMemo(
+      () => ({
+        requestPolicy: "cache-and-network",
+        url: "https://api.zora.co/graphql",
+      }),
+      []
+    ),
+  });
+  const { data, fetching, error } = result;
+
+  if (fetching) {
+    return (
+      <div className="flex flex-col min-h-screen text-shadowTitle  items-center">
+        <div className="noise"></div>
+        <Header />
+        <div className="flex flex-col justify-center min-h-[90vh]">
+          Fetching your NFTs ...
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col min-h-screen text-shadowTitle  items-center">
+        <div className="noise"></div>
+        <Header />
+        <News size="xl" />
+
+        <div className="flex flex-col justify-center min-h-[90vh]">
+          Error fetching your NFTs ...
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className=" max-w-6xl mx-auto ">
+    <div className=" max-w-7xl mx-auto ">
       <Head>
         <title>FeltZine - Fjord</title>
-        <meta name="description" content="Lost echoes - nfts owned" />
+        <meta name="description" content="Lost echoes - NFTs owned" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="noise"></div>
       <Header />
-      {/* {tokens?.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 px-8 mt-12">
-          {tokens?.map((t: any) => {
-            const token = t.token;
-            const ipfsURL = `https://ipfs.io/ipfs/Qmag7Hgh3C2igYajdYFtLgE132yjEgwjAda4x4HBXj8tNv/1`;
-            console.log(ipfsURL);
-            const animationURL = token.metadata?.animation_url.split("/").pop();
-            const formatedAnimationURL = `https://ipfs.io/ipfs/${animationURL}`;
-            return (
-              <div
-                key={token.tokenId}
-                className="relative flex flex-col justify-start items-center  border border-[#f8f8f8] p-2 text-white w-full object-cover"
-              >
-                <video
-                  src={formatedAnimationURL}
-                  autoPlay
-                  loop
-                  className=" w-full h-64 object-cover"
-                />
-                <div className=" mt-8 text-sm">Token id: {token.tokenId}</div>
-              </div>
-            );
-          })}
+      <News size="2xl" />
+      {data && (
+        <div className="mt-8 text-shadowTitle px-4 pb-12">
+          <div className=" relative flex items-center justify-between">
+            <span>Your NFTs</span>
+            <Link href="/drops">&larr;BACK</Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12  mt-8">
+            {result?.data?.tokens.nodes.map((t: any) => {
+              const token = t.token;
+              const animationURL = token.metadata?.animation_url
+                .split("/")
+                .pop();
+              const formatedAnimationURL = `https://ipfs.io/ipfs/${animationURL}`;
+              return (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ ease: "easeOut", duration: 1 }}
+                  whileHover={{ scale: 1.02 }}
+                  key={token.metadata?.animation_url}
+                  className="relative aspect-square shadow-lg shadow-[#f8f8f8]/20 flex flex-col justify-start items-center  border border-[#8b8b8b] p-2 text-[#00eeff] object-cover w-full"
+                >
+                  <video
+                    src={formatedAnimationURL}
+                    autoPlay
+                    preload="metadata"
+                    loop
+                    playsInline={token.metadata?.animation_url ? true : false}
+                    // poster={formatedImage}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className=" text-sm flex w-full justify-between items-between gap-1 pt-4">
+                    <span>Lost Echoes</span>
+                    <span>Token id: {token.tokenId}</span>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       )}
-      {!tokens?.length && (
-        <div className="flex flex-col min-h-[60vh] justify-center items-center gap-6  ">
-          <h1 className="text-shadowTitle">
+      {data?.tokens.nodes.length === 0 && (
+        <div className="flex flex-col min-h-[50vh] justify-center items-center gap-6  ">
+          <h1 className="text-shadowTitle text-lg">
             You don&apos;t own Lost Echoes NFTs
           </h1>
-          <Link href={"/lost-echoes"}>
-            <button className="relative cursor-fancy border text-shadowTitle hover:shadow-md hover:shadow-white/40 border-[#f3f3f3] px-4 py-2 hover:">
-              Mint
-            </button>
-          </Link>
         </div>
-      )} */}
+      )}
     </div>
   );
 };

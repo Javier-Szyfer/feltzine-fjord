@@ -12,18 +12,18 @@ const Header = () => {
       {route !== "/" && (
         <div className=" md:pl-4  md:fixed z-40 md:right-4  lg:hidden h-auto flex items-center gap-4 cursor-fancy text-sm ">
           <ConnectBtn />
-          {/* <Link href={"/nfts"}>
+          <Link href={"/nfts"} rel="preload">
             <AiOutlineWallet className="w-6 h-6 text-shadowFirst text-[#cccccc] shadow-md shadow-[#f8f8f8]/30" />
-          </Link> */}
+          </Link>
         </div>
       )}
       {/* Desktop connect */}
       {route !== "/" && (
         <div className=" hidden lg:flex fixed  items-end flex-col top-8 right-4 gap-2 cursor-fancy text-sm ">
           <ConnectBtn />
-          {/* <Link href={"/nfts"}>
+          <Link href={"/nfts"} rel="preload">
             <AiOutlineWallet className="w-6 h-6 text-shadowFirst text-[#cccccc] shadow-md shadow-[#f8f8f8]/30" />
-          </Link> */}
+          </Link>
         </div>
       )}
       <Link href={"/drops"}>

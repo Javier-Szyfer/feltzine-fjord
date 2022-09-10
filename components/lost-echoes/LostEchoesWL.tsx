@@ -7,10 +7,7 @@ import Timer from "../common/Timer";
 import { chainID } from "../../constants/chainId";
 //WAGMI
 import {
-  useAccount,
-  useBalance,
   useContractWrite,
-  useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
   useContractRead,
@@ -24,8 +21,10 @@ import { ethers } from "ethers";
 import { toast } from "react-toastify";
 import { useMerkleTree } from "../../hooks/useMerkleTree";
 import { formatHash } from "../../utils/formatters";
+import { useAuth } from "../../hooks/useAuth";
 
 const LostEchoesWL = () => {
+  const { address, chain, balance } = useAuth();
   //STATE
   const [whiteListMintAmount, setWhiteListMintAmount] = useState(1);
   const [processing, setProcessing] = useState(false);
@@ -55,11 +54,6 @@ const LostEchoesWL = () => {
     { volume: 0.2 }
   );
   //WAGMI READ
-  const { chain } = useNetwork();
-  const { address } = useAccount();
-  const { data: balance } = useBalance({
-    addressOrName: address,
-  });
   const { data: nftsOwned, refetch: refetchNFTs } = useContractRead({
     addressOrName: fjordDrop1ContractAddress,
     contractInterface: fjordDrop1MainnetAbi,

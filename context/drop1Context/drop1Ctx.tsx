@@ -3,13 +3,9 @@ import { createContext, useContext } from "react";
 import { fjordDrop1ContractAddress } from "../../constants/contractAddresses";
 import { fjordDrop1MainnetAbi } from "../../contractABI/mainnetABIS";
 //WAGMI
-import { useContractRead, useAccount } from "wagmi";
-
+import { useContractRead } from "wagmi";
 import { ethers } from "ethers";
 import { format, fromUnixTime } from "date-fns";
-import request, { gql, RequestDocument } from "graphql-request";
-import useSWR from "swr";
-import { getNFTsInWallet } from "../../lib/OwnedNftsQuery";
 
 interface Drop1ContextProps {
   totalMintedDrop1?: number;
@@ -26,15 +22,6 @@ interface props {
 const Drop1Context = createContext<Drop1ContextProps>({} as Drop1ContextProps);
 
 export function Drop1Wrapper({ children }: props) {
-  const { address } = useAccount();
-
-  // const fetcher = (query: RequestDocument) =>
-  //   request("https://api.zora.co/graphql", query);
-
-  // const { data: nftsInWallet } = useSWR(query, fetcher, {
-  //   refreshInterval: 1000,
-  // });
-  // console.log(nftsInWallet);
   const { data: whitelistEndDate } = useContractRead({
     addressOrName: fjordDrop1ContractAddress,
     contractInterface: fjordDrop1MainnetAbi,
@@ -54,7 +41,7 @@ export function Drop1Wrapper({ children }: props) {
     watch: true,
     cacheTime: 5,
   });
-  //HADNLE TIME
+  //HANDLE TIME
   const whitelistEndDateToNumber = whitelistEndDate
     ? ethers.BigNumber.from(whitelistEndDate).toNumber()
     : 0;
@@ -72,7 +59,6 @@ export function Drop1Wrapper({ children }: props) {
         totalMintedDrop1,
         endWLDateInSecs,
         formattedWLEndDate,
-        // nftsInWallet,
         stage,
       }}
     >

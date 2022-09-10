@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Head from "next/head";
 import { NextSeo } from "next-seo";
 import { useEffect, useState } from "react";
 //CONTEXT
@@ -36,7 +35,6 @@ const LostEchoes = () => {
   } = useSoundContext();
   const { endWLDateInSecs, stage, nftsInWallet } = useDrop1Context();
   const tokens = nftsInWallet?.tokens.nodes;
-  console.log("nftsInWallet", tokens);
 
   //STATE
   const [loading, setLoading] = useState(true);
