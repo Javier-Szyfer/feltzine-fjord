@@ -66,22 +66,20 @@ const LostEchoes = () => {
       <NextSeo
         title="Lost Echoes by Felt Zine"
         description="Original art by Ina Vare with production by Felt Zine. Lost Echoes explores the implicit bias of anthropologists, speculative futures, and retrofuturism as researchers discover an artist's memories in the year 3030 without context."
-        canonical="https://fjord.feltzine.art/lost-echoes"
+        canonical="https://feltzine-fjord.vercel.app/lost-echoes"
         openGraph={{
-          url: "https://fjord.feltzine.art/lost-echoes",
+          url: "https://feltzine-fjord.vercel.app/lost-echoes",
           title: "Lost Echoes by Felt Zine",
+          site_name: "Lost Echoes by Felt Zine",
           description:
             "Original art by Ina Vare with production by Felt Zine. Lost Echoes explores the implicit bias of anthropologists, speculative futures, and retrofuturism as researchers discover an artist’s memories in the year 3030 without context.",
           images: [
             {
               url: "https://res.cloudinary.com/aldi/image/upload/v1662486659/feltzine/b4Vq8Lw8_gnabpc.jpg",
-              width: 1200,
-              height: 630,
               alt: "Lost Echoes open graph",
               type: "image/jpeg",
             },
           ],
-          site_name: "Lost Echoes by Felt Zine",
         }}
         twitter={{
           handle: "@FeltZine",
