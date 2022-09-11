@@ -16,7 +16,9 @@ import { publicProvider } from "wagmi/providers/public";
 import { infuraProvider } from "wagmi/providers/infura";
 import "../styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
+import SEO from "../next-seo.config";
 import { createClient as urqlClient, Provider } from "urql";
+import { DefaultSeo } from "next-seo";
 
 const client = urqlClient({
   url: "https://api.zora.co/graphql",
@@ -62,6 +64,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Provider value={client}>
               <Drop1Wrapper>
                 <Drop2Wrapper>
+                  <DefaultSeo {...SEO} />
                   <Component {...pageProps} />
                 </Drop2Wrapper>
               </Drop1Wrapper>

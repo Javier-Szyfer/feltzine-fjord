@@ -81,6 +81,11 @@ const LostEchoes = () => {
             },
           ],
         }}
+        twitter={{
+          handle: "@FeltZine",
+          site: "@FeltZine",
+          cardType: "summary_large_image",
+        }}
       />
       <ToastContainer
         position="bottom-right"
