@@ -20,7 +20,8 @@
     "**/*.ts",
     "**/*.tsx",
     "pages/_document.js",
-    "pages/api/auth/[...nextauth.ts]"
+    "pages/api/auth/[...nextauth.ts]",
+    "next-seo.config.js"
   ],
   "exclude": ["node_modules"]
 }
