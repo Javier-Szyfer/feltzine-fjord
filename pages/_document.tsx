@@ -10,7 +10,10 @@ export default function Document() {
           content="width=device-width, initial-scale=1, maximum-scale=5"
         />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <link rel="icon" href="https://fjord.feltzine.art/assets/favicon.jpg" />
+        <link
+          rel="icon"
+          href="https://www.fjord.feltzine.art/assets/favicon.jpg"
+        />
         <meta content="#000000" name="theme-color" />
         <meta content="#000000" name="msapplication-TileColor" />
 
