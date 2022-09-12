@@ -1,22 +1,22 @@
-import Link from "next/link";
-import { useState } from "react";
-import useSound from "use-sound";
-import useDrop1Context from "../../context/drop1Context/drop1Ctx";
-import useSoundContext from "../../context/soundContext/soundCtx";
+import Link from 'next/link';
+import { useState } from 'react';
+import useSound from 'use-sound';
+import useDrop1Context from '../../context/drop1Context/drop1Ctx';
+import useSoundContext from '../../context/soundContext/soundCtx';
 //DATA
-import { fjordDrop1ContractAddress } from "../../constants/contractAddresses";
-import { fjordDrop1MainnetAbi } from "../../contractABI/mainnetABIS";
+import { fjordDrop1ContractAddress } from '../../constants/contractAddresses';
+import { fjordDrop1MainnetAbi } from '../../contractABI/mainnetABIS';
 //WAGMI
+import { ethers } from 'ethers';
+import { toast } from 'react-toastify';
 import {
   useContractWrite,
   usePrepareContractWrite,
   useWaitForTransaction,
-} from "wagmi";
-import { ethers } from "ethers";
-import { toast } from "react-toastify";
-import { formatHash } from "../../utils/formatters";
-import { chainID } from "../../constants/chainId";
-import { useAuth } from "../../hooks/useAuth";
+} from 'wagmi';
+import { chainID } from '../../constants/chainId';
+import { useAuth } from '../../hooks/useAuth';
+import { formatHash } from '../../utils/formatters';
 
 const LostEchoesPM = () => {
   //CONTEXT
@@ -37,12 +37,12 @@ const LostEchoesPM = () => {
   const { config } = usePrepareContractWrite({
     addressOrName: fjordDrop1ContractAddress,
     contractInterface: fjordDrop1MainnetAbi,
-    functionName: "publicMint",
+    functionName: 'publicMint',
     args: [
       publicMintAmount,
       {
         value: ethers.utils.parseEther(
-          totalPublicPrice ? totalPublicPrice.toString() : "0"
+          totalPublicPrice ? totalPublicPrice.toString() : '0'
         ),
       },
     ],
@@ -63,7 +63,7 @@ const LostEchoesPM = () => {
       //refetch
       readTMinted();
       setShowTXHash(true);
-      toast.success("Transaction successful", { toastId: "mintSuccess-tv1" });
+      toast.success('Transaction successful', { toastId: 'mintSuccess-tv1' });
     },
   });
 
@@ -73,7 +73,7 @@ const LostEchoesPM = () => {
 
   //SOUNDS
   const [back] = useSound(
-    "https://res.cloudinary.com/aldi/video/upload/v1661351389/feltzine/back_o59yfu.mp3",
+    'https://res.cloudinary.com/aldi/video/upload/v1661351389/feltzine/back_o59yfu.mp3',
     { volume: 0.2 }
   );
 
@@ -81,27 +81,27 @@ const LostEchoesPM = () => {
   const handlePublicMint = () => {
     setProcessing(true);
     if (!publicMintAmount || publicMintAmount == 0) {
-      toast.error("Please enter a valid amount");
+      toast.error('Please enter a valid amount');
       setProcessing(false);
       return;
     } else if (stage !== 4) {
-      toast.error("Public mint is not active yet");
+      toast.error('Public mint is not active yet');
       setProcessing(false);
     } else if (chain?.id !== chainID) {
-      toast.error("Please connect to Goerli Testnet", {
-        toastId: "wrongNetwork-tv1-publicMint",
+      toast.error('Please connect to Goerli Testnet', {
+        toastId: 'wrongNetwork-tv1-publicMint',
       });
       setProcessing(false);
       return;
     } else if (!address) {
-      toast.error("Please connect your wallet", {
-        toastId: "noWallet-tv1-publicMint",
+      toast.error('Please connect your wallet', {
+        toastId: 'noWallet-tv1-publicMint',
       });
       setProcessing(false);
       return;
     } else if (balance && parseInt(balance?.formatted) < totalPublicPrice) {
-      toast.error("Insufficient funds", {
-        toastId: "insufficientFunds-tv1-publicMint",
+      toast.error('Insufficient funds', {
+        toastId: 'insufficientFunds-tv1-publicMint',
       });
       setProcessing(false);
       return;
@@ -127,19 +127,19 @@ const LostEchoesPM = () => {
               {/* STATUS */}
               {stage == 4 ? (
                 <span className="flex  items-center text-[#00ff00] text-[10px] sm:text-sm">
-                  <span className=" animate-pulse w-2 h-2 bg-[#00ff00] mr-2 rounded-full" />{" "}
+                  <span className=" animate-pulse w-2 h-2 bg-[#00ff00] mr-2 rounded-full" />{' '}
                   Active
                 </span>
               ) : (
                 <span className="flex items-center text-[#ff0000] text-[10px]  sm:text-sm">
-                  <span className=" animate-pulse w-2 h-2 bg-[#ff0000] mr-2 rounded-full" />{" "}
+                  <span className=" animate-pulse w-2 h-2 bg-[#ff0000] mr-2 rounded-full" />{' '}
                   Inactive
                 </span>
               )}
             </div>
             <span>
               Artifacts found:
-              {totalMintedDrop1 ? `${totalMintedDrop1}/525` : "N/A"}
+              {totalMintedDrop1 ? `${totalMintedDrop1}/525` : 'N/A'}
             </span>
             <h3 className="mt-8">
               Researchers discover Ina&apos;s memories in the year 3030.
@@ -167,7 +167,7 @@ const LostEchoesPM = () => {
             </div>
           </div>
           <div className=" flex w-full  justify-between items-center mt-6">
-            <Link href={"/drops"}>
+            <Link href={'/drops'}>
               <button
                 className="text-drop1 hover:text-[#ff3700] cursor-fancy "
                 onClick={() => {

@@ -1,46 +1,18 @@
-import Head from 'next/head';
-import { fjordDrop1ContractAddress } from '../constants/contractAddresses';
-import Header from '../components/common/Header';
-import Link from 'next/link';
-import { gql } from 'graphql-request';
-import { useQuery } from 'urql';
-import { useMemo } from 'react';
-import { useAuth } from '../hooks/useAuth';
-import { motion } from 'framer-motion';
-import News from '../components/common/News';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { motion } from 'framer-motion';
+import Head from 'next/head';
+import Link from 'next/link';
+import Header from '../components/common/Header';
+import News from '../components/common/News';
+import useDrop1Context from '../context/drop1Context/drop1Ctx';
+import { useAuth } from '../hooks/useAuth';
 
 const NftsInWallet = () => {
   const { address } = useAuth();
-  const { openConnectModal } = useConnectModal();
+  const { ownerNFTsResult } = useDrop1Context();
+  const { data, fetching, error } = ownerNFTsResult;
 
-  const OWNED_NFTS = gql`
-    query ($col: [String!], $add: [String!]) {
-      tokens(
-        where: { collectionAddresses: $col, ownerAddresses: $add }
-        networks: { network: ETHEREUM, chain: MAINNET }
-      ) {
-        nodes {
-          token {
-            tokenId
-            metadata
-          }
-        }
-      }
-    }
-  `;
-  const [result] = useQuery({
-    query: OWNED_NFTS,
-    variables: { col: fjordDrop1ContractAddress, add: address },
-    context: useMemo(
-      () => ({
-        requestPolicy: 'cache-and-network',
-        url: 'https://api.zora.co/graphql',
-      }),
-      []
-    ),
-  });
-  const { data, fetching, error } = result;
+  const { openConnectModal } = useConnectModal();
 
   if (!address) {
     return (
@@ -111,7 +83,7 @@ const NftsInWallet = () => {
             <Link href="/drops">&larr;BACK</Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12  mt-8">
-            {result?.data?.tokens.nodes.map((t: any) => {
+            {ownerNFTsResult?.data?.tokens.nodes.map((t: any) => {
               const token = t.token;
               const animationURL = token.metadata?.animation_url
                 .split('/')

@@ -1,5 +1,5 @@
-import Marquee from "react-fast-marquee";
-import useDrop1Context from "../../context/drop1Context/drop1Ctx";
+import Marquee from 'react-fast-marquee';
+import useDrop1Context from '../../context/drop1Context/drop1Ctx';
 
 const News = ({ size }: any) => {
   const { totalMintedDrop1 } = useDrop1Context();
@@ -19,8 +19,8 @@ const News = ({ size }: any) => {
         className="pixeledNews italic md:text-2xl tracking-tight "
       >
         <span className="mx-1">
-          <span className="font-bold">*:･ﾟLost Echoes *:･ﾟ</span> Status:{" "}
-          <span className="font-bold">LIVE</span> - Total minted:{" "}
+          <span className="font-bold">*:･ﾟLost Echoes *:･ﾟ</span> Status:{' '}
+          <span className="font-bold">LIVE</span> - Total minted:{' '}
           {totalMintedDrop1}/525 ✧✧✧
         </span>
         <span className="mr-1">FJORD Drop2 - Status: NOT STARTED ✧✧✧ </span>

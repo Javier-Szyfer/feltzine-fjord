@@ -1,26 +1,26 @@
-import Link from 'next/link';
 import { NextSeo } from 'next-seo';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 //CONTEXT
-import useSoundContext from '../context/soundContext/soundCtx';
 import { useDrop1Context } from '../context/drop1Context/drop1Ctx';
+import useSoundContext from '../context/soundContext/soundCtx';
 //COMPONENTS
 import Header from '../components/common/Header';
 import News from '../components/common/News';
 //VIEWS
-import LostEchoesWL from '../components/lost-echoes/LostEchoesWL';
-import LELoading from '../components/lost-echoes/LELoading';
-import LEFjord from '../components/lost-echoes/LEFjord';
-import LostEchoesPM from '../components/lost-echoes/LostEchoesPM';
 import LEDisconnected from '../components/lost-echoes/LEDisconnected';
+import LEFjord from '../components/lost-echoes/LEFjord';
+import LELoading from '../components/lost-echoes/LELoading';
+import LostEchoesPM from '../components/lost-echoes/LostEchoesPM';
+import LostEchoesWL from '../components/lost-echoes/LostEchoesWL';
 //WAGMI
 import { useAccount, useNetwork } from 'wagmi';
 //
+import { ToastContainer, Zoom } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { chainID } from '../constants/chainId';
 import { useWhitelist } from '../hooks/useWhitelist';
 import { wlAddresses1 } from '../utils/merkle/wlAddresses1';
-import { ToastContainer, Zoom } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const LostEchoes = () => {
   //CONTEXT
@@ -33,9 +33,9 @@ const LostEchoes = () => {
     tv1SoundtrackPause,
     tv1SoundtrackPlay,
   } = useSoundContext();
-  const { endWLDateInSecs, stage, nftsInWallet } = useDrop1Context();
-  const tokens = nftsInWallet?.tokens.nodes;
+  const { endWLDateInSecs, stage, ownerNFTsResult } = useDrop1Context();
 
+  const { data } = ownerNFTsResult;
   //STATE
   const [loading, setLoading] = useState(true);
 
@@ -48,10 +48,10 @@ const LostEchoes = () => {
   const isWhitelisted = useWhitelist(address, wlAddresses1);
 
   useEffect(() => {
-    setTimeout(() => {
+    const loadingTime = setTimeout(() => {
       setLoading(false);
     }, 2000);
-    return () => tv1SoundtrackStop();
+    return () => clearTimeout(loadingTime);
   }, []);
 
   const handleSoundOff = () => {
@@ -185,15 +185,18 @@ const LostEchoes = () => {
                       <span className="text-[#5d5d5df4]">OFF</span> | ON
                     </span>
                   ) : (
-                    <span className="">
+                    <span>
                       OFF | <span className="text-[#5d5d5df4]">ON</span>
                     </span>
                   )}
                 </div>
               </button>
-              {tokens?.length > 0 && (
+              {data?.tokens.nodes.length !== 0 && (
                 <Link href={'/nfts'}>
-                  <button className=" cursor-fancy  border border-gray-400 py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none w-auto  mt-4 text-xs">
+                  <button
+                    onClick={() => tv1SoundtrackStop()}
+                    className=" cursor-fancy  border border-gray-400 py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none w-auto  mt-4 text-xs"
+                  >
                     See NFTs
                   </button>
                 </Link>

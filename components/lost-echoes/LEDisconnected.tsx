@@ -1,5 +1,5 @@
-import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
-import { chainID } from "../../constants/chainId";
+import { useChainModal, useConnectModal } from '@rainbow-me/rainbowkit';
+import { chainID } from '../../constants/chainId';
 
 const LEDisconnected = ({ chainId, address }: any) => {
   const { openConnectModal } = useConnectModal();
