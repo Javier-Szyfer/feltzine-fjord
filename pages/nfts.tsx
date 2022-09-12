@@ -1,14 +1,14 @@
-import Head from "next/head";
-import { fjordDrop1ContractAddress } from "../constants/contractAddresses";
-import Header from "../components/common/Header";
-import Link from "next/link";
-import { gql } from "graphql-request";
-import { useQuery } from "urql";
-import { useMemo } from "react";
-import { useAuth } from "../hooks/useAuth";
-import { motion } from "framer-motion";
-import News from "../components/common/News";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
+import Head from 'next/head';
+import { fjordDrop1ContractAddress } from '../constants/contractAddresses';
+import Header from '../components/common/Header';
+import Link from 'next/link';
+import { gql } from 'graphql-request';
+import { useQuery } from 'urql';
+import { useMemo } from 'react';
+import { useAuth } from '../hooks/useAuth';
+import { motion } from 'framer-motion';
+import News from '../components/common/News';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 const NftsInWallet = () => {
   const { address } = useAuth();
@@ -34,8 +34,8 @@ const NftsInWallet = () => {
     variables: { col: fjordDrop1ContractAddress, add: address },
     context: useMemo(
       () => ({
-        requestPolicy: "cache-and-network",
-        url: "https://api.zora.co/graphql",
+        requestPolicy: 'cache-and-network',
+        url: 'https://api.zora.co/graphql',
       }),
       []
     ),
@@ -114,14 +114,14 @@ const NftsInWallet = () => {
             {result?.data?.tokens.nodes.map((t: any) => {
               const token = t.token;
               const animationURL = token.metadata?.animation_url
-                .split("/")
+                .split('/')
                 .pop();
               const formatedAnimationURL = `https://ipfs.io/ipfs/${animationURL}`;
               return (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ ease: "easeOut", duration: 1 }}
+                  transition={{ ease: 'easeOut', duration: 1 }}
                   whileHover={{ scale: 1.02 }}
                   key={token.metadata?.animation_url}
                   className="relative aspect-square shadow-lg shadow-[#f8f8f8]/20 flex flex-col justify-start items-center  border border-[#8b8b8b] p-2 text-[#00eeff] object-cover w-full"

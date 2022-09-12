@@ -1,29 +1,29 @@
-import { useState } from "react";
-import Head from "next/head";
-import Link from "next/link";
-import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
-import { chainID } from "../constants/chainId";
+import { useState } from 'react';
+import Head from 'next/head';
+import Link from 'next/link';
+import { useChainModal, useConnectModal } from '@rainbow-me/rainbowkit';
+import { chainID } from '../constants/chainId';
 //CONTEXT
-import useSoundContext from "../context/soundContext/soundCtx";
-import { useDrop1Context } from "../context/drop1Context/drop1Ctx";
-import { useDrop2Context } from "../context/drop2Context/drop2Ctx";
+import useSoundContext from '../context/soundContext/soundCtx';
+import { useDrop1Context } from '../context/drop1Context/drop1Ctx';
+import { useDrop2Context } from '../context/drop2Context/drop2Ctx';
 //
-import { motion } from "framer-motion";
-import { fadeInUp, stagger } from "../animations/animations";
-import useSound from "use-sound";
-import { Zoom, ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { motion } from 'framer-motion';
+import { fadeInUp, stagger } from '../animations/animations';
+import useSound from 'use-sound';
+import { Zoom, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 //COMPONENTS
-import Header from "../components/common/Header";
-import News from "../components/common/News";
-import Tv1Whitelist from "../components/drops/tv1/Tv1Whitelist";
-import Tv1FjordMint from "../components/drops/tv1/Tv1FjordMint";
-import TV1PublicMint from "../components/drops/tv1/TV1PublicMint";
+import Header from '../components/common/Header';
+import News from '../components/common/News';
+import Tv1Whitelist from '../components/drops/tv1/Tv1Whitelist';
+import Tv1FjordMint from '../components/drops/tv1/Tv1FjordMint';
+import TV1PublicMint from '../components/drops/tv1/TV1PublicMint';
 //WHITELIST
-import { useWhitelist } from "../hooks/useWhitelist";
-import { wlAddresses1 } from "../utils/merkle/wlAddresses1";
-import Timer from "../components/common/Timer";
-import { useAuth } from "../hooks/useAuth";
+import { useWhitelist } from '../hooks/useWhitelist';
+import { wlAddresses1 } from '../utils/merkle/wlAddresses1';
+import Timer from '../components/common/Timer';
+import { useAuth } from '../hooks/useAuth';
 
 const Drops = () => {
   const { address, chain } = useAuth();
@@ -47,19 +47,19 @@ const Drops = () => {
 
   //AUDIOS FOR DROPS
   const [play1, { stop: stop1 }] = useSound(
-    "https://res.cloudinary.com/aldi/video/upload/v1660499727/feltzine/tv1_wcnpei.mp3",
+    'https://res.cloudinary.com/aldi/video/upload/v1660499727/feltzine/tv1_wcnpei.mp3',
     { volume: 0.1 }
   );
   const [play2, { stop: stop2 }] = useSound(
-    "https://res.cloudinary.com/aldi/video/upload/v1660499727/feltzine/tv2_imm5wi.mp3",
+    'https://res.cloudinary.com/aldi/video/upload/v1660499727/feltzine/tv2_imm5wi.mp3',
     { volume: 0.1 }
   );
   const [play3, { stop: stop3 }] = useSound(
-    "https://res.cloudinary.com/aldi/video/upload/v1660499727/feltzine/tv4_vu2w5e.mp3",
+    'https://res.cloudinary.com/aldi/video/upload/v1660499727/feltzine/tv4_vu2w5e.mp3',
     { volume: 0.1 }
   );
   const [play4, { stop: stop4 }] = useSound(
-    "https://res.cloudinary.com/aldi/video/upload/v1660499727/feltzine/tv3_icptgi.mp3",
+    'https://res.cloudinary.com/aldi/video/upload/v1660499727/feltzine/tv3_icptgi.mp3',
     { volume: 0.1 }
   );
 
@@ -68,16 +68,16 @@ const Drops = () => {
   //HANDLE TVS
   const handleEnterTv = (tv: number) => {
     if (!address) {
-      toast.error("Connect wallet first");
+      toast.error('Connect wallet first');
       return;
     } else if (!chain) {
-      toast.error("Please connect wallet to continue", {
-        toastId: "walletDisconnected-4tvs",
+      toast.error('Please connect wallet to continue', {
+        toastId: 'walletDisconnected-4tvs',
       });
       return;
     } else if (chain?.id !== chainID) {
-      toast.error("Please switch to Goerli network", {
-        toastId: "switchNetwork-4tvs",
+      toast.error('Please switch to Goerli network', {
+        toastId: 'switchNetwork-4tvs',
       });
       return;
     }
@@ -128,9 +128,9 @@ const Drops = () => {
           <News size="xl" />
           {isWhitelisted && endWLDateInSecs > date.getTime() && (
             <span className=" mt-4 text-[#00eeff] tracking-tighter text-[10px] sm:text-xs text-shadowFirst flex flex-col sm:flex-row justify-center items-center">
-              You are whitelisted for:{" "}
+              You are whitelisted for:{' '}
               <span className="italic ml-1 flex flex-col justify-center items-center ">
-                {isWhitelisted && "LOST ECHOES"}
+                {isWhitelisted && 'LOST ECHOES'}
                 {/* {merkleCheck1?.isIncluded && "- Second Chance"}
               {merkleCheck1?.isIncluded && "- Third Monster"} */}
               </span>
@@ -194,7 +194,7 @@ const Drops = () => {
                   chain?.id === chainID && (
                     <a
                       href={
-                        "https://fjordnfts.com/drops/mainnet/0xC1656a25591d440b88275E5D36Ad921F2048A9Cb"
+                        'https://fjordnfts.com/drops/mainnet/0xC1656a25591d440b88275E5D36Ad921F2048A9Cb'
                       }
                       rel="noopener noreferrer"
                       target="_blank"
@@ -376,7 +376,7 @@ const Drops = () => {
                 </button>
               </div>
               <div className="flex items-center justify-center mt-8 md:mt-0">
-                <Link href={"https://twitter.com/FeltZine"} passHref>
+                <Link href={'https://twitter.com/FeltZine'} passHref>
                   <a
                     rel="noopener noreferrer"
                     target="_blank"
@@ -386,7 +386,7 @@ const Drops = () => {
                   </a>
                 </Link>
                 <span className="mx-2">|</span>
-                <Link href={"https://www.feltzine.art/"} passHref>
+                <Link href={'https://www.feltzine.art/'} passHref>
                   <a
                     rel="noopener noreferrer"
                     target="_blank"
