@@ -39,6 +39,7 @@
     "eslint": "8.20.0",
     "eslint-config-next": "12.2.3",
     "file-loader": "6.2.0",
+    "husky": "8.0.1",
     "merkletreejs": "0.2.32",
     "postcss": "8.4.14",
     "postcss-nesting": "10.1.10",
