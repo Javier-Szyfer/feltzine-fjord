@@ -1,6 +1,6 @@
-import type { NextPage } from "next";
-import Header from "../components/common/Header";
-import InitView from "../components/InitView";
+import type { NextPage } from 'next';
+import Header from '../components/common/Header';
+import InitView from '../components/InitView';
 
 const Home: NextPage = () => {
   return (

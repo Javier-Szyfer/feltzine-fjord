@@ -1,4 +1,4 @@
-import { getMerkleProof, getMerkleRoot } from "../utils/merkle/merkle";
+import { getMerkleProof, getMerkleRoot } from '../utils/merkle/merkle';
 
 export const useMerkleTree = (
   addressToCheck: string | undefined,

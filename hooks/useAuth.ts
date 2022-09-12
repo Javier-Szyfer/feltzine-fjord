@@ -7,8 +7,8 @@ import {
   useBalance,
   useEnsName,
   useEnsAvatar,
-} from "wagmi";
-import { shortenAddress } from "../utils/shortenAddress";
+} from 'wagmi';
+import { shortenAddress } from '../utils/shortenAddress';
 
 export function useAuth() {
   const provider = useProvider();

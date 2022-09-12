@@ -1,26 +1,26 @@
-import Link from "next/link";
-import { NextSeo } from "next-seo";
-import { useEffect, useState } from "react";
+import Link from 'next/link';
+import { NextSeo } from 'next-seo';
+import { useEffect, useState } from 'react';
 //CONTEXT
-import useSoundContext from "../context/soundContext/soundCtx";
-import { useDrop1Context } from "../context/drop1Context/drop1Ctx";
+import useSoundContext from '../context/soundContext/soundCtx';
+import { useDrop1Context } from '../context/drop1Context/drop1Ctx';
 //COMPONENTS
-import Header from "../components/common/Header";
-import News from "../components/common/News";
+import Header from '../components/common/Header';
+import News from '../components/common/News';
 //VIEWS
-import LostEchoesWL from "../components/lost-echoes/LostEchoesWL";
-import LELoading from "../components/lost-echoes/LELoading";
-import LEFjord from "../components/lost-echoes/LEFjord";
-import LostEchoesPM from "../components/lost-echoes/LostEchoesPM";
-import LEDisconnected from "../components/lost-echoes/LEDisconnected";
+import LostEchoesWL from '../components/lost-echoes/LostEchoesWL';
+import LELoading from '../components/lost-echoes/LELoading';
+import LEFjord from '../components/lost-echoes/LEFjord';
+import LostEchoesPM from '../components/lost-echoes/LostEchoesPM';
+import LEDisconnected from '../components/lost-echoes/LEDisconnected';
 //WAGMI
-import { useAccount, useNetwork } from "wagmi";
+import { useAccount, useNetwork } from 'wagmi';
 //
-import { chainID } from "../constants/chainId";
-import { useWhitelist } from "../hooks/useWhitelist";
-import { wlAddresses1 } from "../utils/merkle/wlAddresses1";
-import { ToastContainer, Zoom } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { chainID } from '../constants/chainId';
+import { useWhitelist } from '../hooks/useWhitelist';
+import { wlAddresses1 } from '../utils/merkle/wlAddresses1';
+import { ToastContainer, Zoom } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LostEchoes = () => {
   //CONTEXT
@@ -67,24 +67,24 @@ const LostEchoes = () => {
         title="Lost Echoes by Felt Zine"
         description="Original art by Ina Vare with production by Felt Zine. Lost Echoes explores the implicit bias of anthropologists, speculative futures, and retrofuturism as researchers discover an artist's memories in the year 3030 without context."
         openGraph={{
-          type: "website",
-          url: "https://www.feltzine-fjord.vercel.app/lost-echoes",
-          title: "Lost Echoes by Felt Zine",
-          site_name: "Lost Echoes by Felt Zine",
+          type: 'website',
+          url: 'https://www.feltzine-fjord.vercel.app/lost-echoes',
+          title: 'Lost Echoes by Felt Zine',
+          site_name: 'Lost Echoes by Felt Zine',
           description:
-            "Original art by Ina Vare with production by Felt Zine. Lost Echoes explores the implicit bias of anthropologists, speculative futures, and retrofuturism as researchers discover an artist’s memories in the year 3030 without context.",
+            'Original art by Ina Vare with production by Felt Zine. Lost Echoes explores the implicit bias of anthropologists, speculative futures, and retrofuturism as researchers discover an artist’s memories in the year 3030 without context.',
           images: [
             {
-              url: "https://res.cloudinary.com/aldi/image/upload/v1662486659/feltzine/b4Vq8Lw8_gnabpc.jpg",
-              alt: "Lost Echoes open graph",
-              type: "image/jpeg",
+              url: 'https://res.cloudinary.com/aldi/image/upload/v1662486659/feltzine/b4Vq8Lw8_gnabpc.jpg',
+              alt: 'Lost Echoes open graph',
+              type: 'image/jpeg',
             },
           ],
         }}
         twitter={{
-          handle: "@FeltZine",
-          site: "@FeltZine",
-          cardType: "summary_large_image",
+          handle: '@FeltZine',
+          site: '@FeltZine',
+          cardType: 'summary_large_image',
         }}
       />
       <ToastContainer
@@ -102,9 +102,9 @@ const LostEchoes = () => {
           <News size="xl" />
           {isWhitelisted && endWLDateInSecs > date.getTime() && (
             <span className=" mt-4 text-[#00eeff] tracking-tighter text-[10px] sm:text-xs text-shadowFirst flex flex-col sm:flex-row justify-center items-center">
-              You are whitelisted for:{" "}
+              You are whitelisted for:{' '}
               <span className="italic ml-1 flex flex-col justify-center items-center ">
-                {isWhitelisted && "Lost Echoes"}
+                {isWhitelisted && 'Lost Echoes'}
               </span>
             </span>
           )}
@@ -192,7 +192,7 @@ const LostEchoes = () => {
                 </div>
               </button>
               {tokens?.length > 0 && (
-                <Link href={"/nfts"}>
+                <Link href={'/nfts'}>
                   <button className=" cursor-fancy  border border-gray-400 py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none w-auto  mt-4 text-xs">
                     See NFTs
                   </button>

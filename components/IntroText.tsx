@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import { SplitChars } from "./SplitChars";
-import { AnimatePresence, motion } from "framer-motion";
-import { easing } from "../animations/animations";
+import { useEffect } from 'react';
+import { SplitChars } from './SplitChars';
+import { AnimatePresence, motion } from 'framer-motion';
+import { easing } from '../animations/animations';
 
 function IntroText({ visible, setVisible }: any) {
   useEffect(() => {
@@ -18,7 +18,7 @@ function IntroText({ visible, setVisible }: any) {
               exit={{ opacity: 0 }}
             >
               <SplitChars
-                initial={{ y: "115%" }}
+                initial={{ y: '115%' }}
                 animate="visible"
                 variants={{
                   visible: (i: number) => ({
