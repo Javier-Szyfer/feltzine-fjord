@@ -1,24 +1,24 @@
 import type { AppProps } from 'next/app';
 //Context
-import { SoundWrapper } from '../context/soundContext/soundCtx';
+import {
+  connectorsForWallets,
+  RainbowKitProvider,
+  Theme,
+  wallet,
+} from '@rainbow-me/rainbowkit';
+import '@rainbow-me/rainbowkit/styles.css';
+import { AnimatePresence } from 'framer-motion';
+import { DefaultSeo } from 'next-seo';
+import { useEffect, useState } from 'react';
+import { createClient as urqlClient, Provider } from 'urql';
+import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
+import { infuraProvider } from 'wagmi/providers/infura';
+import { publicProvider } from 'wagmi/providers/public';
 import { Drop1Wrapper } from '../context/drop1Context/drop1Ctx';
 import { Drop2Wrapper } from '../context/drop2Context/drop2Ctx';
-import { useState, useEffect } from 'react';
-import { AnimatePresence } from 'framer-motion';
-import {
-  RainbowKitProvider,
-  connectorsForWallets,
-  wallet,
-  Theme,
-} from '@rainbow-me/rainbowkit';
-import { WagmiConfig, chain, configureChains, createClient } from 'wagmi';
-import { publicProvider } from 'wagmi/providers/public';
-import { infuraProvider } from 'wagmi/providers/infura';
-import '../styles/globals.css';
-import '@rainbow-me/rainbowkit/styles.css';
+import { SoundWrapper } from '../context/soundContext/soundCtx';
 import SEO from '../next-seo.config';
-import { createClient as urqlClient, Provider } from 'urql';
-import { DefaultSeo } from 'next-seo';
+import '../styles/globals.css';
 
 const client = urqlClient({
   url: 'https://api.zora.co/graphql',
