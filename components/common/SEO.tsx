@@ -48,7 +48,7 @@ const SEO: FC<Props> = ({
       <meta property="twitter:image:src" content={image} />
       <meta name="twitter:card" content="summary_large_image" />
       <meta property="twitter:image:width" content="1200" />
-      <meta property="twitter:image:height" content="6300" />
+      <meta property="twitter:image:height" content="630" />
       <meta property="twitter:creator" content="FeltZine" />
       <meta property="og:image:alt" content={`${title}- open graph card`} />
     </Head>
