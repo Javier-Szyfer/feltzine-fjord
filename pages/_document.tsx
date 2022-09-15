@@ -1,4 +1,4 @@
-import { Html, Head, Main, NextScript } from 'next/document';
+import { Head, Html, Main, NextScript } from 'next/document';
 
 export default function Document() {
   return (
@@ -6,10 +6,7 @@ export default function Document() {
       <Head>
         <meta charSet="utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <link
-          rel="icon"
-          href="https://www.fjord.feltzine.art/assets/favicon.jpg"
-        />
+        <link rel="icon" href="https://fjord.feltzine.art/assets/favicon.jpg" />
         <meta content="#000000" name="theme-color" />
         <meta content="#000000" name="msapplication-TileColor" />
 
