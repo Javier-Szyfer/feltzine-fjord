@@ -10,7 +10,7 @@ interface Props {
 const SEO: FC<Props> = ({
   title = 'FeltZine x Fjord',
   description = 'Revolutionizing NFT Drops With Felt Zine and Fjord NFTs Liquidity Bootstrapping Pools',
-  image = 'https://res.cloudinary.com/aldi/image/upload/v1663247546/feltzine/general0g-sized_nfyc2t.jpg',
+  image = 'https://feltzine-fjord.vercel.app/assets/general-og.jpg',
 }) => {
   return (
     <Head>

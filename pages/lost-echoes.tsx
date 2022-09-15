@@ -65,7 +65,7 @@ const LostEchoes = () => {
     <div className=" overflow-hidden">
       <SEO
         title="FeltZine - Lost Echoes"
-        image="https://res.cloudinary.com/aldi/image/upload/v1663250057/feltzine/le-resized_sqqije.jpg"
+        image="https://feltzine-fjord.vercel.app/assets/le-resized.jpg"
       />
       <ToastContainer
         position="bottom-right"
