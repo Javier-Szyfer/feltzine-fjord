@@ -8,7 +8,6 @@ import {
 } from '@rainbow-me/rainbowkit';
 import '@rainbow-me/rainbowkit/styles.css';
 import { AnimatePresence } from 'framer-motion';
-import { DefaultSeo } from 'next-seo';
 import { useEffect, useState } from 'react';
 import { createClient as urqlClient, Provider } from 'urql';
 import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
@@ -17,7 +16,6 @@ import { publicProvider } from 'wagmi/providers/public';
 import { Drop1Wrapper } from '../context/drop1Context/drop1Ctx';
 import { Drop2Wrapper } from '../context/drop2Context/drop2Ctx';
 import { SoundWrapper } from '../context/soundContext/soundCtx';
-import SEO from '../next-seo.config';
 import '../styles/globals.css';
 
 const client = urqlClient({
@@ -64,7 +62,6 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Provider value={client}>
               <Drop1Wrapper>
                 <Drop2Wrapper>
-                  <DefaultSeo {...SEO} />
                   <Component {...pageProps} />
                 </Drop2Wrapper>
               </Drop1Wrapper>
