@@ -7,7 +7,7 @@ const Home: NextPage = () => {
   return (
     <>
       <SEO />
-      <div className=" flex flex-col justify-center items-center overflow-hidden  ">
+      <div className="flex flex-col justify-center items-center overflow-hidden  ">
         <div className="noise" />
         <Header />
         <InitView />

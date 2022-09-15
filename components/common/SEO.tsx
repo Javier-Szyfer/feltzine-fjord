@@ -34,7 +34,7 @@ const SEO: FC<Props> = ({
       <link rel="preconnect" href="https://ipfs.infura.io" />
       <link rel="dns-prefetch" href="https://ipfs.infura.io" />
 
-      <meta property="og:url" content="https://www.feltzine-fjord.vercel.app" />
+      <meta property="og:url" content="https://feltzine-fjord.vercel.app" />
       <meta property="og:site_name" content="Feltzine x Fjord" />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
