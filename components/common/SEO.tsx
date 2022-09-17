@@ -10,7 +10,7 @@ interface Props {
 const SEO: FC<Props> = ({
   title = 'FeltZine x Fjord',
   description = 'Revolutionizing NFT Drops With Felt Zine and Fjord NFTs Liquidity Bootstrapping Pools',
-  image = 'https://feltzine-fjord.vercel.app/assets/general-og.jpg',
+  image = 'https://www.feltzine-fjord.vercel.app/assets/general-og.jpg',
 }) => {
   return (
     <Head>
@@ -34,21 +34,30 @@ const SEO: FC<Props> = ({
       <link rel="preconnect" href="https://ipfs.infura.io" />
       <link rel="dns-prefetch" href="https://ipfs.infura.io" /> */}
 
-      <meta property="og:url" content={image} />
+      <meta
+        property="og:url"
+        content="https://www.feltzine-fjord.vercel.app/assets/general-og.jpg"
+      />
       <meta property="og:site_name" content="Feltzine x Fjord" />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content={image} />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
+      <meta
+        property="og:image"
+        content="https://www.feltzine-fjord.vercel.app/assets/general-og.jpg"
+      />
+      {/* <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" /> */}
 
       <meta property="twitter:site" content="Feltzine" />
       <meta property="twitter:title" content={title} />
       <meta property="twitter:description" content={description} />
-      <meta property="twitter:image" content={image} />
       <meta name="twitter:card" content="summary_large_image" />
-      <meta property="twitter:image:width" content="1200" />
-      <meta property="twitter:image:height" content="630" />
+      {/* <meta property="twitter:image:width" content="1200" />
+      <meta property="twitter:image:height" content="630" /> */}
+      <meta
+        name="twitter:image"
+        content="https://www.feltzine-fjord.vercel.app/assets/general-og.jpg"
+      />
       <meta property="twitter:creator" content="FeltZine" />
       <meta property="og:image:alt" content={`${title}- open graph card`} />
     </Head>
