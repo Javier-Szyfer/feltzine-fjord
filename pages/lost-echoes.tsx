@@ -1,6 +1,6 @@
+import Head from 'next/head';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import SEO from '../components/common/SEO';
 //CONTEXT
 import { useDrop1Context } from '../context/drop1Context/drop1Ctx';
 import useSoundContext from '../context/soundContext/soundCtx';
@@ -25,6 +25,11 @@ import { useWhitelist } from '../hooks/useWhitelist';
 import { wlAddresses1 } from '../utils/merkle/wlAddresses1';
 
 const LostEchoes = () => {
+  const title = 'FeltZine - Lost Echoes';
+  const description =
+    'Revolutionizing NFT Drops With Felt Zine and Fjord NFTs Liquidity Bootstrapping Pools';
+  const image = 'https://feltzine-fjord.vercel.app/assets/le-resized.jpg';
+
   //CONTEXT
   const {
     isSoundOn,
@@ -65,10 +70,23 @@ const LostEchoes = () => {
 
   return (
     <div className=" overflow-hidden">
-      <SEO
-        title="FeltZine - Lost Echoes"
-        image="https://feltzine-fjord.vercel.app/assets/le-resized.jpg"
-      />
+      <Head>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://feltzine-fjord.vercel.app" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={image} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="twitter:site" content="Feltzine" />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={description} />
+        <meta name="twitter:image" content={image} />
+        <meta property="twitter:creator" content="FeltZine" />
+        <meta property="og:image:alt" content={`${title}- open graph card`} />
+      </Head>
       <ToastContainer
         position="bottom-right"
         autoClose={4000}
