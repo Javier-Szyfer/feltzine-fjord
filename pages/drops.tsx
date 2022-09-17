@@ -1,29 +1,27 @@
-import { useState } from 'react';
+import { useChainModal, useConnectModal } from '@rainbow-me/rainbowkit';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useChainModal, useConnectModal } from '@rainbow-me/rainbowkit';
+import { useState } from 'react';
 import { chainID } from '../constants/chainId';
 //CONTEXT
-import useSoundContext from '../context/soundContext/soundCtx';
 import { useDrop1Context } from '../context/drop1Context/drop1Ctx';
-import { useDrop2Context } from '../context/drop2Context/drop2Ctx';
+import useSoundContext from '../context/soundContext/soundCtx';
 //
 import { motion } from 'framer-motion';
-import { fadeInUp, stagger } from '../animations/animations';
-import useSound from 'use-sound';
-import { Zoom, ToastContainer, toast } from 'react-toastify';
+import { toast, ToastContainer, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import useSound from 'use-sound';
+import { fadeInUp, stagger } from '../animations/animations';
 //COMPONENTS
 import Header from '../components/common/Header';
 import News from '../components/common/News';
 import Tv1Whitelist from '../components/drops/tv1/Tv1Whitelist';
-import Tv1FjordMint from '../components/drops/tv1/Tv1FjordMint';
-import TV1PublicMint from '../components/drops/tv1/TV1PublicMint';
 //WHITELIST
+import Timer from '../components/common/Timer';
+import { Tv1MintEnded } from '../components/drops/tv1/Tv1MintEnded';
+import { useAuth } from '../hooks/useAuth';
 import { useWhitelist } from '../hooks/useWhitelist';
 import { wlAddresses1 } from '../utils/merkle/wlAddresses1';
-import Timer from '../components/common/Timer';
-import { useAuth } from '../hooks/useAuth';
 
 const Drops = () => {
   const { address, chain } = useAuth();
@@ -38,7 +36,6 @@ const Drops = () => {
   const { endWLDateInSecs, stage } = useDrop1Context();
   const [tv1Hover, setTv1Hover] = useState(false);
   //DROP2
-  const { endWL2DateInSecs, formattedWL2EndDate } = useDrop2Context();
   const [tv2Hover, setTv2Hover] = useState(false);
   //DROP3
   const [tv3Hover, setTv3Hover] = useState(false);
@@ -217,13 +214,13 @@ const Drops = () => {
                     </a>
                   )}
                 {/* FJORD MINT == WHITELIST ENDED && PUBLIC MINT INACTIVE*/}
-                {stage === 3 &&
+                {/* {stage === 3 &&
                   endWLDateInSecs < date.getTime() &&
                   chain?.id === chainID &&
-                  address && <Tv1FjordMint tv1Hover={tv1Hover} stop1={stop1} />}
+                  address && <Tv1FjordMint tv1Hover={tv1Hover} stop1={stop1} />} */}
 
                 {/* PUBLIC MINT ACTIVE*/}
-                {address &&
+                {/* {address &&
                   endWLDateInSecs < date.getTime() &&
                   stage === 4 &&
                   chain?.id === chainID && (
@@ -231,7 +228,9 @@ const Drops = () => {
                       handleEnterTv={handleEnterTv}
                       tv1Hover={tv1Hover}
                     />
-                  )}
+                  )} */}
+                {/* MINT ENDED */}
+                <Tv1MintEnded stop1={stop1} tv1Hover={tv1Hover} />
                 {/* DISCONNECTED */}
                 {!address && (
                   <button

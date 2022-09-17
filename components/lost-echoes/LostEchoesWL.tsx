@@ -1,27 +1,27 @@
-import Link from "next/link";
-import { useState } from "react";
-import useSound from "use-sound";
-import useDrop1Context from "../../context/drop1Context/drop1Ctx";
-import useSoundContext from "../../context/soundContext/soundCtx";
-import Timer from "../common/Timer";
-import { chainID } from "../../constants/chainId";
+import Link from 'next/link';
+import { useState } from 'react';
+import useSound from 'use-sound';
+import { chainID } from '../../constants/chainId';
+import useDrop1Context from '../../context/drop1Context/drop1Ctx';
+import useSoundContext from '../../context/soundContext/soundCtx';
+import Timer from '../common/Timer';
 //WAGMI
 import {
+  useContractRead,
   useContractWrite,
   usePrepareContractWrite,
   useWaitForTransaction,
-  useContractRead,
-} from "wagmi";
+} from 'wagmi';
 //DATA
-import { fjordDrop1ContractAddress } from "../../constants/contractAddresses";
-import { fjordDrop1MainnetAbi } from "../../contractABI/mainnetABIS";
-import { wlAddresses1 } from "../../utils/merkle/wlAddresses1";
-import { useWhitelist } from "../../hooks/useWhitelist";
-import { ethers } from "ethers";
-import { toast } from "react-toastify";
-import { useMerkleTree } from "../../hooks/useMerkleTree";
-import { formatHash } from "../../utils/formatters";
-import { useAuth } from "../../hooks/useAuth";
+import { ethers } from 'ethers';
+import { toast } from 'react-toastify';
+import { fjordDrop1ContractAddress } from '../../constants/contractAddresses';
+import { fjordDrop1MainnetAbi } from '../../contractABI/mainnetABIS';
+import { useAuth } from '../../hooks/useAuth';
+import { useMerkleTree } from '../../hooks/useMerkleTree';
+import { useWhitelist } from '../../hooks/useWhitelist';
+import { formatHash } from '../../utils/formatters';
+import { wlAddresses1 } from '../../utils/merkle/wlAddresses1';
 
 const LostEchoesWL = () => {
   const { address, chain, balance } = useAuth();
@@ -42,22 +42,22 @@ const LostEchoesWL = () => {
   } = useSoundContext();
   //SOUNDS
   const [mint1] = useSound(
-    "https://res.cloudinary.com/aldi/video/upload/v1661350626/feltzine/mint1_th5lyy.mp3",
+    'https://res.cloudinary.com/aldi/video/upload/v1661350626/feltzine/mint1_th5lyy.mp3',
     { volume: 0.2 }
   );
   const [mint2] = useSound(
-    "https://res.cloudinary.com/aldi/video/upload/v1661350625/feltzine/mint2_biappo.mp3",
+    'https://res.cloudinary.com/aldi/video/upload/v1661350625/feltzine/mint2_biappo.mp3',
     { volume: 0.2 }
   );
   const [back] = useSound(
-    "https://res.cloudinary.com/aldi/video/upload/v1661351389/feltzine/back_o59yfu.mp3",
+    'https://res.cloudinary.com/aldi/video/upload/v1661351389/feltzine/back_o59yfu.mp3',
     { volume: 0.2 }
   );
   //WAGMI READ
   const { data: nftsOwned, refetch: refetchNFTs } = useContractRead({
     addressOrName: fjordDrop1ContractAddress,
     contractInterface: fjordDrop1MainnetAbi,
-    functionName: "mintPerWhitelistedWallet",
+    functionName: 'mintPerWhitelistedWallet',
     args: [address],
     cacheTime: 5,
     watch: true,
@@ -69,7 +69,7 @@ const LostEchoesWL = () => {
   const { config } = usePrepareContractWrite({
     addressOrName: fjordDrop1ContractAddress,
     contractInterface: fjordDrop1MainnetAbi,
-    functionName: "whitelistMint",
+    functionName: 'whitelistMint',
     args: [
       whiteListMintAmount,
       proof,
@@ -91,7 +91,7 @@ const LostEchoesWL = () => {
     confirmations: 2,
     onSuccess() {
       setProcessing(false);
-      toast.success("Transaction successful", { toastId: "mintSuccess-tv1" });
+      toast.success('Transaction successful', { toastId: 'mintSuccess-tv1' });
       setShowTXHash(true);
       //refetch
       readTMinted();
@@ -101,32 +101,32 @@ const LostEchoesWL = () => {
   const handleWhitelistMint = () => {
     setProcessing(true);
     if (chain?.id !== chainID) {
-      toast.error("Please connect to Goerli Testnet", {
-        toastId: "wrongNetwork-tv1",
+      toast.error('Please connect to Goerli Testnet', {
+        toastId: 'wrongNetwork-tv1',
       });
       setProcessing(false);
       return;
     } else if (!address) {
-      toast.error("Please connect your wallet", { toastId: "noWallet-tv1" });
+      toast.error('Please connect your wallet', { toastId: 'noWallet-tv1' });
       setProcessing(false);
       return;
     } else if (balance && balance?.formatted < totalWhitelistPrice.toString()) {
-      toast.error("Insufficient funds", { toastId: "insufficientFunds-tv1" });
+      toast.error('Insufficient funds', { toastId: 'insufficientFunds-tv1' });
       setProcessing(false);
       return;
     } else if (nftsOwned && Number(nftsOwned) + whiteListMintAmount > 2) {
-      toast.error("You can only mint 2 NFTs", {
-        toastId: "maxMintExceeded-tv1",
+      toast.error('You can only mint 2 NFTs', {
+        toastId: 'maxMintExceeded-tv1',
       });
       setProcessing(false);
       return;
     } else if (!isWhitelisted) {
-      toast.error("You are not whitelisted", { toastId: "notWhitelisted-tv1" });
+      toast.error('You are not whitelisted', { toastId: 'notWhitelisted-tv1' });
       setProcessing(false);
       return;
     } else if (date.getTime() >= endWLDateInSecs) {
-      toast.error("Whitelist period has ended", {
-        toastId: "whitelistEnded-tv1",
+      toast.error('Whitelist period has ended', {
+        toastId: 'whitelistEnded-tv1',
       });
       setProcessing(false);
       return;
@@ -152,7 +152,7 @@ const LostEchoesWL = () => {
             </div>
             <span>
               Artifacts found:
-              {totalMintedDrop1 ? `${totalMintedDrop1}/525` : "N/A"}
+              {totalMintedDrop1 ? `${totalMintedDrop1}/525` : 'N/A'}
             </span>
             <h3 className="mt-8">
               Researchers discover Ina&apos;s memories in the year 3030.
@@ -172,7 +172,7 @@ const LostEchoesWL = () => {
               <div className="border border-[#80ff9e] text-center text-[#80ff9e] flex">
                 <button
                   className={` ${
-                    whiteListMintAmount === 1 ? "bg-[#80ff9e47]" : "bg-none"
+                    whiteListMintAmount === 1 ? 'bg-[#80ff9e47]' : 'bg-none'
                   } text-drop1 md:w-auto px-4 md:h-10 border-r py-2 border-[#80ff9e] rounded-l cursor-fancy `}
                   onClick={() => {
                     setWhiteListMintAmount(1),
@@ -184,7 +184,7 @@ const LostEchoesWL = () => {
                 </button>
                 <button
                   className={` ${
-                    whiteListMintAmount === 2 ? "bg-[#80ff9e47]" : "bg-none"
+                    whiteListMintAmount === 2 ? 'bg-[#80ff9e47]' : 'bg-none'
                   } text-drop1 md:w-auto px-4 md:h-10 border-r border-[#80ff9e] rounded-l cursor-fancy `}
                   onClick={() => {
                     isSoundOn && mint2(),
@@ -198,7 +198,7 @@ const LostEchoesWL = () => {
             )}
           </div>
           <div className=" flex w-full  justify-between items-center mt-6">
-            <Link href={"/drops"}>
+            <Link href={'/drops'}>
               <button
                 className="text-drop1 hover:text-[#ff3700] cursor-fancy "
                 onClick={() => {

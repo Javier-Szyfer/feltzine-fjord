@@ -46,6 +46,7 @@ const SEO: FC<Props> = ({
       <meta property="twitter:title" content={title} />
       <meta property="twitter:description" content={description} />
       <meta property="twitter:image:src" content={image} />
+      <meta property="twitter:image" content={image} />
       <meta name="twitter:card" content="summary_large_image" />
       <meta property="twitter:image:width" content="1200" />
       <meta property="twitter:image:height" content="630" />
