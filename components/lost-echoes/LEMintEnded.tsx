@@ -2,16 +2,11 @@ import Link from 'next/link';
 import useSound from 'use-sound';
 import useDrop1Context from '../../context/drop1Context/drop1Ctx';
 import useSoundContext from '../../context/soundContext/soundCtx';
-import Timer from '../common/Timer';
-interface Props {
-  stage: number;
-}
 
-const LEFjord = ({ stage }: Props) => {
+export const LEMintEnded = () => {
   //CONTEXT
-  const { totalMintedDrop1, endWLDateInSecs } = useDrop1Context();
+  const { totalMintedDrop1 } = useDrop1Context();
   const { isSoundOn, tv1SoundtrackStop } = useSoundContext();
-  const date = new Date();
   //SOUNDS
   const [back] = useSound(
     'https://res.cloudinary.com/aldi/video/upload/v1661351389/feltzine/back_o59yfu.mp3',
@@ -27,17 +22,12 @@ const LEFjord = ({ stage }: Props) => {
         muted
         className=" opacity-60 contrast-80 hue-rotate-50 bg-black mix-blend-exclusion hidden lg:flex"
       />
-
       <div className=" lg:absolute inset-0  flex flex-col justify-between shadow-xl shadow-stone-200/10 rounded-2xl bg-[url('../public/images/tv-bg.png')] lg:p-8 ">
         <div className="bg-[url('https://res.cloudinary.com/aldi/image/upload/v1662031129/feltzine/gifBg1_aeastj.gif')] bg-cover bg-opacity-10  lg:bg-none p-4 sm:p-8 lg:p-0 h-full flex flex-col justify-between">
           <div>
             <div className="flex flex-col md:flex-row justify-between md:items-center ">
               <h2>LOST ECHOES</h2>
-              {endWLDateInSecs > date.getTime() ? (
-                <Timer deadline={endWLDateInSecs} />
-              ) : (
-                <a href="https://fjordnfts.com/create/">whitelist ended</a>
-              )}
+              <h3>MINT ENDED</h3>
             </div>
             <span className="">
               Artifacts found:
@@ -65,12 +55,12 @@ const LEFjord = ({ stage }: Props) => {
               </button>
             </Link>
             <a
-              href="https://fjordnfts.com/drops/mainnet/0xC1656a25591d440b88275E5D36Ad921F2048A9Cb"
+              href="https://www.feltzine.art/collections/0xb775206e01fe2d60de85df9f18dd810998bff6d7"
               target="_blank"
               rel="noopener noreferrer"
             >
               <button className="text-[#80ff9e] border  border-[#80ff9e] px-3 py-1 text-drop1 hover:shadow-sm hover:shadow-red-400 cursor-fancy ">
-                {stage === 3 ? 'VISIT FJORD DROP' : 'MINT TRHOUGH FJORD'}
+                COLLECT HERE
               </button>
             </a>
           </div>
@@ -79,5 +69,3 @@ const LEFjord = ({ stage }: Props) => {
     </>
   );
 };
-
-export default LEFjord;

@@ -1,24 +1,32 @@
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { motion } from 'framer-motion';
 import Head from 'next/head';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
+import useSound from 'use-sound';
 import Header from '../components/common/Header';
 import News from '../components/common/News';
+import { fjordDrop1ContractAddress } from '../constants/contractAddresses';
 import useDrop1Context from '../context/drop1Context/drop1Ctx';
 import { useAuth } from '../hooks/useAuth';
 
 const NftsInWallet = () => {
+  const router = useRouter();
   const { address } = useAuth();
   const { ownerNFTsResult } = useDrop1Context();
   const { data, fetching, error } = ownerNFTsResult;
-
   const { openConnectModal } = useConnectModal();
+
+  const FeltZineUrl = 'https://feltzine.art/';
+  const [back] = useSound(
+    'https://res.cloudinary.com/aldi/video/upload/v1661351389/feltzine/back_o59yfu.mp3',
+    { volume: 0.2 }
+  );
 
   if (!address) {
     return (
-      <div className=" relative flex flex-col min-h-screen text-shadowTitle  items-center">
-        <div className="noise"></div>
+      <div className=" max-w-7xl mx-auto px-4">
         <Header />
+        <div className="noise"></div>
         <div className="max-w-4xl mx-auto">
           <News size="2xl" />
         </div>
@@ -80,7 +88,13 @@ const NftsInWallet = () => {
         <div className="mt-8 text-shadowTitle pb-12">
           <div className=" relative flex items-center justify-between">
             <span>Your NFTs</span>
-            <Link href="/drops">&larr;BACK</Link>
+            <button
+              onClick={() => {
+                back(), router.back();
+              }}
+            >
+              &larr;BACK
+            </button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12  mt-8">
             {ownerNFTsResult?.data?.tokens.nodes.map((t: any) => {
@@ -90,28 +104,40 @@ const NftsInWallet = () => {
                 .pop();
               const formatedAnimationURL = `https://ipfs.io/ipfs/${animationURL}`;
               return (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ ease: 'easeOut', duration: 1 }}
-                  whileHover={{ scale: 1.02 }}
+                <a
+                  href={`${
+                    FeltZineUrl +
+                    fjordDrop1ContractAddress +
+                    '/' +
+                    token.tokenId
+                  }`}
                   key={token.metadata?.animation_url}
-                  className="relative aspect-square shadow-lg shadow-[#f8f8f8]/20 flex flex-col justify-start items-center  border border-[#8b8b8b] p-2 text-[#00eeff] object-cover w-full"
+                  target="_blank"
+                  rel="noreferrer"
                 >
-                  <video
-                    src={formatedAnimationURL}
-                    autoPlay
-                    preload="metadata"
-                    loop
-                    playsInline={token.metadata?.animation_url ? true : false}
-                    // poster={formatedImage}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className=" text-sm flex w-full justify-between items-between gap-1 pt-4">
-                    <span>Lost Echoes</span>
-                    <span>Token id: {token.tokenId}</span>
-                  </div>
-                </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ ease: 'easeOut', duration: 1 }}
+                    whileHover={{ scale: 1.02 }}
+                    className="relative aspect-square shadow-lg shadow-[#f8f8f8]/20 flex flex-col justify-start items-center  border border-[#8b8b8b] p-2 text-[#00eeff] object-cover w-full"
+                  >
+                    <video
+                      src={formatedAnimationURL}
+                      autoPlay
+                      preload="metadata"
+                      loop
+                      muted
+                      playsInline={token.metadata?.animation_url ? true : false}
+                      // poster={formatedImage}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className=" text-sm flex w-full justify-between items-between gap-1 pt-4">
+                      <span>Lost Echoes</span>
+                      <span>Token id: {token.tokenId}</span>
+                    </div>
+                  </motion.div>
+                </a>
               );
             })}
           </div>

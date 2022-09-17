@@ -11,8 +11,10 @@ import News from '../components/common/News';
 import LEDisconnected from '../components/lost-echoes/LEDisconnected';
 import LEFjord from '../components/lost-echoes/LEFjord';
 import LELoading from '../components/lost-echoes/LELoading';
+import { LEMintEnded } from '../components/lost-echoes/LEMintEnded';
 import LostEchoesPM from '../components/lost-echoes/LostEchoesPM';
 import LostEchoesWL from '../components/lost-echoes/LostEchoesWL';
+
 //WAGMI
 import { useAccount, useNetwork } from 'wagmi';
 //
@@ -50,7 +52,7 @@ const LostEchoes = () => {
   useEffect(() => {
     const loadingTime = setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1000);
     return () => clearTimeout(loadingTime);
   }, []);
 
@@ -119,7 +121,7 @@ const LostEchoes = () => {
               </div>
             )}
           {/* MINT FJORD: WHITELIST INACTIVE && PUBLICMINT INACTIVE */}
-          {address &&
+          {/* {address &&
             !loading &&
             chain?.id === chainID &&
             date.getTime() > endWLDateInSecs &&
@@ -127,8 +129,14 @@ const LostEchoes = () => {
               <div className=" text-drop1  relative  lg:min-h-none   border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
                 <LEFjord stage={stage} />
               </div>
-            )}
+            )} */}
 
+          {/* MINT ENDED */}
+          {address && !loading && (
+            <div className=" text-drop1  relative  lg:min-h-none  border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
+              <LEMintEnded />
+            </div>
+          )}
           {/* WHITELIST ACTIVE AND WHITELISTED ACC */}
           {address &&
             isWhitelisted &&
@@ -150,39 +158,38 @@ const LostEchoes = () => {
               </div>
             )}
           {/* SOUND CONTROL */}
-          {!loading && (
-            <div className="flex w-full justify-between items-center pb-6 px-4">
-              <button
-                onClick={() => {
-                  handleSoundOff();
-                }}
-                className=" cursor-fancy  border border-gray-400 py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none w-auto  mt-4 text-xs"
-              >
-                <div className="flex items-center justify-center">
-                  <span className="mr-3 text-shadowFirst">SOUND</span>
-                  {isSoundOn ? (
-                    <span className="">
-                      <span className="text-[#5d5d5df4]">OFF</span> | ON
-                    </span>
-                  ) : (
-                    <span>
-                      OFF | <span className="text-[#5d5d5df4]">ON</span>
-                    </span>
-                  )}
-                </div>
-              </button>
-              {data?.tokens.nodes.length !== 0 && (
-                <Link href={'/nfts'}>
-                  <button
-                    onClick={() => tv1SoundtrackStop()}
-                    className=" cursor-fancy  border border-gray-400 py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none w-auto  mt-4 text-xs"
-                  >
-                    See NFTs
-                  </button>
-                </Link>
-              )}
-            </div>
-          )}
+
+          <div className="flex w-full justify-between items-center pb-6 px-4">
+            <button
+              onClick={() => {
+                handleSoundOff();
+              }}
+              className=" cursor-fancy  border border-gray-400 py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none w-auto  mt-4 text-xs"
+            >
+              <div className="flex items-center justify-center">
+                <span className="mr-3 text-shadowFirst">SOUND</span>
+                {isSoundOn ? (
+                  <span className="">
+                    <span className="text-[#5d5d5df4]">OFF</span> | ON
+                  </span>
+                ) : (
+                  <span>
+                    OFF | <span className="text-[#5d5d5df4]">ON</span>
+                  </span>
+                )}
+              </div>
+            </button>
+            {data?.tokens.nodes.length !== 0 && (
+              <Link href={'/nfts'}>
+                <button
+                  onClick={() => tv1SoundtrackStop()}
+                  className=" cursor-fancy  border border-gray-400 py-2 px-4 shadow-sm shadow-gray-100/60 rounded-none w-auto  mt-4 text-xs"
+                >
+                  See NFTs
+                </button>
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </div>
