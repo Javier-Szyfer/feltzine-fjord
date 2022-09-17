@@ -5,19 +5,15 @@ import InitView from '../components/InitView';
 
 const Home: NextPage = () => {
   const title = 'FeltZine x Fjord';
-  // const description =
-  //   'Revolutionizing NFT Drops With Felt Zine and Fjord NFTs Liquidity Bootstrapping Pools';
-  // const image = 'https://www.feltzine-fjord.vercel.app/assets/general-og.jpg';
+  const description =
+    'Revolutionizing NFT Drops With Felt Zine and Fjord NFTs Liquidity Bootstrapping Pools';
+  const image = 'https://www.feltzine-fjord.vercel.app/assets/general-og.jpg';
 
   return (
     <>
       <Head>
-        {/* <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=5"
-        /> */}
         <title>{title}</title>
-        {/* <meta name="description" content={description} />
+        <meta name="description" content={description} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://feltzine-fjord.vercel.app" />
         <meta property="og:title" content={title} />
@@ -30,7 +26,7 @@ const Home: NextPage = () => {
         <meta property="twitter:description" content={description} />
         <meta name="twitter:image" content={image} />
         <meta property="twitter:creator" content="FeltZine" />
-        <meta property="og:image:alt" content={`${title}- open graph card`} /> */}
+        <meta property="og:image:alt" content={`${title}- open graph card`} />
       </Head>
 
       <div className="flex flex-col justify-center items-center overflow-hidden  ">
