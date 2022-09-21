@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { useState } from 'react';
 import useSound from 'use-sound';
+
 //COMPONENTS
-import IntroText from './IntroText';
 import News from './common/News';
+import IntroText from './IntroText';
 
 const InitView = () => {
   const [visible, setVisible] = useState(false);

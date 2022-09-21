@@ -16,6 +16,7 @@ interface Drop1ContextProps {
   stage?: any;
   readTMinted: () => void;
   ownerNFTsResult: any;
+  reexecuteQuery: any;
 }
 
 interface props {
@@ -59,12 +60,13 @@ export function Drop1Wrapper({ children }: props) {
   const totalMintedDrop1 =
     totalMintedDrop && ethers.BigNumber.from(totalMintedDrop).toNumber();
 
-  //GET OWNED NFTS
+  //GET OWNED NFTS QUERY
   const OWNED_NFTS = gql`
-    query ($col: [String!], $add: [String!]) {
+    query ($col: [String!], $add: [String!], $limit: Int!) {
       tokens(
         where: { collectionAddresses: $col, ownerAddresses: $add }
         networks: { network: ETHEREUM, chain: MAINNET }
+        pagination: { limit: $limit }
       ) {
         nodes {
           token {
@@ -72,12 +74,20 @@ export function Drop1Wrapper({ children }: props) {
             metadata
           }
         }
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
       }
     }
   `;
-  const [result] = useQuery({
+  const [result, reexecuteQuery] = useQuery({
     query: OWNED_NFTS,
-    variables: { col: fjordDrop1ContractAddress, add: address },
+    variables: {
+      col: fjordDrop1ContractAddress,
+      add: '0x5e080d8b14c1da5936509c2c9ef0168a19304202',
+      limit: 20,
+    },
     context: useMemo(
       () => ({
         requestPolicy: 'cache-and-network',
@@ -94,6 +104,7 @@ export function Drop1Wrapper({ children }: props) {
         totalMintedDrop1,
         endWLDateInSecs,
         formattedWLEndDate,
+        reexecuteQuery,
         stage,
         ownerNFTsResult: result,
       }}

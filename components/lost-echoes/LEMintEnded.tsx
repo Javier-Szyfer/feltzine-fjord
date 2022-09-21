@@ -19,6 +19,7 @@ export const LEMintEnded = () => {
         src="https://res.cloudinary.com/aldi/video/upload/v1661348392/feltzine/production_ID_3877749_gackzc.mp4"
         autoPlay
         loop
+        preload="true"
         muted
         className=" opacity-60 contrast-80 hue-rotate-50 bg-black mix-blend-exclusion hidden lg:flex"
       />
@@ -27,7 +28,7 @@ export const LEMintEnded = () => {
           <div>
             <div className="flex flex-col md:flex-row justify-between md:items-center ">
               <h2>LOST ECHOES</h2>
-              <h3>MINT ENDED</h3>
+              <h3>MINT COMPLETED</h3>
             </div>
             <span className="">
               Artifacts found:
