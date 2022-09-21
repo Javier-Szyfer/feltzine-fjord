@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-import { SplitChars } from './SplitChars';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect } from 'react';
 import { easing } from '../animations/animations';
+import { SplitChars } from './SplitChars';
 
 function IntroText({ visible, setVisible }: any) {
   useEffect(() => {
@@ -30,8 +30,7 @@ function IntroText({ visible, setVisible }: any) {
                   }),
                 }}
               >
-                Collaboration between Felt Zine and Fjord Foundry. Four drops to
-                be anounced soon.
+                Four drops collaboration between Felt Zine and Fjord Foundry.
               </SplitChars>
             </motion.div>
           )}

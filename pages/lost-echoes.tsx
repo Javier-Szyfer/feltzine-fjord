@@ -12,7 +12,6 @@ import LEDisconnected from '../components/lost-echoes/LEDisconnected';
 import LEFjord from '../components/lost-echoes/LEFjord';
 import LELoading from '../components/lost-echoes/LELoading';
 import { LEMintEnded } from '../components/lost-echoes/LEMintEnded';
-import LostEchoesPM from '../components/lost-echoes/LostEchoesPM';
 import LostEchoesWL from '../components/lost-echoes/LostEchoesWL';
 
 //WAGMI
@@ -169,7 +168,7 @@ const LostEchoes = () => {
               </div>
             )}
           {/* PUBLIC MINT === WHITELIST ENDED AND FJORD MINT ENDED */}
-          {address &&
+          {/* {address &&
             date.getTime() > endWLDateInSecs &&
             !loading &&
             stage === 4 &&
@@ -177,7 +176,7 @@ const LostEchoes = () => {
               <div className=" text-drop1 relative lg:min-h-none  border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
                 <LostEchoesPM />
               </div>
-            )}
+            )} */}
           {/* SOUND CONTROL */}
 
           <div className="flex w-full justify-between items-center pb-6 px-4">

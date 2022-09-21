@@ -15,6 +15,7 @@ const NftsInWallet = () => {
   const { ownerNFTsResult } = useDrop1Context();
   const { data, fetching, error } = ownerNFTsResult;
   const { openConnectModal } = useConnectModal();
+  console.log(ownerNFTsResult);
 
   const FeltZineUrl = 'https://feltzine.art/';
   const [back] = useSound(
@@ -30,7 +31,6 @@ const NftsInWallet = () => {
         <div className="max-w-4xl mx-auto">
           <News size="2xl" />
         </div>
-
         <div className="relative flex flex-col justify-center min-h-[90vh]">
           <button
             onClick={() => {
@@ -111,7 +111,7 @@ const NftsInWallet = () => {
                     '/' +
                     token.tokenId
                   }`}
-                  key={token.metadata?.animation_url}
+                  key={token.tokenId}
                   target="_blank"
                   rel="noreferrer"
                 >

@@ -230,7 +230,8 @@ const Drops = () => {
                     />
                   )} */}
                 {/* MINT ENDED */}
-                <Tv1MintEnded stop1={stop1} tv1Hover={tv1Hover} />
+                {address && <Tv1MintEnded stop1={stop1} tv1Hover={tv1Hover} />}
+
                 {/* DISCONNECTED */}
                 {!address && (
                   <button
