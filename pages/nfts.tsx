@@ -15,7 +15,6 @@ const NftsInWallet = () => {
   const { ownerNFTsResult } = useDrop1Context();
   const { data, fetching, error } = ownerNFTsResult;
   const { openConnectModal } = useConnectModal();
-  console.log(ownerNFTsResult);
 
   const FeltZineUrl = 'https://feltzine.art/';
   const [back] = useSound(
@@ -46,7 +45,7 @@ const NftsInWallet = () => {
 
   if (fetching) {
     return (
-      <div className="flex flex-col min-h-screen text-shadowTitle  items-center">
+      <div className=" max-w-7xl mx-auto px-4">
         <div className="noise"></div>
         <Header />
 
@@ -59,14 +58,14 @@ const NftsInWallet = () => {
 
   if (error) {
     return (
-      <div className="flex flex-col min-h-screen text-shadowTitle  items-center px-8">
+      <div className=" max-w-7xl mx-auto px-4">
         <div className="noise"></div>
         <Header />
         <div className="max-w-4xl mx-auto">
           <News size="2xl" />
         </div>
 
-        <div className="flex flex-col justify-center min-h-[90vh]">
+        <div className="flex flex-col items-center text-center justify-center min-h-[80vh]">
           Error fetching your NFTs ...
         </div>
       </div>
