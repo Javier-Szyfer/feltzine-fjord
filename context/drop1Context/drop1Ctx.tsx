@@ -85,12 +85,17 @@ export function Drop1Wrapper({ children }: props) {
     query: OWNED_NFTS,
     variables: {
       col: fjordDrop1ContractAddress,
-      add: '0x5e080d8b14c1da5936509c2c9ef0168a19304202',
-      limit: 20,
+      add: address,
+      limit: 24,
     },
     context: useMemo(
       () => ({
         requestPolicy: 'cache-and-network',
+        headers: {
+          'Content-Type': 'applicaton/json',
+          key: 'Access-Control-Allow-Credentials',
+          value: 'true',
+        },
         url: 'https://api.zora.co/graphql',
       }),
       []
