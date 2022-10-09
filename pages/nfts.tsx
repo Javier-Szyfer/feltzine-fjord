@@ -145,7 +145,7 @@ const NftsInWallet = () => {
       {data?.tokens.nodes.length === 0 && (
         <div className="flex flex-col min-h-[50vh] justify-center items-center gap-6  ">
           <h1 className="text-shadowTitle text-lg">
-            You don&apos;t own Lost Echoes NFTs
+            You don&apos;t own any NFTs yet
           </h1>
         </div>
       )}

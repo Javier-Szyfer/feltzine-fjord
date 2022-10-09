@@ -9,9 +9,7 @@ import Header from '../components/common/Header';
 import News from '../components/common/News';
 //VIEWS
 import LEDisconnected from '../components/lost-echoes/LEDisconnected';
-import LEFjord from '../components/lost-echoes/LEFjord';
 import LELoading from '../components/lost-echoes/LELoading';
-import { LEMintEnded } from '../components/lost-echoes/LEMintEnded';
 import LostEchoesWL from '../components/lost-echoes/LostEchoesWL';
 
 //WAGMI
@@ -19,6 +17,7 @@ import { useAccount, useNetwork } from 'wagmi';
 //
 import { ToastContainer, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { LEMintEnded } from '../components/lost-echoes/LEMintEnded';
 import { chainID } from '../constants/chainId';
 import { useWhitelist } from '../hooks/useWhitelist';
 import { wlAddresses1 } from '../utils/merkle/wlAddresses1';
@@ -39,7 +38,7 @@ const LostEchoes = () => {
     tv1SoundtrackPause,
     tv1SoundtrackPlay,
   } = useSoundContext();
-  const { endWLDateInSecs, stage, ownerNFTsResult } = useDrop1Context();
+  const { endWLDateInSecs, ownerNFTsResult } = useDrop1Context();
 
   const { data } = ownerNFTsResult;
   //STATE
@@ -119,18 +118,18 @@ const LostEchoes = () => {
 
         <div
           className="relative px-4 w-full mx-auto flex flex-col justify-start 2xl:justify-center items-center 
-          md:py-4 lg:shadow-xl  lg:shadow-stone-600/50 sm:max-w-6xl md:max-w-4xl 2xl:max-w-7xl text-[10px] xs:text-sm md:text-[18px] lg:text-lg  2xl:text-2xl min-h-[100vh]  font-bold"
+          md:py-4 lg:shadow-xl  lg:shadow-stone-600/50 sm:max-w-6xl md:max-w-4xl 2xl:max-w-7xl text-[10px] xs:text-sm md:text-[18px] lg:text-lg  2xl:text-2xl min-h-[100vh] lg:min-h-[80vh]  font-bold"
         >
           {/* LOADING */}
           {loading && <LELoading />}
-          {/* DISCONNECTED OR WRONG CHAIN */}
+          {/* DISCONNECTED  */}
           {!loading && (!address || chain?.id != chainID) && (
-            <div className=" text-drop1  relative  lg:min-h-none   border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
+            <div className=" text-drop1  relative  lg:min-h-none   border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-[#00eeff]/10 hover:shadow-[#00eeff]/30 text-[#00eeff] bg-[#01000055]  p-4  opacity-95">
               <LEDisconnected chainId={chain?.id} address={address} />
             </div>
           )}
           {/*VISIT FJORD: WHITELIST ACTIVE AND NOT WHITELISTED ACC */}
-          {address &&
+          {/* {address &&
             !isWhitelisted &&
             !loading &&
             chain?.id === chainID &&
@@ -139,7 +138,7 @@ const LostEchoes = () => {
               <div className=" text-drop1  relative  lg:min-h-none   border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
                 <LEFjord stage={stage} />
               </div>
-            )}
+            )} */}
           {/* MINT FJORD: WHITELIST INACTIVE && PUBLICMINT INACTIVE */}
           {/* {address &&
             !loading &&
@@ -152,8 +151,8 @@ const LostEchoes = () => {
             )} */}
 
           {/* MINT ENDED */}
-          {address && !loading && (
-            <div className=" text-drop1  relative  lg:min-h-none  border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
+          {address && !loading && chain?.id === chainID && (
+            <div className=" text-drop1  relative  lg:min-h-none  border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-[#00eeff]/10 hover:shadow-[#00eeff]/30 text-[#00eeff] bg-[#01000055]  p-4  opacity-95">
               <LEMintEnded />
             </div>
           )}
@@ -163,7 +162,7 @@ const LostEchoes = () => {
             date.getTime() < endWLDateInSecs &&
             chain?.id === chainID &&
             !loading && (
-              <div className=" text-drop1  relative  lg:min-h-none  border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
+              <div className=" text-drop1  relative  lg:min-h-none  border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-[#00eeff]/10 hover:shadow-[#00eeff]/30 text-[#00eeff] bg-[#01000055]  p-4  opacity-95">
                 <LostEchoesWL />
               </div>
             )}

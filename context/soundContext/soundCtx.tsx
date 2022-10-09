@@ -1,5 +1,5 @@
-import { createContext, useContext, useState } from "react";
-import useSound from "use-sound";
+import { createContext, useContext, useState } from 'react';
+import useSound from 'use-sound';
 
 interface SoundContextProps {
   isSoundOn: boolean;
@@ -9,7 +9,6 @@ interface SoundContextProps {
   tv1SoundtrackPlay: () => void;
   tv1SoundtrackStop: () => void;
   tv1SoundtrackPause: () => void;
-
   toggleSound: () => void;
 }
 const INITIAL_STATE: SoundContextProps = {
@@ -22,13 +21,10 @@ const INITIAL_STATE: SoundContextProps = {
   tv1SoundtrackStop: () => {},
   toggleSound: () => {},
 };
-interface props {
-  children: JSX.Element | JSX.Element[];
-}
 
 const SoundContext = createContext(INITIAL_STATE);
 
-export function SoundWrapper({ children }: props) {
+export function SoundWrapper({ children }: any) {
   const [isSoundOn, setIsSoundOn] = useState(true);
   const [tv1Soundtrack, setTv1Soundtrack] = useState(false);
 
@@ -37,7 +33,7 @@ export function SoundWrapper({ children }: props) {
     tv1SoundtrackPlay,
     { pause: tv1SoundtrackPause, stop: tv1SoundtrackStop },
   ] = useSound(
-    "https://res.cloudinary.com/aldi/video/upload/v1661350979/feltzine/tv1soundtrack_uottyq.mp3",
+    'https://res.cloudinary.com/aldi/video/upload/v1661350979/feltzine/tv1soundtrack_uottyq.mp3',
     {
       volume: 0.2,
 
@@ -51,7 +47,7 @@ export function SoundWrapper({ children }: props) {
   );
   //GENERAL ON / OFF TOGGLE SOUND
   const [toggleSound] = useSound(
-    "https://res.cloudinary.com/aldi/video/upload/v1660491891/feltzine/toggle1_ibppkc.mp3",
+    'https://res.cloudinary.com/aldi/video/upload/v1660491891/feltzine/toggle1_ibppkc.mp3',
     { volume: 0.1 }
   );
 
@@ -77,7 +73,7 @@ export function useSoundContext() {
   const context = useContext(SoundContext);
 
   if (!context) {
-    console.error("Error deploying Drop1Context!!!");
+    console.error('Error deploying Drop1Context!!!');
   }
 
   return context;

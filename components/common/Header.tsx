@@ -1,11 +1,18 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { AiOutlineWallet } from 'react-icons/ai';
+import useSoundContext from '../../context/soundContext/soundCtx';
 import { ConnectBtn } from './ConnectBtn';
 
 const Header = () => {
   const router = useRouter();
   const route = router.pathname;
+
+  const { tv1SoundtrackStop } = useSoundContext();
+
+  const stopSounds = () => {
+    tv1SoundtrackStop();
+  };
   return (
     <div className="flex w-full flex-col gap-4  items-center  pt-8">
       {/* Mobile connect */}
@@ -22,7 +29,9 @@ const Header = () => {
         <div className=" hidden lg:flex fixed  items-end flex-col top-8 right-4 gap-2 cursor-fancy text-sm ">
           <ConnectBtn />
           <Link href={'/nfts'} rel="preload">
-            <AiOutlineWallet className="w-6 h-6 text-shadowFirst text-[#cccccc] shadow-md shadow-[#f8f8f8]/30" />
+            <button onClick={stopSounds}>
+              <AiOutlineWallet className="w-6 h-6 text-shadowFirst text-[#cccccc] shadow-md shadow-[#f8f8f8]/30" />
+            </button>
           </Link>
         </div>
       )}
