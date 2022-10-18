@@ -13,7 +13,7 @@ const TV1PublicMint = ({ handleEnterTv, tv1Hover }: TV1PublicMintProps) => {
         onClick={() => handleEnterTv(1)}
       >
         <h2 className="text-[#ff0000] ">LOST ECHOES</h2>
-        {tv1Hover && <p className=" absolute bottom-4 ">ACCESS</p>}
+        {tv1Hover && <p className=" absolute bottom-4 ">ENTER</p>}
       </button>
     </Link>
   );

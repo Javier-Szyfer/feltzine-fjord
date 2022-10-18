@@ -13,7 +13,7 @@ interface Drop1ContextProps {
   totalMintedDrop1?: number;
   endWLDateInSecs: number;
   formattedWLEndDate: string;
-  stage?: any;
+  drop1Stage?: any;
   readTMinted: () => void;
   ownerNFTsResult: any;
   reexecuteQuery: any;
@@ -40,7 +40,7 @@ export function Drop1Wrapper({ children }: props) {
     watch: true,
     cacheTime: 5,
   });
-  const { data: stage } = useContractRead({
+  const { data: drop1Stage } = useContractRead({
     addressOrName: fjordDrop1ContractAddress,
     contractInterface: fjordDrop1MainnetAbi,
     functionName: 'stage',
@@ -72,6 +72,7 @@ export function Drop1Wrapper({ children }: props) {
           token {
             tokenId
             metadata
+            collectionAddress
           }
         }
         pageInfo {
@@ -86,7 +87,7 @@ export function Drop1Wrapper({ children }: props) {
     variables: {
       col: fjordDrop1ContractAddress,
       add: address,
-      limit: 24,
+      limit: 48,
     },
     context: useMemo(
       () => ({
@@ -110,7 +111,7 @@ export function Drop1Wrapper({ children }: props) {
         endWLDateInSecs,
         formattedWLEndDate,
         reexecuteQuery,
-        stage,
+        drop1Stage,
         ownerNFTsResult: result,
       }}
     >

@@ -2,25 +2,23 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 //CONTEXT
-import { useDrop1Context } from '../context/drop1Context/drop1Ctx';
+import useDrop2Context from '../context/drop2Context/drop2Ctx';
 import useSoundContext from '../context/soundContext/soundCtx';
 //COMPONENTS
 import Header from '../components/common/Header';
 import News from '../components/common/News';
+
 //VIEWS
-import LEDisconnected from '../components/lost-echoes/LEDisconnected';
-import LELoading from '../components/lost-echoes/LELoading';
-import LostEchoesWL from '../components/lost-echoes/LostEchoesWL';
+import HHDisconnected from '../components/hell-house/HHDisconnected';
+import HHLoading from '../components/hell-house/HHLoading';
+import HHPublicMint from '../components/hell-house/HHPublicMint';
 
 //WAGMI
 import { useAccount, useNetwork } from 'wagmi';
 //
 import { ToastContainer, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { LEMintEnded } from '../components/lost-echoes/LEMintEnded';
 import { chainID } from '../constants/chainId';
-import { useWhitelist } from '../hooks/useWhitelist';
-import { wlAddresses1 } from '../utils/merkle/wlAddresses1';
 
 const LostEchoes = () => {
   const title = 'FeltZine - Lost Echoes';
@@ -34,23 +32,19 @@ const LostEchoes = () => {
     tv1SoundtrackStop,
     setIsSoundOn,
     toggleSound,
-    tv1Soundtrack,
-    tv1SoundtrackPause,
-    tv1SoundtrackPlay,
+    tv2Soundtrack,
+    tv2SoundtrackPause,
+    tv2SoundtrackPlay,
   } = useSoundContext();
-  const { endWLDateInSecs, ownerNFTsResult } = useDrop1Context();
+  const { hellHouseNfts, drop2Stage } = useDrop2Context();
 
-  const { data } = ownerNFTsResult;
+  const { data } = hellHouseNfts;
   //STATE
   const [loading, setLoading] = useState(true);
-
-  const date = new Date();
 
   //WAGMI
   const { chain } = useNetwork();
   const { address } = useAccount();
-
-  const isWhitelisted = useWhitelist(address, wlAddresses1);
 
   useEffect(() => {
     const loadingTime = setTimeout(() => {
@@ -59,11 +53,19 @@ const LostEchoes = () => {
     return () => clearTimeout(loadingTime);
   }, []);
 
+  useEffect(() => {
+    if (isSoundOn) {
+      tv2SoundtrackPlay();
+    } else {
+      tv2SoundtrackPause();
+    }
+  }, [isSoundOn]);
+
   const handleSoundOff = () => {
     toggleSound(),
       setIsSoundOn(!isSoundOn),
-      tv1Soundtrack && tv1SoundtrackPause();
-    !tv1Soundtrack && !isSoundOn && tv1SoundtrackPlay();
+      tv2Soundtrack && tv2SoundtrackPause();
+    !tv2Soundtrack && !isSoundOn && tv2SoundtrackPlay();
   };
 
   return (
@@ -101,81 +103,35 @@ const LostEchoes = () => {
         {/* NEWS */}
         <div className="px-8 sm:px-4 md:max-w-4xl lg:px-0 mx-auto mt-2">
           <News size="xl" />
-          {isWhitelisted && endWLDateInSecs > date.getTime() && (
-            <span className=" mt-4 text-[#00eeff] tracking-tighter text-[10px] sm:text-xs text-shadowFirst flex flex-col sm:flex-row justify-center items-center">
-              You are whitelisted for:{' '}
-              <span className="italic ml-1 flex flex-col justify-center items-center ">
-                {isWhitelisted && 'Lost Echoes'}
-              </span>
-            </span>
-          )}
-          {!isWhitelisted && address && endWLDateInSecs > date.getTime() && (
-            <span className=" mt-4 text-[#00eeff] tracking-tighter text-xs text-shadowFirst flex flex-col sm:flex-row justify-center items-center">
-              Not whitelisted
-            </span>
-          )}
         </div>
 
         <div
           className="relative px-4 w-full mx-auto flex flex-col justify-start 2xl:justify-center items-center 
-          md:py-4 lg:shadow-xl  lg:shadow-stone-600/50 sm:max-w-6xl md:max-w-4xl 2xl:max-w-7xl text-[10px] xs:text-sm md:text-[18px] lg:text-lg  2xl:text-2xl min-h-[100vh] lg:min-h-[80vh]  font-bold"
+          md:py-4 lg:shadow-xl   lg:shadow-stone-600/50 sm:max-w-6xl md:max-w-4xl 2xl:max-w-7xl text-[10px] xs:text-sm md:text-[18px] lg:text-lg  2xl:text-2xl min-h-[100vh] lg:min-h-[80vh]  font-bold"
         >
           {/* LOADING */}
-          {loading && <LELoading />}
-          {/* DISCONNECTED  */}
+          {loading && <HHLoading />}
+          {/* DISCONNECTED OR WRONG CHAIN  */}
           {!loading && (!address || chain?.id != chainID) && (
-            <div className=" text-drop1  relative  lg:min-h-none   border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-[#00eeff]/10 hover:shadow-[#00eeff]/30 text-[#00eeff] bg-[#01000055]  p-4  opacity-95">
-              <LEDisconnected chainId={chain?.id} address={address} />
+            <div className=" text-drop1  relative  lg:min-h-none   border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-[#ff0000]/10 hover:shadow-[#ff0000]/30  bg-[#01000055]  p-4  opacity-95">
+              <HHDisconnected chainId={chain?.id} address={address} />
             </div>
           )}
-          {/*VISIT FJORD: WHITELIST ACTIVE AND NOT WHITELISTED ACC */}
-          {/* {address &&
-            !isWhitelisted &&
-            !loading &&
-            chain?.id === chainID &&
-            date.getTime() < endWLDateInSecs &&
-            stage === 2 && (
-              <div className=" text-drop1  relative  lg:min-h-none   border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
-                <LEFjord stage={stage} />
-              </div>
-            )} */}
-          {/* MINT FJORD: WHITELIST INACTIVE && PUBLICMINT INACTIVE */}
-          {/* {address &&
-            !loading &&
-            chain?.id === chainID &&
-            date.getTime() > endWLDateInSecs &&
-            stage === 3 && (
-              <div className=" text-drop1  relative  lg:min-h-none   border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
-                <LEFjord stage={stage} />
-              </div>
-            )} */}
 
           {/* MINT ENDED */}
-          {address && !loading && chain?.id === chainID && (
+          {/* {address && !loading && chain?.id === chainID && (
             <div className=" text-drop1  relative  lg:min-h-none  border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-[#00eeff]/10 hover:shadow-[#00eeff]/30 text-[#00eeff] bg-[#01000055]  p-4  opacity-95">
               <LEMintEnded />
             </div>
+          )} */}
+
+          {/* PUBLIC MINT */}
+          {address && !loading && chain?.id === chainID && drop2Stage === 2 && (
+            <div className=" text-drop1  relative  lg:min-h-none   border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-[#ff0000]/10 hover:shadow-[#ff0000]/30  bg-[#01000055]  p-4  opacity-95">
+              <HHPublicMint />
+            </div>
           )}
-          {/* WHITELIST ACTIVE AND WHITELISTED ACC */}
-          {address &&
-            isWhitelisted &&
-            date.getTime() < endWLDateInSecs &&
-            chain?.id === chainID &&
-            !loading && (
-              <div className=" text-drop1  relative  lg:min-h-none  border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-[#00eeff]/10 hover:shadow-[#00eeff]/30 text-[#00eeff] bg-[#01000055]  p-4  opacity-95">
-                <LostEchoesWL />
-              </div>
-            )}
-          {/* PUBLIC MINT === WHITELIST ENDED AND FJORD MINT ENDED */}
-          {/* {address &&
-            date.getTime() > endWLDateInSecs &&
-            !loading &&
-            stage === 4 &&
-            chain?.id === chainID && (
-              <div className=" text-drop1 relative lg:min-h-none  border-[0.9px] h-full w-full mt-4 md:mt-0 border-[#302e2e84] shadow-xl shadow-red-800/10 hover:shadow-[#ff370030]/30 text-[#ff0000] bg-[#01000055]  p-4  opacity-95">
-                <LostEchoesPM />
-              </div>
-            )} */}
+
           {/* SOUND CONTROL */}
 
           <div className="flex w-full justify-between items-center pb-6 px-4">

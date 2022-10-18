@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { chainID } from '../constants/chainId';
 //CONTEXT
 import { useDrop1Context } from '../context/drop1Context/drop1Ctx';
+import useDrop2Context from '../context/drop2Context/drop2Ctx';
 import useSoundContext from '../context/soundContext/soundCtx';
 //
 import { motion } from 'framer-motion';
@@ -15,10 +16,9 @@ import { fadeInUp, stagger } from '../animations/animations';
 //COMPONENTS
 import Header from '../components/common/Header';
 import News from '../components/common/News';
-import Tv1Whitelist from '../components/drops/tv1/Tv1Whitelist';
 //WHITELIST
-import Timer from '../components/common/Timer';
 import { Tv1MintEnded } from '../components/drops/tv1/Tv1MintEnded';
+import TV2PublicMint from '../components/drops/tv2/Tv2PublicMint';
 import { useAuth } from '../hooks/useAuth';
 import { useWhitelist } from '../hooks/useWhitelist';
 import { wlAddresses1 } from '../utils/merkle/wlAddresses1';
@@ -33,9 +33,10 @@ const Drops = () => {
   const { openChainModal } = useChainModal();
 
   //DROP1
-  const { endWLDateInSecs, stage } = useDrop1Context();
+  const { endWLDateInSecs, drop1Stage } = useDrop1Context();
   const [tv1Hover, setTv1Hover] = useState(false);
   //DROP2
+  const { drop2Stage } = useDrop2Context();
   const [tv2Hover, setTv2Hover] = useState(false);
   //DROP3
   const [tv3Hover, setTv3Hover] = useState(false);
@@ -144,13 +145,13 @@ const Drops = () => {
           variants={stagger}
           className=" px-4 w-full mx-auto grid grid-col-1 gap-6 md:grid-cols-2 place-content-center md:gap-1 md:max-w-4xl md:py-4 h-full min-h-[80vh] lg:shadow-xl lg:shadow-stone-600/50 sm:max-w-6xl  2xl:max-w-7xl  font-bold"
         >
-          {/* ALL TVS TOGETHER */}
+          {/* ALL TVS  */}
           <>
             {/* //TV1 */}
             <motion.div
               variants={fadeInUp}
               transition={{ delay: 0.5 }}
-              className=" border-[0.9px] mt-4 md:mt-0 border-[#36353584] shadow-md shadow-stone-200/10 hover:shadow-[#ff0000]/50 text-[#ff0000] p-4 h-64  w-72 xs:w-80 sm:w-96 2xl:h-80 md:w-full bg-[#00000055]  opacity-95"
+              className=" border-[0.9px] mt-4 md:mt-0 border-[#36353584] shadow-md shadow-stone-200/10 hover:shadow-[#00eeff]/50 text-[#00eeff] p-4 h-64  w-72 xs:w-80 sm:w-96 2xl:h-80 md:w-full bg-[#00000055]  opacity-95"
             >
               <motion.div
                 onMouseEnter={() => {
@@ -172,20 +173,20 @@ const Drops = () => {
                 }}
                 onHoverStart={() => setTv1Hover(true)}
                 onHoverEnd={() => setTv1Hover(false)}
-                className="text-shadowFirstCollection relative w-full h-full shadow-md shadow-[#80ff9e]/50 rounded-2xl"
+                className="text-shadowFirstCollection relative w-full h-full "
               >
                 <div className="absolute border-[0.5px] border-[#0e0e0e84] inset-0 bg-cover rounded-2xl opacity-70 grayscale bg-[url('https://res.cloudinary.com/aldi/image/upload/v1662031129/feltzine/gifBg1_aeastj.gif')]  from-[#31333e31] to-[#76737325] w-full h-full hover:blur-sm" />
                 {/* WHITELISTED and WHITELIST ACTIVE */}
-                {isWhitelisted &&
+                {/* {isWhitelisted &&
                   endWLDateInSecs > date.getTime() &&
                   chain?.id === chainID && (
                     <Tv1Whitelist
                       tv1Hover={tv1Hover}
                       handleEnterTv={handleEnterTv}
                     />
-                  )}
+                  )} */}
                 {/* NOT WHITELISTED and WHITELIST ACTIVE */}
-                {!isWhitelisted &&
+                {/* {!isWhitelisted &&
                   endWLDateInSecs > date.getTime() &&
                   address &&
                   chain?.id === chainID && (
@@ -212,7 +213,7 @@ const Drops = () => {
                         )}
                       </button>
                     </a>
-                  )}
+                  )} */}
                 {/* FJORD MINT == WHITELIST ENDED && PUBLIC MINT INACTIVE*/}
                 {/* {stage === 3 &&
                   endWLDateInSecs < date.getTime() &&
@@ -230,7 +231,9 @@ const Drops = () => {
                     />
                   )} */}
                 {/* MINT ENDED */}
-                {address && <Tv1MintEnded stop1={stop1} tv1Hover={tv1Hover} />}
+                {address && chain?.id === chainID && (
+                  <Tv1MintEnded stop1={stop1} tv1Hover={tv1Hover} />
+                )}
 
                 {/* DISCONNECTED */}
                 {!address && (
@@ -238,7 +241,7 @@ const Drops = () => {
                     onClick={openConnectModal}
                     className="text-shadowFirstCollection cursor-fancy relative shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center "
                   >
-                    <h2 className="text-[#ff0000] ">LOST ECHOES</h2>
+                    <h2 className="text-[#00eeff] ">LOST ECHOES</h2>
                     {tv1Hover && (
                       <p className="absolute bottom-4 ">CONNECT WALLET</p>
                     )}
@@ -250,7 +253,7 @@ const Drops = () => {
                     onClick={openChainModal}
                     className="text-shadowFirstCollection cursor-fancy relative shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center "
                   >
-                    <h2 className="text-[#ff0000] ">LOST ECHOES</h2>
+                    <h2 className="text-[#00eeff] ">LOST ECHOES</h2>
                     {tv1Hover && (
                       <p className="absolute bottom-4 ">WRONG NETWORK</p>
                     )}
@@ -261,7 +264,7 @@ const Drops = () => {
             {/* TV2 */}
             <motion.div
               variants={fadeInUp}
-              className="border-[0.9px] border-[#36353584] shadow-md shadow-stone-200/10 hover:shadow-[#3a86ff]/50 cursor-fancy   h-64 2xl:h-80 p-4 bg-[#00000055] opacity-50"
+              className="border-[0.9px] border-[#36353584] shadow-md shadow-stone-200/10 hover:shadow-[#ff0000]/50 cursor-fancy   h-64 2xl:h-80 p-4 bg-[#00000055] opacity-50"
             >
               <motion.div
                 whileHover={{
@@ -280,13 +283,46 @@ const Drops = () => {
                   stop3();
                   stop4();
                 }}
-                className="text-shadowInit1 relative  w-full h-full "
+                onHoverStart={() => setTv2Hover(true)}
+                onHoverEnd={() => setTv2Hover(false)}
+                className="text-shadowInit1 relative  w-full h-full rounded-2xl "
               >
-                <div className="absolute border-[0.5px] border-[#0e0e0e84] hover:border-[#69ff69] inset-0  rounded-2xl bg-gradient-to-t  from-[#31333e31] to-[#9f959525] w-full h-full " />
-                <div className="hover:blur-sm absolute inset-0 shadow-xl shadow-stone-500/10 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center ">
-                  <h2 className="">COLLECTION 2</h2>
-                  <h3 className="font-semibold">- Coming soon -</h3>
-                </div>
+                <div
+                  className={` ${
+                    tv2Hover
+                      ? "bg-[url('https://res.cloudinary.com/aldi/image/upload/v1665488312/feltzine/promo_art-x-final_bdoko4.gif')] inset-0   opacity-70  mix-blend-darken  "
+                      : "bg-[url('https://res.cloudinary.com/aldi/image/upload/v1665490849/feltzine/hellhouse59_-_A_Screaming_Cross_ghost_in_the_Cemetery_of_Abi_copy_lcpudb.jpg')] bg-cover bg-top"
+                  } relative border-[0.5px] border-[#0e0e0e84] rounded-2xl   from-[#31333e31] to-[#9f959525] w-full h-full `}
+                />
+                {/* DISCONNECTED */}
+                {!address && (
+                  <button
+                    onClick={openChainModal}
+                    className="absolute inset-0 z-50 text-shadowFirstCollection  text-[#ff0000] cursor-fancy  shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center "
+                  >
+                    <h2>HELL HOUSE</h2>
+                    {tv2Hover && (
+                      <p className="absolute bottom-4 ">CONNECT WALLET</p>
+                    )}
+                  </button>
+                )}
+                {/* WRONG NETWORK */}
+                {chain?.id !== chainID && address && (
+                  <button
+                    onClick={openChainModal}
+                    className="absolute inset-0 text-shadowFirstCollection  text-[#ff0000] cursor-fancy  shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center "
+                  >
+                    <h2 className="">HELL HOUSE</h2>
+                    {tv2Hover && (
+                      <p className="absolute bottom-4 ">WRONG NETWORK</p>
+                    )}
+                  </button>
+                )}
+                {/* PUBLIC MINT ACTIVE*/}
+                {address && drop2Stage === 2 && chain?.id === chainID && (
+                  <TV2PublicMint stop2={stop2} tv2Hover={tv2Hover} />
+                )}
+                {/* </div> */}
               </motion.div>
             </motion.div>
             {/* TV3 */}
