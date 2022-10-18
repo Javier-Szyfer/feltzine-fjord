@@ -21,7 +21,7 @@ export const LEMintEnded = () => {
         loop
         preload="true"
         muted
-        className="opacity-60 contrast-80 hue-rotate-50 bg-black mix-blend-exclusion hidden lg:flex"
+        className="opacity-60 object-cover  contrast-80 w-full h-[60vh]  lg:h-[70vh] hue-rotate-50 bg-black mix-blend-exclusion hidden lg:flex"
       />
       <div className=" lg:absolute inset-0  flex flex-col justify-between shadow-xl shadow-stone-200/10 rounded-2xl bg-[url('../public/images/tv-bg.png')] lg:p-8 ">
         <div className="bg-[url('https://res.cloudinary.com/aldi/image/upload/v1662031129/feltzine/gifBg1_aeastj.gif')] bg-cover bg-opacity-10  lg:bg-none p-4 sm:p-8 lg:p-0 h-full flex flex-col justify-between">

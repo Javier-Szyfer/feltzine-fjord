@@ -27,7 +27,7 @@ const News = ({ size }: any) => {
         </span>
         <span className="mx-1">
           <span className="font-bold"> ψ Hell House ψ</span> Status:{' '}
-          <span className="font-bold">NOT STARTED</span> - Total minted:{' '}
+          <span className="font-bold">ACTIVE</span> - Total minted:{' '}
           {totalMintedDrop2}/777 ✧✧✧
         </span>
 

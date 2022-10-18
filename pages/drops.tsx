@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { chainID } from '../constants/chainId';
 //CONTEXT
 import { useDrop1Context } from '../context/drop1Context/drop1Ctx';
+import useDrop2Context from '../context/drop2Context/drop2Ctx';
 import useSoundContext from '../context/soundContext/soundCtx';
 //
 import { motion } from 'framer-motion';
@@ -17,7 +18,7 @@ import Header from '../components/common/Header';
 import News from '../components/common/News';
 //WHITELIST
 import { Tv1MintEnded } from '../components/drops/tv1/Tv1MintEnded';
-import Tv2FjordMint from '../components/drops/tv2/Tv2FjordMint';
+import TV2PublicMint from '../components/drops/tv2/Tv2PublicMint';
 import { useAuth } from '../hooks/useAuth';
 import { useWhitelist } from '../hooks/useWhitelist';
 import { wlAddresses1 } from '../utils/merkle/wlAddresses1';
@@ -32,9 +33,10 @@ const Drops = () => {
   const { openChainModal } = useChainModal();
 
   //DROP1
-  const { endWLDateInSecs, stage } = useDrop1Context();
+  const { endWLDateInSecs, drop1Stage } = useDrop1Context();
   const [tv1Hover, setTv1Hover] = useState(false);
   //DROP2
+  const { drop2Stage } = useDrop2Context();
   const [tv2Hover, setTv2Hover] = useState(false);
   //DROP3
   const [tv3Hover, setTv3Hover] = useState(false);
@@ -283,12 +285,44 @@ const Drops = () => {
                 }}
                 onHoverStart={() => setTv2Hover(true)}
                 onHoverEnd={() => setTv2Hover(false)}
-                className="text-shadowInit1 relative  w-full h-full shadow-md shadow-[#ff0000]/50 rounded-2xl "
+                className="text-shadowInit1 relative  w-full h-full rounded-2xl "
               >
-                <div className="absolute border-[0.5px] border-[#0e0e0e84] inset-0  rounded-2xl bg-gradient-to-t  from-[#31333e31] to-[#9f959525] w-full h-full " />
-                <div className="absolute inset-0 shadow-xl shadow-stone-500/10 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center ">
-                  <Tv2FjordMint stop2={stop2} tv2Hover={tv2Hover} />
-                </div>
+                <div
+                  className={` ${
+                    tv2Hover
+                      ? "bg-[url('https://res.cloudinary.com/aldi/image/upload/v1665488312/feltzine/promo_art-x-final_bdoko4.gif')] inset-0   opacity-70  mix-blend-darken  "
+                      : "bg-[url('https://res.cloudinary.com/aldi/image/upload/v1665490849/feltzine/hellhouse59_-_A_Screaming_Cross_ghost_in_the_Cemetery_of_Abi_copy_lcpudb.jpg')] bg-cover bg-top"
+                  } relative border-[0.5px] border-[#0e0e0e84] rounded-2xl   from-[#31333e31] to-[#9f959525] w-full h-full `}
+                />
+                {/* DISCONNECTED */}
+                {!address && (
+                  <button
+                    onClick={openChainModal}
+                    className="absolute inset-0 z-50 text-shadowFirstCollection  text-[#ff0000] cursor-fancy  shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center "
+                  >
+                    <h2>HELL HOUSE</h2>
+                    {tv2Hover && (
+                      <p className="absolute bottom-4 ">CONNECT WALLET</p>
+                    )}
+                  </button>
+                )}
+                {/* WRONG NETWORK */}
+                {chain?.id !== chainID && address && (
+                  <button
+                    onClick={openChainModal}
+                    className="absolute inset-0 text-shadowFirstCollection  text-[#ff0000] cursor-fancy  shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center "
+                  >
+                    <h2 className="">HELL HOUSE</h2>
+                    {tv2Hover && (
+                      <p className="absolute bottom-4 ">WRONG NETWORK</p>
+                    )}
+                  </button>
+                )}
+                {/* PUBLIC MINT ACTIVE*/}
+                {address && drop2Stage === 2 && chain?.id === chainID && (
+                  <TV2PublicMint stop2={stop2} tv2Hover={tv2Hover} />
+                )}
+                {/* </div> */}
               </motion.div>
             </motion.div>
             {/* TV3 */}

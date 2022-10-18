@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo } from 'react';
 //FJORD DROP1
-import { fjordDrop1ContractAddress } from '../../constants/contractAddresses';
-import { fjordDrop1MainnetAbi } from '../../contractABI/mainnetABIS';
+import { hellHouseMainnetAddress } from '../../constants/contractAddresses';
+import { hellHouseABI } from '../../contractABI/mainnetABIS';
 //WAGMI
 import { ethers } from 'ethers';
 import { gql, useQuery } from 'urql';
@@ -10,9 +10,9 @@ import { useAuth } from '../../hooks/useAuth';
 
 interface Drop2ContextProps {
   totalMintedDrop2?: number;
-  stage?: any;
+  drop2Stage?: any;
   readTMinted: () => void;
-  ownerNFTsResult: any;
+  hellHouseNfts: any;
   reexecuteQuery: any;
 }
 
@@ -26,15 +26,15 @@ export function Drop2Wrapper({ children }: props) {
   const { address } = useAuth();
 
   const { data: totalMintedDrop, refetch: readTMinted } = useContractRead({
-    addressOrName: fjordDrop1ContractAddress,
-    contractInterface: fjordDrop1MainnetAbi,
+    addressOrName: hellHouseMainnetAddress,
+    contractInterface: hellHouseABI,
     functionName: 'totalSupply',
     watch: true,
     cacheTime: 5,
   });
-  const { data: stage } = useContractRead({
-    addressOrName: fjordDrop1ContractAddress,
-    contractInterface: fjordDrop1MainnetAbi,
+  const { data: drop2Stage } = useContractRead({
+    addressOrName: hellHouseMainnetAddress,
+    contractInterface: hellHouseABI,
     functionName: 'stage',
     watch: true,
     cacheTime: 5,
@@ -57,6 +57,7 @@ export function Drop2Wrapper({ children }: props) {
           token {
             tokenId
             metadata
+            collectionAddress
           }
         }
         pageInfo {
@@ -69,9 +70,9 @@ export function Drop2Wrapper({ children }: props) {
   const [result, reexecuteQuery] = useQuery({
     query: OWNED_NFTS,
     variables: {
-      col: fjordDrop1ContractAddress,
-      add: address,
-      limit: 24,
+      col: hellHouseMainnetAddress,
+      add: '0x5e080D8b14c1DA5936509c2c9EF0168A19304202',
+      limit: 100,
     },
     context: useMemo(
       () => ({
@@ -93,8 +94,8 @@ export function Drop2Wrapper({ children }: props) {
         readTMinted,
         totalMintedDrop2,
         reexecuteQuery,
-        stage,
-        ownerNFTsResult: result,
+        drop2Stage,
+        hellHouseNfts: result,
       }}
     >
       {children}
