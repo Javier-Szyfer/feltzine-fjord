@@ -14,13 +14,12 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from 'wagmi';
-import { chainID } from '../../constants/chainId';
 import { useAuth } from '../../hooks/useAuth';
 import { formatHash } from '../../utils/formatters';
 
 const LostEchoesPM = () => {
   //CONTEXT
-  const { stage, readTMinted } = useDrop1Context();
+  const { readTMinted } = useDrop1Context();
   const { address, balance, chain } = useAuth();
 
   //STATE
@@ -80,32 +79,32 @@ const LostEchoesPM = () => {
   //PUBLIC MINT
   const handlePublicMint = () => {
     setProcessing(true);
-    if (!publicMintAmount || publicMintAmount == 0) {
-      toast.error('Please enter a valid amount');
-      setProcessing(false);
-      return;
-    } else if (stage !== 4) {
-      toast.error('Public mint is not active yet');
-      setProcessing(false);
-    } else if (chain?.id !== chainID) {
-      toast.error('Please connect to Goerli Testnet', {
-        toastId: 'wrongNetwork-tv1-publicMint',
-      });
-      setProcessing(false);
-      return;
-    } else if (!address) {
-      toast.error('Please connect your wallet', {
-        toastId: 'noWallet-tv1-publicMint',
-      });
-      setProcessing(false);
-      return;
-    } else if (balance && parseInt(balance?.formatted) < totalPublicPrice) {
-      toast.error('Insufficient funds', {
-        toastId: 'insufficientFunds-tv1-publicMint',
-      });
-      setProcessing(false);
-      return;
-    }
+    // if (!publicMintAmount || publicMintAmount == 0) {
+    //   toast.error('Please enter a valid amount');
+    //   setProcessing(false);
+    //   return;
+    // } else if (stage !== 4) {
+    //   toast.error('Public mint is not active yet');
+    //   setProcessing(false);
+    // } else if (chain?.id !== chainID) {
+    //   toast.error('Please connect to Goerli Testnet', {
+    //     toastId: 'wrongNetwork-tv1-publicMint',
+    //   });
+    //   setProcessing(false);
+    //   return;
+    // } else if (!address) {
+    //   toast.error('Please connect your wallet', {
+    //     toastId: 'noWallet-tv1-publicMint',
+    //   });
+    //   setProcessing(false);
+    //   return;
+    // } else if (balance && parseInt(balance?.formatted) < totalPublicPrice) {
+    //   toast.error('Insufficient funds', {
+    //     toastId: 'insufficientFunds-tv1-publicMint',
+    //   });
+    //   setProcessing(false);
+    //   return;
+    // }
     publicMintWrite?.();
   };
 
@@ -124,8 +123,7 @@ const LostEchoesPM = () => {
           <div>
             <div className="flex gap-4 flex-col-reverse md:flex-row justify-between md:items-center">
               <h2>LOST ECHOES</h2>
-              {/* STATUS */}
-              {stage == 4 ? (
+              {/* {stage == 4 ? (
                 <span className="flex  items-center text-[#00ff00] text-[10px] sm:text-sm">
                   <span className=" animate-pulse w-2 h-2 bg-[#00ff00] mr-2 rounded-full" />{' '}
                   Active
@@ -135,7 +133,7 @@ const LostEchoesPM = () => {
                   <span className=" animate-pulse w-2 h-2 bg-[#ff0000] mr-2 rounded-full" />{' '}
                   Inactive
                 </span>
-              )}
+              )} */}
             </div>
             <span>
               Artifacts found:
