@@ -71,7 +71,7 @@ export function Drop2Wrapper({ children }: props) {
     query: OWNED_NFTS,
     variables: {
       col: hellHouseMainnetAddress,
-      add: '0x5e080D8b14c1DA5936509c2c9EF0168A19304202',
+      add: address,
       limit: 100,
     },
     context: useMemo(
