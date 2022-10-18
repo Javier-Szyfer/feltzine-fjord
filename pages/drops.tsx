@@ -297,12 +297,17 @@ const Drops = () => {
                 {/* DISCONNECTED */}
                 {!address && (
                   <button
-                    onClick={openChainModal}
+                    onClick={openConnectModal}
                     className="absolute inset-0 z-50 text-shadowFirstCollection  text-[#ff0000] cursor-fancy  shadow-xl shadow-stone-200/5 rounded-2xl bg-[url('../public/images/tv-bg.png')] w-full h-full  flex flex-col justify-center items-center "
                   >
                     <h2>HELL HOUSE</h2>
                     {tv2Hover && (
-                      <p className="absolute bottom-4 ">CONNECT WALLET</p>
+                      <p
+                        className="absolute bottom-4 "
+                        onClick={openChainModal}
+                      >
+                        CONNECT WALLET
+                      </p>
                     )}
                   </button>
                 )}

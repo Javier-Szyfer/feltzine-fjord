@@ -4,7 +4,7 @@ export default function Document() {
   const title = 'FeltZine x Fjord';
   const description =
     'Revolutionizing NFT Drops With Felt Zine and Fjord NFTs Liquidity Bootstrapping Pools';
-  const image = 'https://www.feltzine-fjord.vercel.app/assets/general-og.jpg';
+  const image = 'https://feltzine-fjord.vercel.app/assets/general-og.jpg';
 
   return (
     <Html lang="en">
