@@ -21,10 +21,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import { chainID } from '../constants/chainId';
 
 const LostEchoes = () => {
-  const title = 'FeltZine - Lost Echoes';
+  const title = 'FeltZine - Hell House';
   const description =
     'Revolutionizing NFT Drops With Felt Zine and Fjord NFTs Liquidity Bootstrapping Pools';
-  const image = 'https://feltzine-fjord.vercel.app/assets/le-resized.jpg';
+  const image = 'https://feltzine-fjord.vercel.app/assets/general-og.jpg';
 
   //CONTEXT
   const {
@@ -76,7 +76,7 @@ const LostEchoes = () => {
         <meta property="og:type" content="website" />
         <meta
           property="og:url"
-          content="https://feltzine-fjord.vercel.app/lost-echoes"
+          content="https://feltzine-fjord.vercel.app/hell-house"
         />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
